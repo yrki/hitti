@@ -5,6 +5,7 @@ using Api.Features.Organizations;
 using Api.Features.Weather;
 using Api.Infrastructure.Authentication;
 using Api.Infrastructure.Database;
+using Api.Infrastructure.Notifications;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,6 +24,7 @@ builder.Services.AddCors(options =>
 // Infrastructure
 builder.Services.AddDatabase(builder.Configuration);
 builder.Services.AddJwtAuthentication(builder.Configuration);
+builder.Services.AddNotifications(builder.Configuration);
 
 // Features
 builder.Services.AddWeatherFeature();

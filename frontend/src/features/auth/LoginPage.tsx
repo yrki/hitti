@@ -90,6 +90,10 @@ export function LoginPage() {
         </form>
 
         <p className={styles.registerLink}>
+          <Link to="/glemt-passord">Glemt passord?</Link>
+        </p>
+
+        <p className={styles.registerLink}>
           Ingen konto? <Link to="/registrer">Registrer organisasjon</Link>
         </p>
       </div>

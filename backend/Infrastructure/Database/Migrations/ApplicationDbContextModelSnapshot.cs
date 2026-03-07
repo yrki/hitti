@@ -71,6 +71,52 @@ namespace Api.Infrastructure.Database.Migrations
                     b.ToTable("activities", (string)null);
                 });
 
+            modelBuilder.Entity("Api.Infrastructure.Database.Entities.ActivityParticipantEntity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("ActivityId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("InvitationChannel")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("character varying(10)");
+
+                    b.Property<string>("InvitationToken")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<DateTime>("InvitedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("MemberId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime?>("RespondedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("InvitationToken")
+                        .IsUnique();
+
+                    b.HasIndex("MemberId");
+
+                    b.HasIndex("ActivityId", "MemberId")
+                        .IsUnique();
+
+                    b.ToTable("activity_participants", (string)null);
+                });
+
             modelBuilder.Entity("Api.Infrastructure.Database.Entities.MemberEntity", b =>
                 {
                     b.Property<Guid>("Id")
@@ -160,6 +206,58 @@ namespace Api.Infrastructure.Database.Migrations
                     b.ToTable("organizations", (string)null);
                 });
 
+            modelBuilder.Entity("Api.Infrastructure.Database.Entities.PasswordResetTokenEntity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime>("ExpiresAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("MemberId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Token")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("character varying(256)");
+
+                    b.Property<bool>("Used")
+                        .HasColumnType("boolean");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MemberId");
+
+                    b.HasIndex("Token")
+                        .IsUnique();
+
+                    b.ToTable("password_reset_tokens", (string)null);
+                });
+
+            modelBuilder.Entity("Api.Infrastructure.Database.Entities.ActivityParticipantEntity", b =>
+                {
+                    b.HasOne("Api.Infrastructure.Database.Entities.ActivityEntity", "Activity")
+                        .WithMany("Participants")
+                        .HasForeignKey("ActivityId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Api.Infrastructure.Database.Entities.MemberEntity", "Member")
+                        .WithMany()
+                        .HasForeignKey("MemberId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Activity");
+
+                    b.Navigation("Member");
+                });
+
             modelBuilder.Entity("Api.Infrastructure.Database.Entities.MemberEntity", b =>
                 {
                     b.HasOne("Api.Infrastructure.Database.Entities.OrganizationEntity", "Organization")
@@ -169,6 +267,22 @@ namespace Api.Infrastructure.Database.Migrations
                         .IsRequired();
 
                     b.Navigation("Organization");
+                });
+
+            modelBuilder.Entity("Api.Infrastructure.Database.Entities.PasswordResetTokenEntity", b =>
+                {
+                    b.HasOne("Api.Infrastructure.Database.Entities.MemberEntity", "Member")
+                        .WithMany()
+                        .HasForeignKey("MemberId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Member");
+                });
+
+            modelBuilder.Entity("Api.Infrastructure.Database.Entities.ActivityEntity", b =>
+                {
+                    b.Navigation("Participants");
                 });
 
             modelBuilder.Entity("Api.Infrastructure.Database.Entities.OrganizationEntity", b =>

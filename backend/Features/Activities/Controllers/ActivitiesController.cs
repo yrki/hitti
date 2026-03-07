@@ -1,18 +1,23 @@
+using System.Security.Claims;
 using Api.Features.Activities.Commands;
 using Api.Features.Activities.Contracts;
 using Api.Features.Activities.Queries;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Features.Activities.Controllers;
 
 [ApiController]
+[Authorize]
 [Route("api/[controller]")]
 public sealed class ActivitiesController(
     GetAllActivitiesHandler getAllActivitiesHandler,
     GetActivityByIdHandler getActivityByIdHandler,
     CreateActivityHandler createActivityHandler,
     UpdateActivityHandler updateActivityHandler,
-    DeleteActivityHandler deleteActivityHandler) : ControllerBase
+    DeleteActivityHandler deleteActivityHandler,
+    SendInvitationsHandler sendInvitationsHandler,
+    GetActivityParticipantsHandler getActivityParticipantsHandler) : ControllerBase
 {
     [HttpGet]
     public async Task<ActionResult<IReadOnlyList<ActivityResponse>>> GetAll(CancellationToken cancellationToken)
@@ -65,5 +70,45 @@ public sealed class ActivitiesController(
         }
 
         return NoContent();
+    }
+
+    [HttpPost("{id:guid}/invitations")]
+    public async Task<ActionResult<SendInvitationsResponse>> SendInvitations(
+        Guid id,
+        [FromBody] SendInvitationsRequest request,
+        CancellationToken cancellationToken)
+    {
+        var organizationId = GetOrganizationId();
+        if (organizationId is null) return Unauthorized();
+
+        var result = await sendInvitationsHandler.HandleAsync(id, organizationId.Value, request.Channel, cancellationToken);
+
+        if (result is null)
+        {
+            return NotFound();
+        }
+
+        return Ok(result);
+    }
+
+    [HttpGet("{id:guid}/participants")]
+    public async Task<ActionResult<IReadOnlyList<ParticipantResponse>>> GetParticipants(
+        Guid id,
+        CancellationToken cancellationToken)
+    {
+        var participants = await getActivityParticipantsHandler.HandleAsync(id, cancellationToken);
+
+        if (participants is null)
+        {
+            return NotFound();
+        }
+
+        return Ok(participants);
+    }
+
+    private Guid? GetOrganizationId()
+    {
+        var claim = User.FindFirst("org")?.Value;
+        return Guid.TryParse(claim, out var id) ? id : null;
     }
 }

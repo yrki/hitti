@@ -24,6 +24,7 @@ applyTo: "frontend/**"
 ## TypeScript
 
 - Strict mode is enabled — never use `any`. Use `unknown` and narrow types when needed.
+- Use `enum` or `as const` union types for any fixed set of values (statuses, roles, channels, etc.) — never use raw strings ("magic strings"). Prefer `as const` union types over TypeScript `enum` when the values are simple strings.
 - Prefer `interface` for object shapes and `type` for unions/intersections.
 - Export types explicitly with `export type` when the export is type-only.
 - Use `satisfies` to validate object literals against types without widening.

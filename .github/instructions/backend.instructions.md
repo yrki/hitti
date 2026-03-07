@@ -52,6 +52,12 @@ applyTo: "backend/**"
 - Use `IOptions<T>` pattern for configuration.
 - Register feature services in per-feature extension methods: `AddMembersFeature()`.
 
+## Enums
+
+- Use C# `enum` types for any fixed set of values (statuses, roles, types, channels, etc.) — never use raw strings ("magic strings").
+- Store enums as their **string name** in the database, not as integers. Configure with `.HasConversion<string>()` in entity configurations.
+- Place shared enums in the feature's `Contracts/` folder or in a shared location if used across features.
+
 ## Data Access
 
 - Use Entity Framework Core with code-first migrations.

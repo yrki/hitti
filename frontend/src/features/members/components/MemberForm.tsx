@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { MemberStatus, MemberRole } from '../types';
 import type { Member, CreateMemberRequest } from '../types';
 import styles from './MemberForm.module.css';
 
@@ -12,8 +13,8 @@ export function MemberForm({ member, onSubmit, onCancel }: Props) {
   const [name, setName] = useState(member?.name ?? '');
   const [email, setEmail] = useState(member?.email ?? '');
   const [phone, setPhone] = useState(member?.phone ?? '');
-  const [status, setStatus] = useState(member?.status ?? 'active');
-  const [role, setRole] = useState(member?.role ?? 'member');
+  const [status, setStatus] = useState(member?.status ?? MemberStatus.Active);
+  const [role, setRole] = useState(member?.role ?? MemberRole.Member);
   const [password, setPassword] = useState('');
   const [joinedAt, setJoinedAt] = useState(
     member?.joinedAt ? member.joinedAt.substring(0, 10) : new Date().toISOString().substring(0, 10)
@@ -79,10 +80,10 @@ export function MemberForm({ member, onSubmit, onCancel }: Props) {
           <select
             className={styles.input}
             value={status}
-            onChange={(e) => setStatus(e.target.value)}
+            onChange={(e) => setStatus(e.target.value as MemberStatus)}
           >
-            <option value="active">Aktiv</option>
-            <option value="inactive">Inaktiv</option>
+            <option value={MemberStatus.Active}>Aktiv</option>
+            <option value={MemberStatus.Inactive}>Inaktiv</option>
           </select>
         </label>
 
@@ -91,14 +92,14 @@ export function MemberForm({ member, onSubmit, onCancel }: Props) {
           <select
             className={styles.input}
             value={role}
-            onChange={(e) => setRole(e.target.value)}
+            onChange={(e) => setRole(e.target.value as MemberRole)}
           >
-            <option value="member">Medlem</option>
-            <option value="admin">Admin</option>
+            <option value={MemberRole.Member}>Medlem</option>
+            <option value={MemberRole.Admin}>Admin</option>
           </select>
         </label>
 
-        {role === 'admin' && (
+        {role === MemberRole.Admin && (
           <label className={styles.label}>
             {member ? 'Nytt passord (la stå tomt for å beholde)' : 'Passord'}
             <input

@@ -5,8 +5,8 @@ public sealed record CreateMemberRequest
     public required string Name { get; init; }
     public required string Email { get; init; }
     public required string Phone { get; init; }
-    public required string Status { get; init; }
-    public required string Role { get; init; }
+    public required MemberStatus Status { get; init; }
+    public required MemberRole Role { get; init; }
     public required DateTime JoinedAt { get; init; }
     public string? Password { get; init; }
 }

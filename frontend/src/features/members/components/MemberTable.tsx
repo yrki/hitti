@@ -1,3 +1,4 @@
+import { MemberStatus, MemberRole } from '../types';
 import type { Member } from '../types';
 import styles from './MemberTable.module.css';
 
@@ -29,13 +30,13 @@ export function MemberTable({ members, onEdit, onDelete }: Props) {
               <td>{m.email}</td>
               <td>{m.phone}</td>
               <td>
-                <span className={`${styles.badge} ${m.status === 'active' ? styles.active : styles.inactive}`}>
-                  {m.status === 'active' ? 'Aktiv' : 'Inaktiv'}
+                <span className={`${styles.badge} ${m.status === MemberStatus.Active ? styles.active : styles.inactive}`}>
+                  {m.status === MemberStatus.Active ? 'Aktiv' : 'Inaktiv'}
                 </span>
               </td>
               <td>
-                <span className={`${styles.badge} ${m.role === 'admin' ? styles.admin : styles.member}`}>
-                  {m.role === 'admin' ? 'Admin' : 'Medlem'}
+                <span className={`${styles.badge} ${m.role === MemberRole.Admin ? styles.admin : styles.member}`}>
+                  {m.role === MemberRole.Admin ? 'Admin' : 'Medlem'}
                 </span>
               </td>
               <td>{new Date(m.joinedAt).toLocaleDateString('nb-NO')}</td>

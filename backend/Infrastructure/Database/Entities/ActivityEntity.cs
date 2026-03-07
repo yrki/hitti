@@ -12,4 +12,6 @@ public sealed class ActivityEntity
     public required string ContactPhone { get; set; }
     public DateTime CreatedAt { get; set; }
     public DateTime UpdatedAt { get; set; }
+
+    public ICollection<ActivityParticipantEntity> Participants { get; set; } = [];
 }

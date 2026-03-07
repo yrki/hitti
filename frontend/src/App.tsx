@@ -1,10 +1,10 @@
 import { Routes, Route } from 'react-router-dom';
 import { Layout } from './shared/components/Layout';
 import { ProtectedRoute } from './shared/auth/ProtectedRoute';
-import { LoginPage, RegisterPage } from './features/auth';
+import { LoginPage, RegisterPage, ForgotPasswordPage, ResetPasswordPage } from './features/auth';
 import { DashboardPage } from './features/dashboard';
 import { MembersPage, MemberFormPage } from './features/members';
-import { ActivitiesPage, ActivityFormPage } from './features/activities';
+import { ActivitiesPage, ActivityFormPage, ActivityDetailPage, RsvpPage } from './features/activities';
 import { SettingsPage } from './features/settings';
 
 export function App() {
@@ -12,6 +12,9 @@ export function App() {
     <Routes>
       <Route path="login" element={<LoginPage />} />
       <Route path="registrer" element={<RegisterPage />} />
+      <Route path="glemt-passord" element={<ForgotPasswordPage />} />
+      <Route path="tilbakestill-passord" element={<ResetPasswordPage />} />
+      <Route path="svar/:token" element={<RsvpPage />} />
       <Route
         element={
           <ProtectedRoute>
@@ -25,6 +28,7 @@ export function App() {
         <Route path="medlemmer/:id/rediger" element={<MemberFormPage />} />
         <Route path="aktiviteter" element={<ActivitiesPage />} />
         <Route path="aktiviteter/ny" element={<ActivityFormPage />} />
+        <Route path="aktiviteter/:id" element={<ActivityDetailPage />} />
         <Route path="aktiviteter/:id/rediger" element={<ActivityFormPage />} />
         <Route path="innstillinger" element={<SettingsPage />} />
       </Route>

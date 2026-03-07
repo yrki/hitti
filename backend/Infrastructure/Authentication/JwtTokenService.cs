@@ -1,6 +1,7 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using Api.Features.Members.Contracts;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
@@ -10,7 +11,7 @@ public sealed class JwtTokenService(IOptions<JwtOptions> options)
 {
     private readonly JwtOptions _options = options.Value;
 
-    public string GenerateToken(Guid memberId, string name, string email, string role, Guid organizationId)
+    public string GenerateToken(Guid memberId, string name, string email, MemberRole role, Guid organizationId)
     {
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_options.Key));
         var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
@@ -20,7 +21,7 @@ public sealed class JwtTokenService(IOptions<JwtOptions> options)
             new Claim(JwtRegisteredClaimNames.Sub, memberId.ToString()),
             new Claim(JwtRegisteredClaimNames.Name, name),
             new Claim(JwtRegisteredClaimNames.Email, email),
-            new Claim(ClaimTypes.Role, role),
+            new Claim(ClaimTypes.Role, role.ToString()),
             new Claim("org", organizationId.ToString()),
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
         };

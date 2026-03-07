@@ -15,6 +15,7 @@ This is a monorepo with two projects:
 - Keep functions and methods small and focused on a single responsibility.
 - Handle errors explicitly — never swallow exceptions silently.
 - Use strict/nullable types — avoid `any` (TypeScript) and enable nullable reference types (C#).
+- Never use magic strings for fixed sets of values (statuses, roles, channels, etc.) — always define enums.
 
 See project-specific instructions in:
 - [Frontend instructions](.github/instructions/frontend.instructions.md)

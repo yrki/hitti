@@ -23,10 +23,11 @@ export function ActivityFormPage() {
   async function handleSubmit(data: CreateActivityRequest) {
     if (id) {
       await updateActivity(id, data);
+      navigate(`/aktiviteter/${id}`);
     } else {
-      await createActivity(data);
+      const created = await createActivity(data);
+      navigate(`/aktiviteter/${created.id}`);
     }
-    navigate('/aktiviteter');
   }
 
   function handleCancel() {

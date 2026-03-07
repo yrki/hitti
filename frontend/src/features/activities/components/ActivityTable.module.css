@@ -30,6 +30,21 @@
   background: #f9fafb;
 }
 
+.titleLink {
+  border: none;
+  background: none;
+  color: #6366f1;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 0;
+  font-size: inherit;
+  text-align: left;
+}
+
+.titleLink:hover {
+  text-decoration: underline;
+}
+
 .actions {
   display: flex;
   gap: 0.5rem;

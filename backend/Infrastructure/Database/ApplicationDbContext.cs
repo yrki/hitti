@@ -8,6 +8,8 @@ public sealed class ApplicationDbContext(DbContextOptions<ApplicationDbContext> 
     public DbSet<MemberEntity> Members => Set<MemberEntity>();
     public DbSet<ActivityEntity> Activities => Set<ActivityEntity>();
     public DbSet<OrganizationEntity> Organizations => Set<OrganizationEntity>();
+    public DbSet<ActivityParticipantEntity> ActivityParticipants => Set<ActivityParticipantEntity>();
+    public DbSet<PasswordResetTokenEntity> PasswordResetTokens => Set<PasswordResetTokenEntity>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

@@ -12,6 +12,9 @@ public static class ActivitiesFeatureExtensions
         services.AddScoped<CreateActivityHandler>();
         services.AddScoped<UpdateActivityHandler>();
         services.AddScoped<DeleteActivityHandler>();
+        services.AddScoped<SendInvitationsHandler>();
+        services.AddScoped<RespondToInvitationHandler>();
+        services.AddScoped<GetActivityParticipantsHandler>();
 
         return services;
     }

@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom';
 import type { Activity } from '../types';
 import styles from './ActivityTable.module.css';
 
@@ -8,6 +9,8 @@ interface Props {
 }
 
 export function ActivityTable({ activities, onEdit, onDelete }: Props) {
+  const navigate = useNavigate();
+
   return (
     <div className={styles.wrapper}>
       <table className={styles.table}>
@@ -23,7 +26,11 @@ export function ActivityTable({ activities, onEdit, onDelete }: Props) {
         <tbody>
           {activities.map((a) => (
             <tr key={a.id}>
-              <td>{a.title}</td>
+              <td>
+                <button className={styles.titleLink} onClick={() => navigate(`/aktiviteter/${a.id}`)}>
+                  {a.title}
+                </button>
+              </td>
               <td>{new Date(a.activityDate).toLocaleDateString('nb-NO')}</td>
               <td>{a.location}</td>
               <td>{a.contactName}</td>

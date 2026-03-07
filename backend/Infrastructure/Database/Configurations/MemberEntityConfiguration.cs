@@ -16,8 +16,8 @@ public sealed class MemberEntityConfiguration : IEntityTypeConfiguration<MemberE
         builder.Property(m => m.Name).IsRequired().HasMaxLength(200);
         builder.Property(m => m.Email).IsRequired().HasMaxLength(200);
         builder.Property(m => m.Phone).IsRequired().HasMaxLength(50);
-        builder.Property(m => m.Status).IsRequired().HasMaxLength(20);
-        builder.Property(m => m.Role).IsRequired().HasMaxLength(20);
+        builder.Property(m => m.Status).IsRequired().HasMaxLength(20).HasConversion<string>();
+        builder.Property(m => m.Role).IsRequired().HasMaxLength(20).HasConversion<string>();
         builder.Property(m => m.PasswordHash).HasMaxLength(500);
 
         builder.Property(m => m.JoinedAt).IsRequired();

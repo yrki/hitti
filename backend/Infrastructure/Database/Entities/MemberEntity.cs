@@ -1,3 +1,5 @@
+using Api.Features.Members.Contracts;
+
 namespace Api.Infrastructure.Database.Entities;
 
 public sealed class MemberEntity
@@ -6,8 +8,8 @@ public sealed class MemberEntity
     public required string Name { get; set; }
     public required string Email { get; set; }
     public required string Phone { get; set; }
-    public required string Status { get; set; }
-    public required string Role { get; set; }
+    public required MemberStatus Status { get; set; }
+    public required MemberRole Role { get; set; }
     public string? PasswordHash { get; set; }
     public Guid OrganizationId { get; set; }
     public DateTime JoinedAt { get; set; }
