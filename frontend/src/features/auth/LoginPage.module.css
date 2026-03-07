@@ -16,11 +16,9 @@
   width: 100%;
 }
 
-.title {
-  margin: 0 0 0.5rem;
-  font-size: 1.75rem;
-  font-weight: 700;
-  color: #111827;
+.logo {
+  height: 36px;
+  margin-bottom: 0.5rem;
 }
 
 .subtitle {
@@ -56,6 +54,27 @@
   outline: none;
   border-color: #3b82f6;
   box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+}
+
+.inputError {
+  border-color: #dc2626;
+}
+
+.inputError:focus {
+  border-color: #dc2626;
+  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.15);
+}
+
+.required {
+  color: #dc2626;
+  margin-left: 2px;
+}
+
+.fieldError {
+  color: #dc2626;
+  font-size: 0.8rem;
+  font-weight: 400;
+  margin-top: 2px;
 }
 
 .error {

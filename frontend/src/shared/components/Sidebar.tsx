@@ -1,27 +1,19 @@
-import { NavLink, useNavigate } from 'react-router-dom';
-import { useAuth } from '../auth/AuthContext';
+import { NavLink } from 'react-router-dom';
+import hittiLogo from '../../assets/hitti-logo.svg';
 import styles from './Sidebar.module.css';
 
 const navItems = [
-  { to: '/', label: 'Dashboard', icon: '📊' },
-  { to: '/medlemmer', label: 'Medlemmer', icon: '👥' },
-  { to: '/aktiviteter', label: 'Aktiviteter', icon: '📅' },
-  { to: '/innstillinger', label: 'Innstillinger', icon: '⚙️' },
+  { to: '/', label: 'Dashboard', icon: '⊞' },
+  { to: '/medlemmer', label: 'Medlemmer', icon: '♟' },
+  { to: '/aktiviteter', label: 'Aktiviteter', icon: '◉' },
+  { to: '/innstillinger', label: 'Innstillinger', icon: '⚙' },
 ];
 
 export function Sidebar() {
-  const { user, logout } = useAuth();
-  const navigate = useNavigate();
-
-  function handleLogout() {
-    logout();
-    navigate('/login');
-  }
-
   return (
     <aside className={styles.sidebar}>
       <div className={styles.logo}>
-        <h2>{user?.organization.name ?? 'Medlemsvarsling'}</h2>
+        <img src={hittiLogo} alt="hitti" className={styles.logoImage} />
       </div>
       <nav className={styles.nav}>
         {navItems.map((item) => (
@@ -38,11 +30,6 @@ export function Sidebar() {
           </NavLink>
         ))}
       </nav>
-      <div className={styles.footer}>
-        <button className={styles.footerButton} onClick={handleLogout}>
-          Logg ut
-        </button>
-      </div>
     </aside>
   );
 }

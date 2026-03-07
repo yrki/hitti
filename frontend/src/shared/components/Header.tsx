@@ -1,20 +1,25 @@
-import { useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../auth/AuthContext';
 import styles from './Header.module.css';
 
-const pageTitles: Record<string, string> = {
-  '/': 'Dashboard',
-  '/medlemmer': 'Medlemmer',
-  '/aktiviteter': 'Aktiviteter',
-  '/innstillinger': 'Innstillinger',
-};
-
 export function Header() {
-  const { pathname } = useLocation();
-  const title = pageTitles[pathname] ?? 'Medlemsvarsling';
+  const { user, logout } = useAuth();
+  const navigate = useNavigate();
+
+  function handleLogout() {
+    logout();
+    navigate('/login');
+  }
 
   return (
     <header className={styles.header}>
-      <h1 className={styles.title}>{title}</h1>
+      <span className={styles.orgName}>{user?.organization.name}</span>
+      <div className={styles.userSection}>
+        <span className={styles.userName}>{user?.name}</span>
+        <button className={styles.logoutButton} onClick={handleLogout}>
+          Logg ut
+        </button>
+      </div>
     </header>
   );
 }

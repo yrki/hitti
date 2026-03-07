@@ -2,9 +2,24 @@ import { useState } from 'react';
 import { Navigate, Link, useNavigate } from 'react-router-dom';
 import { setAuthToken } from '../../shared/api';
 import { useAuth } from '../../shared/auth/AuthContext';
+import hittiLogo from '../../assets/hitti-logo.svg';
 import styles from './RegisterPage.module.css';
 
 const API_BASE_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:5137/api';
+
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const PHONE_REGEX = /^\d{8}$/;
+
+interface FieldErrors {
+  organizationName?: string;
+  organizationEmail?: string;
+  organizationPhone?: string;
+  adminName?: string;
+  adminEmail?: string;
+  adminPhone?: string;
+  password?: string;
+  confirmPassword?: string;
+}
 
 export function RegisterPage() {
   const { isAuthenticated, isLoading, setUser } = useAuth();
@@ -18,6 +33,7 @@ export function RegisterPage() {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
+  const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
   const [submitting, setSubmitting] = useState(false);
 
   if (isLoading) {
@@ -28,20 +44,56 @@ export function RegisterPage() {
     return <Navigate to="/" replace />;
   }
 
+  function clearFieldError(field: keyof FieldErrors) {
+    setFieldErrors((prev) => ({ ...prev, [field]: undefined }));
+  }
+
   async function handleSubmit(event: React.FormEvent) {
     event.preventDefault();
     setError(null);
 
-    if (password !== confirmPassword) {
-      setError('Passordene stemmer ikke overens');
-      return;
+    const errors: FieldErrors = {};
+
+    if (!organizationName.trim()) errors.organizationName = 'Navn er påkrevd';
+    if (!organizationEmail.trim()) {
+      errors.organizationEmail = 'E-postadresse er påkrevd';
+    } else if (!EMAIL_REGEX.test(organizationEmail)) {
+      errors.organizationEmail = 'Ugyldig e-postadresse';
+    }
+    if (!organizationPhone.trim()) {
+      errors.organizationPhone = 'Telefonnummer er påkrevd';
+    } else if (!PHONE_REGEX.test(organizationPhone)) {
+      errors.organizationPhone = 'Telefonnummer må være 8 siffer';
     }
 
-    if (password.length < 8) {
-      setError('Passordet må være minst 8 tegn');
-      return;
+    if (!adminName.trim()) errors.adminName = 'Navn er påkrevd';
+    if (!adminEmail.trim()) {
+      errors.adminEmail = 'E-postadresse er påkrevd';
+    } else if (!EMAIL_REGEX.test(adminEmail)) {
+      errors.adminEmail = 'Ugyldig e-postadresse';
+    }
+    if (!adminPhone.trim()) {
+      errors.adminPhone = 'Telefonnummer er påkrevd';
+    } else if (!PHONE_REGEX.test(adminPhone)) {
+      errors.adminPhone = 'Telefonnummer må være 8 siffer';
     }
 
+    if (!password) {
+      errors.password = 'Passord er påkrevd';
+    } else if (password.length < 8) {
+      errors.password = 'Passordet må være minst 8 tegn';
+    }
+    if (!confirmPassword) {
+      errors.confirmPassword = 'Bekreft passord er påkrevd';
+    } else if (password !== confirmPassword) {
+      errors.confirmPassword = 'Passordene stemmer ikke overens';
+    }
+
+    if (Object.keys(errors).length > 0) {
+      setFieldErrors(errors);
+      return;
+    }
+    setFieldErrors({});
     setSubmitting(true);
 
     try {
@@ -79,7 +131,7 @@ export function RegisterPage() {
   return (
     <div className={styles.container}>
       <div className={styles.card}>
-        <h1 className={styles.title}>Registrer organisasjon</h1>
+        <img src={hittiLogo} alt="hitti" className={styles.logo} />
         <p className={styles.subtitle}>Opprett en konto for din forening</p>
 
         <form className={styles.form} onSubmit={handleSubmit}>
@@ -87,36 +139,42 @@ export function RegisterPage() {
             <legend className={styles.legend}>Organisasjon</legend>
 
             <label className={styles.label}>
-              Navn på forening/organisasjon
+              <span>Navn på forening/organisasjon <span className={styles.required}>*</span></span>
               <input
-                className={styles.input}
+                className={`${styles.input} ${fieldErrors.organizationName ? styles.inputError : ''}`}
                 type="text"
                 value={organizationName}
-                onChange={(e) => setOrganizationName(e.target.value)}
+                onChange={(e) => { setOrganizationName(e.target.value); clearFieldError('organizationName'); }}
                 required
+                placeholder="F.eks. Fotballklubben"
               />
+              {fieldErrors.organizationName && <span className={styles.fieldError}>{fieldErrors.organizationName}</span>}
             </label>
 
             <label className={styles.label}>
-              E-postadresse (organisasjon)
+              <span>E-postadresse (organisasjon) <span className={styles.required}>*</span></span>
               <input
-                className={styles.input}
+                className={`${styles.input} ${fieldErrors.organizationEmail ? styles.inputError : ''}`}
                 type="email"
                 value={organizationEmail}
-                onChange={(e) => setOrganizationEmail(e.target.value)}
+                onChange={(e) => { setOrganizationEmail(e.target.value); clearFieldError('organizationEmail'); }}
                 required
+                placeholder="org@epost.no"
               />
+              {fieldErrors.organizationEmail && <span className={styles.fieldError}>{fieldErrors.organizationEmail}</span>}
             </label>
 
             <label className={styles.label}>
-              Telefonnummer (organisasjon)
+              <span>Telefonnummer (organisasjon) <span className={styles.required}>*</span></span>
               <input
-                className={styles.input}
+                className={`${styles.input} ${fieldErrors.organizationPhone ? styles.inputError : ''}`}
                 type="tel"
                 value={organizationPhone}
-                onChange={(e) => setOrganizationPhone(e.target.value)}
+                onChange={(e) => { setOrganizationPhone(e.target.value); clearFieldError('organizationPhone'); }}
                 required
+                placeholder="12345678"
               />
+              {fieldErrors.organizationPhone && <span className={styles.fieldError}>{fieldErrors.organizationPhone}</span>}
             </label>
           </fieldset>
 
@@ -124,63 +182,71 @@ export function RegisterPage() {
             <legend className={styles.legend}>Administrator</legend>
 
             <label className={styles.label}>
-              Navn
+              <span>Navn <span className={styles.required}>*</span></span>
               <input
-                className={styles.input}
+                className={`${styles.input} ${fieldErrors.adminName ? styles.inputError : ''}`}
                 type="text"
                 value={adminName}
-                onChange={(e) => setAdminName(e.target.value)}
+                onChange={(e) => { setAdminName(e.target.value); clearFieldError('adminName'); }}
                 required
+                placeholder="Ola Nordmann"
               />
+              {fieldErrors.adminName && <span className={styles.fieldError}>{fieldErrors.adminName}</span>}
             </label>
 
             <label className={styles.label}>
-              E-postadresse
+              <span>E-postadresse <span className={styles.required}>*</span></span>
               <input
-                className={styles.input}
+                className={`${styles.input} ${fieldErrors.adminEmail ? styles.inputError : ''}`}
                 type="email"
                 value={adminEmail}
-                onChange={(e) => setAdminEmail(e.target.value)}
+                onChange={(e) => { setAdminEmail(e.target.value); clearFieldError('adminEmail'); }}
                 required
                 autoComplete="email"
+                placeholder="din@epost.no"
               />
+              {fieldErrors.adminEmail && <span className={styles.fieldError}>{fieldErrors.adminEmail}</span>}
             </label>
 
             <label className={styles.label}>
-              Telefonnummer
+              <span>Telefonnummer <span className={styles.required}>*</span></span>
               <input
-                className={styles.input}
+                className={`${styles.input} ${fieldErrors.adminPhone ? styles.inputError : ''}`}
                 type="tel"
                 value={adminPhone}
-                onChange={(e) => setAdminPhone(e.target.value)}
+                onChange={(e) => { setAdminPhone(e.target.value); clearFieldError('adminPhone'); }}
                 required
+                placeholder="12345678"
               />
+              {fieldErrors.adminPhone && <span className={styles.fieldError}>{fieldErrors.adminPhone}</span>}
             </label>
 
             <label className={styles.label}>
-              Passord
+              <span>Passord <span className={styles.required}>*</span></span>
               <input
-                className={styles.input}
+                className={`${styles.input} ${fieldErrors.password ? styles.inputError : ''}`}
                 type="password"
                 value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={(e) => { setPassword(e.target.value); clearFieldError('password'); }}
                 required
                 autoComplete="new-password"
-                minLength={8}
+                placeholder="Minst 8 tegn"
               />
+              {fieldErrors.password && <span className={styles.fieldError}>{fieldErrors.password}</span>}
             </label>
 
             <label className={styles.label}>
-              Bekreft passord
+              <span>Bekreft passord <span className={styles.required}>*</span></span>
               <input
-                className={styles.input}
+                className={`${styles.input} ${fieldErrors.confirmPassword ? styles.inputError : ''}`}
                 type="password"
                 value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
+                onChange={(e) => { setConfirmPassword(e.target.value); clearFieldError('confirmPassword'); }}
                 required
                 autoComplete="new-password"
-                minLength={8}
+                placeholder="Gjenta passord"
               />
+              {fieldErrors.confirmPassword && <span className={styles.fieldError}>{fieldErrors.confirmPassword}</span>}
             </label>
           </fieldset>
 
