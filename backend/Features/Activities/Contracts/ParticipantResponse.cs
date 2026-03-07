@@ -9,6 +9,9 @@ public sealed record ParticipantResponse
     public required string MemberPhone { get; init; }
     public required ParticipantStatus Status { get; init; }
     public required InvitationChannel InvitationChannel { get; init; }
+    public required NotificationStatus NotificationStatus { get; init; }
     public required DateTime InvitedAt { get; init; }
     public DateTime? RespondedAt { get; init; }
+    public DateTime? NotificationSentAt { get; init; }
+    public DateTime? NotificationFailedAt { get; init; }
 }

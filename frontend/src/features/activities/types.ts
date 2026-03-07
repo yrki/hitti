@@ -45,6 +45,13 @@ export const InvitationChannel = {
 } as const;
 export type InvitationChannel = (typeof InvitationChannel)[keyof typeof InvitationChannel];
 
+export const NotificationStatus = {
+  Pending: 'Pending',
+  Sent: 'Sent',
+  Failed: 'Failed',
+} as const;
+export type NotificationStatus = (typeof NotificationStatus)[keyof typeof NotificationStatus];
+
 export interface Participant {
   id: string;
   memberId: string;
@@ -53,8 +60,11 @@ export interface Participant {
   memberPhone: string;
   status: ParticipantStatus;
   invitationChannel: InvitationChannel;
+  notificationStatus: NotificationStatus;
   invitedAt: string;
   respondedAt: string | null;
+  notificationSentAt: string | null;
+  notificationFailedAt: string | null;
 }
 
 export interface SendInvitationsRequest {

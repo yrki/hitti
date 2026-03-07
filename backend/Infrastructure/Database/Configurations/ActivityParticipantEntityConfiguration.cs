@@ -16,6 +16,7 @@ public sealed class ActivityParticipantEntityConfiguration : IEntityTypeConfigur
         builder.Property(ap => ap.Status).IsRequired().HasMaxLength(20).HasConversion<string>();
         builder.Property(ap => ap.InvitationChannel).IsRequired().HasMaxLength(10).HasConversion<string>();
         builder.Property(ap => ap.InvitationToken).IsRequired().HasMaxLength(100);
+        builder.Property(ap => ap.NotificationStatus).IsRequired().HasMaxLength(20).HasConversion<string>();
         builder.Property(ap => ap.InvitedAt).IsRequired();
 
         builder.HasOne(ap => ap.Activity)

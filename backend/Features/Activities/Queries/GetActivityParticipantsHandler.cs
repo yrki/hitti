@@ -31,8 +31,11 @@ public sealed class GetActivityParticipantsHandler(ApplicationDbContext dbContex
                 MemberPhone = ap.Member.Phone,
                 Status = ap.Status,
                 InvitationChannel = ap.InvitationChannel,
+                NotificationStatus = ap.NotificationStatus,
                 InvitedAt = ap.InvitedAt,
                 RespondedAt = ap.RespondedAt,
+                NotificationSentAt = ap.NotificationSentAt,
+                NotificationFailedAt = ap.NotificationFailedAt,
             })
             .ToListAsync(cancellationToken);
     }

@@ -38,16 +38,14 @@ public sealed class AzureNotificationService(
             content: new EmailContent(subject) { Html = htmlBody },
             recipients: new EmailRecipients([new EmailAddress(toAddress, toName)]));
 
-        var operation = await client.SendAsync(Azure.WaitUntil.Completed, emailMessage, cancellationToken);
+        var operation = await client.SendAsync(Azure.WaitUntil.Started, emailMessage, cancellationToken);
 
-        if (operation.HasCompleted && operation.Value.Status == EmailSendStatus.Succeeded)
-        {
-            logger.LogInformation("Email sent successfully to {Email}", toAddress);
-        }
-        else
+        if (operation.HasValue && operation.Value.Status == EmailSendStatus.Failed)
         {
             logger.LogError("Failed to send email to {Email}: status {Status}", toAddress, operation.Value.Status);
             throw new InvalidOperationException($"Kunne ikke sende e-post til {toAddress}");
         }
+
+        logger.LogInformation("Email queued successfully to {Email}, operation id: {OperationId}", toAddress, operation.Id);
     }
 }

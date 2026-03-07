@@ -1,4 +1,4 @@
-import { ParticipantStatus, InvitationChannel } from '../types';
+import { ParticipantStatus, InvitationChannel, NotificationStatus } from '../types';
 import type { Participant } from '../types';
 import styles from './ParticipantList.module.css';
 
@@ -10,6 +10,12 @@ const statusLabels: Record<Participant['status'], string> = {
   [ParticipantStatus.Accepted]: 'Deltar',
   [ParticipantStatus.Declined]: 'Kan ikke',
   [ParticipantStatus.Invited]: 'Ikke svart',
+};
+
+const notificationLabels: Record<Participant['notificationStatus'], string> = {
+  [NotificationStatus.Pending]: 'Venter',
+  [NotificationStatus.Sent]: 'Sendt',
+  [NotificationStatus.Failed]: 'Feilet',
 };
 
 export function ParticipantList({ participants }: Props) {
@@ -31,6 +37,7 @@ export function ParticipantList({ participants }: Props) {
             <th>E-post</th>
             <th>Telefon</th>
             <th>Kanal</th>
+            <th>Varsel</th>
             <th>Status</th>
             <th>Svart</th>
           </tr>
@@ -42,6 +49,11 @@ export function ParticipantList({ participants }: Props) {
               <td>{p.memberEmail}</td>
               <td>{p.memberPhone}</td>
               <td>{p.invitationChannel === InvitationChannel.Sms ? 'SMS' : 'E-post'}</td>
+              <td>
+                <span className={`${styles.badge} ${styles[p.notificationStatus]}`}>
+                  {notificationLabels[p.notificationStatus]}
+                </span>
+              </td>
               <td>
                 <span className={`${styles.badge} ${styles[p.status]}`}>
                   {statusLabels[p.status]}

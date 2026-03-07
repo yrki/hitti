@@ -52,14 +52,16 @@ public sealed class SendInvitationsHandler(
             }
 
             var token = GenerateToken();
+            var participantId = Guid.NewGuid();
             var participant = new ActivityParticipantEntity
             {
-                Id = Guid.NewGuid(),
+                Id = participantId,
                 ActivityId = activityId,
                 MemberId = member.Id,
                 Status = ParticipantStatus.Invited,
                 InvitationChannel = channel,
                 InvitationToken = token,
+                NotificationStatus = NotificationStatus.Pending,
                 InvitedAt = DateTime.UtcNow,
             };
 
@@ -68,6 +70,7 @@ public sealed class SendInvitationsHandler(
 
             notificationItems.Add(new NotificationWorkItem
             {
+                ParticipantId = participantId,
                 MemberName = member.Name,
                 MemberEmail = member.Email,
                 MemberPhone = member.Phone,
@@ -93,10 +96,12 @@ public sealed class SendInvitationsHandler(
             {
                 var notificationService = serviceProvider.GetRequiredService<INotificationService>();
                 var backgroundLogger = serviceProvider.GetRequiredService<ILogger<SendInvitationsHandler>>();
+                var bgDbContext = serviceProvider.GetRequiredService<ApplicationDbContext>();
 
                 foreach (var item in notificationItems)
                 {
-                    const int maxRetries = 3;
+                    const int maxRetries = 5;
+                    var sent = false;
                     for (var attempt = 0; attempt < maxRetries; attempt++)
                     {
                         try
@@ -144,11 +149,12 @@ public sealed class SendInvitationsHandler(
 
                             backgroundLogger.LogInformation("Invitation sent via {Channel} to {MemberName} ({MemberId}) for activity {ActivityId}",
                                 channel, item.MemberName, item.MemberId, activityId);
+                            sent = true;
                             break;
                         }
-                        catch (Azure.RequestFailedException ex) when (ex.Status == 429 && attempt < maxRetries - 1)
+                        catch (Azure.RequestFailedException ex) when (ex.Status == 429)
                         {
-                            var delaySeconds = Math.Max(1, attempt + 1) * 2;
+                            var delaySeconds = (attempt + 1) * 10;
                             backgroundLogger.LogWarning("Rate limited sending to {MemberName}, retrying in {Delay}s (attempt {Attempt}/{MaxRetries})",
                                 item.MemberName, delaySeconds, attempt + 1, maxRetries);
                             await Task.Delay(TimeSpan.FromSeconds(delaySeconds), stoppingToken);
@@ -159,6 +165,14 @@ public sealed class SendInvitationsHandler(
                                 channel, item.MemberName, item.MemberId, activityId);
                             break;
                         }
+                    }
+
+                    await UpdateNotificationStatusAsync(bgDbContext, item.ParticipantId, sent, backgroundLogger);
+
+                    if (!sent)
+                    {
+                        backgroundLogger.LogError("Giving up sending {Channel} invitation to {MemberName} ({MemberId}) after {MaxRetries} attempts",
+                            channel, item.MemberName, item.MemberId, maxRetries);
                     }
 
                     await Task.Delay(TimeSpan.FromSeconds(8), stoppingToken);
@@ -181,8 +195,41 @@ public sealed class SendInvitationsHandler(
             .TrimEnd('=');
     }
 
+    private static async Task UpdateNotificationStatusAsync(
+        ApplicationDbContext dbContext,
+        Guid participantId,
+        bool sent,
+        ILogger logger)
+    {
+        try
+        {
+            var participant = await dbContext.ActivityParticipants
+                .FindAsync(participantId);
+
+            if (participant is null) return;
+
+            if (sent)
+            {
+                participant.NotificationStatus = NotificationStatus.Sent;
+                participant.NotificationSentAt = DateTime.UtcNow;
+            }
+            else
+            {
+                participant.NotificationStatus = NotificationStatus.Failed;
+                participant.NotificationFailedAt = DateTime.UtcNow;
+            }
+
+            await dbContext.SaveChangesAsync();
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, "Failed to update notification status for participant {ParticipantId}", participantId);
+        }
+    }
+
     private sealed record NotificationWorkItem
     {
+        public required Guid ParticipantId { get; init; }
         public required string MemberName { get; init; }
         public required string MemberEmail { get; init; }
         public required string MemberPhone { get; init; }

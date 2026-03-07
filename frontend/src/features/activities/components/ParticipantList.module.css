@@ -60,6 +60,21 @@
   color: #6b7280;
 }
 
+.Pending {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.Sent {
+  background: #dbeafe;
+  color: #1e40af;
+}
+
+.Failed {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
 .empty {
   background: #fff;
   border: 1px solid #e5e7eb;
