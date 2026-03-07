@@ -1,4 +1,5 @@
 using Api.Features.Weather.Contracts;
+using Api.Features.Weather.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Features.Weather.Controllers;

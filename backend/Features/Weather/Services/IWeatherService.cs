@@ -1,4 +1,6 @@
-namespace Api.Features.Weather.Contracts;
+using Api.Features.Weather.Contracts;
+
+namespace Api.Features.Weather.Services;
 
 public interface IWeatherService
 {

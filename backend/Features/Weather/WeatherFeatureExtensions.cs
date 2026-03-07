@@ -1,4 +1,3 @@
-using Api.Features.Weather.Contracts;
 using Api.Features.Weather.Services;
 
 namespace Api.Features.Weather;
