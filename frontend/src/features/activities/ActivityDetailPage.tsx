@@ -1,5 +1,6 @@
 import { useEffect, useState, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import DOMPurify from 'dompurify';
 import { getActivity, getParticipants, sendInvitations } from './services/activitiesApi';
 import { ParticipantList } from './components/ParticipantList';
 import { SendInvitationDialog } from './components/SendInvitationDialog';
@@ -91,7 +92,7 @@ export function ActivityDetailPage() {
         </div>
         <div className={styles.detailItem}>
           <span className={styles.detailLabel}>Beskrivelse</span>
-          <span>{activity.description}</span>
+          <span dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(activity.description) }} />
         </div>
         <div className={styles.detailItem}>
           <span className={styles.detailLabel}>Kontakt</span>

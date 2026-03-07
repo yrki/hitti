@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import ReactQuill from 'react-quill-new';
+import 'react-quill-new/dist/quill.snow.css';
 import type { Activity, CreateActivityRequest } from '../types';
 import styles from './ActivityForm.module.css';
 
@@ -41,10 +43,25 @@ export function ActivityForm({ activity, onSubmit, onCancel }: Props) {
           <input className={styles.input} type="text" value={title} onChange={(e) => setTitle(e.target.value)} required />
         </label>
 
-        <label className={styles.label}>
+        <div className={styles.label}>
           Beskrivelse
-          <textarea className={styles.textarea} value={description} onChange={(e) => setDescription(e.target.value)} rows={4} required />
-        </label>
+          <div className={styles.editor}>
+            <ReactQuill
+              theme="snow"
+              value={description}
+              onChange={setDescription}
+              modules={{
+                toolbar: [
+                  [{ header: [2, 3, false] }],
+                  ['bold', 'italic', 'underline'],
+                  [{ list: 'ordered' }, { list: 'bullet' }],
+                  ['link'],
+                  ['clean'],
+                ],
+              }}
+            />
+          </div>
+        </div>
 
         <label className={styles.label}>
           Dato

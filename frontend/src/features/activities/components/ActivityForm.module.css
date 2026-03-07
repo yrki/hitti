@@ -3,7 +3,6 @@
   border-radius: 12px;
   padding: 2rem;
   width: 100%;
-  max-width: 520px;
   max-height: 90vh;
   overflow-y: auto;
   display: flex;
@@ -53,6 +52,30 @@
 .textarea:focus {
   border-color: #6366f1;
   box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+}
+
+.editor {
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  overflow: hidden;
+  transition: border-color 0.15s;
+}
+
+.editor:focus-within {
+  border-color: #6366f1;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+}
+
+.editor :global(.ql-toolbar) {
+  border: none;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.editor :global(.ql-container) {
+  border: none;
+  font-size: 0.875rem;
+  font-family: inherit;
+  min-height: 120px;
 }
 
 .fieldset {
