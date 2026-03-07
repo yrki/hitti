@@ -96,57 +96,72 @@ public sealed class SendInvitationsHandler(
 
                 foreach (var item in notificationItems)
                 {
-                    try
+                    const int maxRetries = 3;
+                    for (var attempt = 0; attempt < maxRetries; attempt++)
                     {
-                        if (!string.IsNullOrEmpty(devRedirectEmail))
+                        try
                         {
-                            var subject = $"[DEV → {item.MemberName}] Invitasjon: {activityTitle}";
-                            var html = $"""
-                                <p><em>Opprinnelig mottaker: {item.MemberName} ({(channel == InvitationChannel.Sms ? item.MemberPhone : item.MemberEmail)})</em></p>
-                                <h2>Du er invitert til {activityTitle}</h2>
-                                <p><strong>Dato:</strong> {activityStartTime:dd.MM.yyyy}</p>
-                                <p><strong>Klokkeslett:</strong> {activityStartTime:HH:mm} – {activityEndTime:HH:mm}</p>
-                                <p><strong>Sted:</strong> {activityLocation}</p>
-                                <p><strong>Beskrivelse:</strong> {activityDescription}</p>
-                                <p>
-                                    <a href="{item.RsvpUrl}?svar=ja" style="display:inline-block;padding:12px 24px;background:#16a34a;color:#fff;text-decoration:none;border-radius:8px;margin-right:8px;">Ja, jeg blir med</a>
-                                    <a href="{item.RsvpUrl}?svar=nei" style="display:inline-block;padding:12px 24px;background:#dc2626;color:#fff;text-decoration:none;border-radius:8px;">Nei, jeg kan ikke</a>
-                                </p>
-                                """;
-                            await notificationService.SendEmailAsync(devRedirectEmail, "Dev", subject, html, stoppingToken);
-                            backgroundLogger.LogInformation("DEV: Redirected {Channel} invitation for {MemberName} to {DevEmail}",
-                                channel, item.MemberName, devRedirectEmail);
-                        }
-                        else if (channel == InvitationChannel.Sms)
-                        {
-                            var message = $"Du er invitert til \"{activityTitle}\" ({activityStartTime:dd.MM.yyyy HH:mm}). Svar her: {item.RsvpUrl}";
-                            await notificationService.SendSmsAsync(item.MemberPhone, message, stoppingToken);
-                        }
-                        else
-                        {
-                            var subject = $"Invitasjon: {activityTitle}";
-                            var html = $"""
-                                <h2>Du er invitert til {activityTitle}</h2>
-                                <p><strong>Dato:</strong> {activityStartTime:dd.MM.yyyy}</p>
-                                <p><strong>Klokkeslett:</strong> {activityStartTime:HH:mm} – {activityEndTime:HH:mm}</p>
-                                <p><strong>Sted:</strong> {activityLocation}</p>
-                                <p><strong>Beskrivelse:</strong> {activityDescription}</p>
-                                <p>
-                                    <a href="{item.RsvpUrl}?svar=ja" style="display:inline-block;padding:12px 24px;background:#16a34a;color:#fff;text-decoration:none;border-radius:8px;margin-right:8px;">Ja, jeg blir med</a>
-                                    <a href="{item.RsvpUrl}?svar=nei" style="display:inline-block;padding:12px 24px;background:#dc2626;color:#fff;text-decoration:none;border-radius:8px;">Nei, jeg kan ikke</a>
-                                </p>
-                                """;
-                            await notificationService.SendEmailAsync(item.MemberEmail, item.MemberName, subject, html, stoppingToken);
-                        }
+                            if (!string.IsNullOrEmpty(devRedirectEmail))
+                            {
+                                var subject = $"[DEV → {item.MemberName}] Invitasjon: {activityTitle}";
+                                var html = $"""
+                                    <p><em>Opprinnelig mottaker: {item.MemberName} ({(channel == InvitationChannel.Sms ? item.MemberPhone : item.MemberEmail)})</em></p>
+                                    <h2>Du er invitert til {activityTitle}</h2>
+                                    <p><strong>Dato:</strong> {activityStartTime:dd.MM.yyyy}</p>
+                                    <p><strong>Klokkeslett:</strong> {activityStartTime:HH:mm} – {activityEndTime:HH:mm}</p>
+                                    <p><strong>Sted:</strong> {activityLocation}</p>
+                                    <p><strong>Beskrivelse:</strong> {activityDescription}</p>
+                                    <p>
+                                        <a href="{item.RsvpUrl}?svar=ja" style="display:inline-block;padding:12px 24px;background:#16a34a;color:#fff;text-decoration:none;border-radius:8px;margin-right:8px;">Ja, jeg blir med</a>
+                                        <a href="{item.RsvpUrl}?svar=nei" style="display:inline-block;padding:12px 24px;background:#dc2626;color:#fff;text-decoration:none;border-radius:8px;">Nei, jeg kan ikke</a>
+                                    </p>
+                                    """;
+                                await notificationService.SendEmailAsync(devRedirectEmail, "Dev", subject, html, stoppingToken);
+                                backgroundLogger.LogInformation("DEV: Redirected {Channel} invitation for {MemberName} to {DevEmail}",
+                                    channel, item.MemberName, devRedirectEmail);
+                            }
+                            else if (channel == InvitationChannel.Sms)
+                            {
+                                var message = $"Du er invitert til \"{activityTitle}\" ({activityStartTime:dd.MM.yyyy HH:mm}). Svar her: {item.RsvpUrl}";
+                                await notificationService.SendSmsAsync(item.MemberPhone, message, stoppingToken);
+                            }
+                            else
+                            {
+                                var subject = $"Invitasjon: {activityTitle}";
+                                var html = $"""
+                                    <h2>Du er invitert til {activityTitle}</h2>
+                                    <p><strong>Dato:</strong> {activityStartTime:dd.MM.yyyy}</p>
+                                    <p><strong>Klokkeslett:</strong> {activityStartTime:HH:mm} – {activityEndTime:HH:mm}</p>
+                                    <p><strong>Sted:</strong> {activityLocation}</p>
+                                    <p><strong>Beskrivelse:</strong> {activityDescription}</p>
+                                    <p>
+                                        <a href="{item.RsvpUrl}?svar=ja" style="display:inline-block;padding:12px 24px;background:#16a34a;color:#fff;text-decoration:none;border-radius:8px;margin-right:8px;">Ja, jeg blir med</a>
+                                        <a href="{item.RsvpUrl}?svar=nei" style="display:inline-block;padding:12px 24px;background:#dc2626;color:#fff;text-decoration:none;border-radius:8px;">Nei, jeg kan ikke</a>
+                                    </p>
+                                    """;
+                                await notificationService.SendEmailAsync(item.MemberEmail, item.MemberName, subject, html, stoppingToken);
+                            }
 
-                        backgroundLogger.LogInformation("Invitation sent via {Channel} to {MemberName} ({MemberId}) for activity {ActivityId}",
-                            channel, item.MemberName, item.MemberId, activityId);
+                            backgroundLogger.LogInformation("Invitation sent via {Channel} to {MemberName} ({MemberId}) for activity {ActivityId}",
+                                channel, item.MemberName, item.MemberId, activityId);
+                            break;
+                        }
+                        catch (Azure.RequestFailedException ex) when (ex.Status == 429 && attempt < maxRetries - 1)
+                        {
+                            var delaySeconds = Math.Max(1, attempt + 1) * 2;
+                            backgroundLogger.LogWarning("Rate limited sending to {MemberName}, retrying in {Delay}s (attempt {Attempt}/{MaxRetries})",
+                                item.MemberName, delaySeconds, attempt + 1, maxRetries);
+                            await Task.Delay(TimeSpan.FromSeconds(delaySeconds), stoppingToken);
+                        }
+                        catch (Exception ex)
+                        {
+                            backgroundLogger.LogError(ex, "Failed to send {Channel} invitation to {MemberName} ({MemberId}) for activity {ActivityId}",
+                                channel, item.MemberName, item.MemberId, activityId);
+                            break;
+                        }
                     }
-                    catch (Exception ex)
-                    {
-                        backgroundLogger.LogError(ex, "Failed to send {Channel} invitation to {MemberName} ({MemberId}) for activity {ActivityId}",
-                            channel, item.MemberName, item.MemberId, activityId);
-                    }
+
+                    await Task.Delay(TimeSpan.FromSeconds(8), stoppingToken);
                 }
             });
         }
