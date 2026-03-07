@@ -80,3 +80,13 @@
 .deleteButton:hover {
   background: #fef2f2;
 }
+
+.admin {
+  background: #dbeafe;
+  color: #1e40af;
+}
+
+.member {
+  background: #f3f4f6;
+  color: #374151;
+}

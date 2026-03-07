@@ -3,6 +3,7 @@ using System;
 using Api.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Api.Infrastructure.Database.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260307151551_AddAuthAndOrganizations")]
+    partial class AddAuthAndOrganizations
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -93,22 +96,10 @@ namespace Api.Infrastructure.Database.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("character varying(200)");
 
-                    b.Property<Guid>("OrganizationId")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("PasswordHash")
-                        .HasMaxLength(500)
-                        .HasColumnType("character varying(500)");
-
                     b.Property<string>("Phone")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("character varying(50)");
-
-                    b.Property<string>("Role")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("character varying(20)");
 
                     b.Property<string>("Status")
                         .IsRequired()
@@ -120,9 +111,7 @@ namespace Api.Infrastructure.Database.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("OrganizationId");
-
-                    b.HasIndex("Email", "OrganizationId")
+                    b.HasIndex("Email")
                         .IsUnique();
 
                     b.ToTable("members", (string)null);
@@ -160,20 +149,103 @@ namespace Api.Infrastructure.Database.Migrations
                     b.ToTable("organizations", (string)null);
                 });
 
-            modelBuilder.Entity("Api.Infrastructure.Database.Entities.MemberEntity", b =>
+            modelBuilder.Entity("Api.Infrastructure.Database.Entities.UserEntity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
+
+                    b.Property<string>("Phone")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("VippsSubjectId")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("VippsSubjectId")
+                        .IsUnique();
+
+                    b.ToTable("users", (string)null);
+                });
+
+            modelBuilder.Entity("Api.Infrastructure.Database.Entities.UserOrganizationEntity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("OrganizationId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Role")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrganizationId");
+
+                    b.HasIndex("UserId", "OrganizationId")
+                        .IsUnique();
+
+                    b.ToTable("user_organizations", (string)null);
+                });
+
+            modelBuilder.Entity("Api.Infrastructure.Database.Entities.UserOrganizationEntity", b =>
                 {
                     b.HasOne("Api.Infrastructure.Database.Entities.OrganizationEntity", "Organization")
-                        .WithMany("Members")
+                        .WithMany("UserOrganizations")
                         .HasForeignKey("OrganizationId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Api.Infrastructure.Database.Entities.UserEntity", "User")
+                        .WithMany("UserOrganizations")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Organization");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Api.Infrastructure.Database.Entities.OrganizationEntity", b =>
                 {
-                    b.Navigation("Members");
+                    b.Navigation("UserOrganizations");
+                });
+
+            modelBuilder.Entity("Api.Infrastructure.Database.Entities.UserEntity", b =>
+                {
+                    b.Navigation("UserOrganizations");
                 });
 #pragma warning restore 612, 618
         }

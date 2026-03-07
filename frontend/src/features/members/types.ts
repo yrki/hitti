@@ -4,6 +4,7 @@ export interface Member {
   email: string;
   phone: string;
   status: string;
+  role: string;
   joinedAt: string;
 }
 
@@ -12,7 +13,9 @@ export interface CreateMemberRequest {
   email: string;
   phone: string;
   status: string;
+  role: string;
   joinedAt: string;
+  password?: string;
 }
 
 export interface UpdateMemberRequest {
@@ -20,5 +23,7 @@ export interface UpdateMemberRequest {
   email: string;
   phone: string;
   status: string;
+  role: string;
   joinedAt: string;
+  password?: string;
 }

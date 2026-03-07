@@ -6,9 +6,10 @@ namespace Api.Features.Members.Queries;
 
 public sealed class GetAllMembersHandler(ApplicationDbContext dbContext)
 {
-    public async Task<IReadOnlyList<MemberResponse>> HandleAsync(CancellationToken cancellationToken = default)
+    public async Task<IReadOnlyList<MemberResponse>> HandleAsync(Guid organizationId, CancellationToken cancellationToken = default)
     {
         return await dbContext.Members
+            .Where(m => m.OrganizationId == organizationId)
             .OrderBy(m => m.Name)
             .Select(m => new MemberResponse
             {
@@ -17,6 +18,7 @@ public sealed class GetAllMembersHandler(ApplicationDbContext dbContext)
                 Email = m.Email,
                 Phone = m.Phone,
                 Status = m.Status,
+                Role = m.Role,
                 JoinedAt = m.JoinedAt
             })
             .ToListAsync(cancellationToken);

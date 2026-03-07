@@ -1,5 +1,7 @@
 import { Routes, Route } from 'react-router-dom';
 import { Layout } from './shared/components/Layout';
+import { ProtectedRoute } from './shared/auth/ProtectedRoute';
+import { LoginPage, RegisterPage } from './features/auth';
 import { DashboardPage } from './features/dashboard';
 import { MembersPage, MemberFormPage } from './features/members';
 import { ActivitiesPage, ActivityFormPage } from './features/activities';
@@ -8,7 +10,15 @@ import { SettingsPage } from './features/settings';
 export function App() {
   return (
     <Routes>
-      <Route element={<Layout />}>
+      <Route path="login" element={<LoginPage />} />
+      <Route path="registrer" element={<RegisterPage />} />
+      <Route
+        element={
+          <ProtectedRoute>
+            <Layout />
+          </ProtectedRoute>
+        }
+      >
         <Route index element={<DashboardPage />} />
         <Route path="medlemmer" element={<MembersPage />} />
         <Route path="medlemmer/ny" element={<MemberFormPage />} />

@@ -1,7 +1,9 @@
 using Api.Features.Activities;
+using Api.Features.Auth;
 using Api.Features.Members;
-using Api.Features.Settings;
+using Api.Features.Organizations;
 using Api.Features.Weather;
+using Api.Infrastructure.Authentication;
 using Api.Infrastructure.Database;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,17 +16,20 @@ builder.Services.AddCors(options =>
     options.AddPolicy("AllowFrontend", policy =>
         policy.WithOrigins("http://localhost:5173", "http://localhost:3000")
               .AllowAnyHeader()
-              .AllowAnyMethod());
+              .AllowAnyMethod()
+              .AllowCredentials());
 });
 
 // Infrastructure
 builder.Services.AddDatabase(builder.Configuration);
+builder.Services.AddJwtAuthentication(builder.Configuration);
 
 // Features
 builder.Services.AddWeatherFeature();
 builder.Services.AddMembersFeature();
 builder.Services.AddActivitiesFeature();
-builder.Services.AddSettingsFeature();
+builder.Services.AddAuthFeature();
+builder.Services.AddOrganizationsFeature();
 
 var app = builder.Build();
 
@@ -42,6 +47,7 @@ app.UseHttpsRedirection();
 
 app.UseCors("AllowFrontend");
 
+app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
 

@@ -1,42 +1,48 @@
-import { useEffect, useState } from 'react';
-import { getSettings, updateSettings } from './services/settingsApi';
-import type { OrganizationSettings, UpdateSettingsRequest } from './types';
+import { useState } from 'react';
+import { useAuth } from '../../shared/auth/AuthContext';
+import { apiFetch } from '../../shared/api';
 import styles from './SettingsPage.module.css';
 
+interface UpdateOrganizationRequest {
+  name: string;
+  email: string;
+  phone: string;
+}
+
+interface OrganizationResponse {
+  id: string;
+  name: string;
+  email: string;
+  phone: string;
+}
+
 export function SettingsPage() {
-  const [settings, setSettings] = useState<OrganizationSettings | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [notFound, setNotFound] = useState(false);
+  const { user, updateOrganization } = useAuth();
+  const organization = user?.organization;
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
 
-  const [organizationName, setOrganizationName] = useState('');
-  const [email, setEmail] = useState('');
-  const [phone, setPhone] = useState('');
+  const [name, setName] = useState(organization?.name ?? '');
+  const [email, setEmail] = useState(organization?.email ?? '');
+  const [phone, setPhone] = useState(organization?.phone ?? '');
 
-  useEffect(() => {
-    getSettings()
-      .then((data) => {
-        setSettings(data);
-        setOrganizationName(data.organizationName);
-        setEmail(data.email);
-        setPhone(data.phone);
-      })
-      .catch(() => setNotFound(true))
-      .finally(() => setLoading(false));
-  }, []);
+  if (!organization) {
+    return <p>Ingen organisasjon valgt.</p>;
+  }
 
   async function handleSubmit(event: React.FormEvent) {
     event.preventDefault();
     setSaving(true);
     setMessage(null);
 
-    const request: UpdateSettingsRequest = { organizationName, email, phone };
+    const request: UpdateOrganizationRequest = { name, email, phone };
 
     try {
-      const updated = await updateSettings(request);
-      setSettings(updated);
-      setNotFound(false);
+      const updated = await apiFetch<OrganizationResponse>('/organizations', {
+        method: 'PUT',
+        body: JSON.stringify(request),
+      });
+      updateOrganization(updated);
       setMessage('Innstillinger lagret');
     } catch {
       setMessage('Kunne ikke lagre innstillinger');
@@ -45,17 +51,9 @@ export function SettingsPage() {
     }
   }
 
-  if (loading) {
-    return <p>Laster innstillinger...</p>;
-  }
-
   return (
     <div>
       <h1 className={styles.title}>Innstillinger</h1>
-
-      {notFound && !settings && (
-        <p className={styles.info}>Ingen innstillinger funnet. Fyll inn og lagre for å opprette.</p>
-      )}
 
       <form className={styles.form} onSubmit={handleSubmit}>
         <label className={styles.label}>
@@ -63,8 +61,8 @@ export function SettingsPage() {
           <input
             className={styles.input}
             type="text"
-            value={organizationName}
-            onChange={(e) => setOrganizationName(e.target.value)}
+            value={name}
+            onChange={(e) => setName(e.target.value)}
             required
           />
         </label>

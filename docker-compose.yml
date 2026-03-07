@@ -25,6 +25,10 @@ services:
       ASPNETCORE_ENVIRONMENT: Development
       ASPNETCORE_HTTP_PORTS: "8080"
       ConnectionStrings__DefaultConnection: "Host=postgres;Port=5432;Database=medlemsvarsling;Username=admin;Password=VeldigHemmeligPassord1"
+      Jwt__Key: "MedlemsvarslingDevSigningKey2026AtLeast32Chars!"
+      Jwt__Issuer: "medlemsvarsling"
+      Jwt__Audience: "medlemsvarsling-frontend"
+      Jwt__ExpirationMinutes: "480"
     ports:
       - "5137:8080"
     depends_on:

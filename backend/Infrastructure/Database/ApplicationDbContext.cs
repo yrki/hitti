@@ -7,7 +7,7 @@ public sealed class ApplicationDbContext(DbContextOptions<ApplicationDbContext> 
 {
     public DbSet<MemberEntity> Members => Set<MemberEntity>();
     public DbSet<ActivityEntity> Activities => Set<ActivityEntity>();
-    public DbSet<OrganizationSettingsEntity> OrganizationSettings => Set<OrganizationSettingsEntity>();
+    public DbSet<OrganizationEntity> Organizations => Set<OrganizationEntity>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

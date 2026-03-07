@@ -7,5 +7,6 @@ public sealed record MemberResponse
     public required string Email { get; init; }
     public required string Phone { get; init; }
     public required string Status { get; init; }
+    public required string Role { get; init; }
     public required DateTime JoinedAt { get; init; }
 }

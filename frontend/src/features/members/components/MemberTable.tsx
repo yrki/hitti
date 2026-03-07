@@ -17,6 +17,7 @@ export function MemberTable({ members, onEdit, onDelete }: Props) {
             <th>E-post</th>
             <th>Telefon</th>
             <th>Status</th>
+            <th>Rolle</th>
             <th>Innmeldt</th>
             <th>Handlinger</th>
           </tr>
@@ -30,6 +31,11 @@ export function MemberTable({ members, onEdit, onDelete }: Props) {
               <td>
                 <span className={`${styles.badge} ${m.status === 'active' ? styles.active : styles.inactive}`}>
                   {m.status === 'active' ? 'Aktiv' : 'Inaktiv'}
+                </span>
+              </td>
+              <td>
+                <span className={`${styles.badge} ${m.role === 'admin' ? styles.admin : styles.member}`}>
+                  {m.role === 'admin' ? 'Admin' : 'Medlem'}
                 </span>
               </td>
               <td>{new Date(m.joinedAt).toLocaleDateString('nb-NO')}</td>
