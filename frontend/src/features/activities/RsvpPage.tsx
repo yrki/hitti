@@ -88,7 +88,7 @@ export function RsvpPage() {
               : `Du har meldt avbud til "${result.activityTitle}".`}
           </p>
           <div className={styles.details}>
-            <p><strong>Dato:</strong> {new Date(result.activityDate).toLocaleDateString('nb-NO', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</p>
+            <p><strong>Dato:</strong> {new Date(result.startTime).toLocaleDateString('nb-NO', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })} kl. {new Date(result.startTime).toLocaleTimeString('nb-NO', { hour: '2-digit', minute: '2-digit' })} – {new Date(result.endTime).toLocaleTimeString('nb-NO', { hour: '2-digit', minute: '2-digit' })}</p>
             <p><strong>Sted:</strong> {result.activityLocation}</p>
           </div>
         </div>

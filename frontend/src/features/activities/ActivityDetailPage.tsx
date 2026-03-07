@@ -84,7 +84,13 @@ export function ActivityDetailPage() {
       <div className={styles.details}>
         <div className={styles.detailItem}>
           <span className={styles.detailLabel}>Dato</span>
-          <span>{new Date(activity.activityDate).toLocaleDateString('nb-NO', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</span>
+          <span>
+            {new Date(activity.startTime).toLocaleDateString('nb-NO', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
+            {' kl. '}
+            {new Date(activity.startTime).toLocaleTimeString('nb-NO', { hour: '2-digit', minute: '2-digit' })}
+            {' – '}
+            {new Date(activity.endTime).toLocaleTimeString('nb-NO', { hour: '2-digit', minute: '2-digit' })}
+          </span>
         </div>
         <div className={styles.detailItem}>
           <span className={styles.detailLabel}>Sted</span>

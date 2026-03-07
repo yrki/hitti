@@ -17,12 +17,22 @@ public sealed class ActivitiesController(
     UpdateActivityHandler updateActivityHandler,
     DeleteActivityHandler deleteActivityHandler,
     SendInvitationsHandler sendInvitationsHandler,
-    GetActivityParticipantsHandler getActivityParticipantsHandler) : ControllerBase
+    GetActivityParticipantsHandler getActivityParticipantsHandler,
+    GetUpcomingActivitiesHandler getUpcomingActivitiesHandler) : ControllerBase
 {
     [HttpGet]
     public async Task<ActionResult<IReadOnlyList<ActivityResponse>>> GetAll(CancellationToken cancellationToken)
     {
         var activities = await getAllActivitiesHandler.HandleAsync(cancellationToken);
+        return Ok(activities);
+    }
+
+    [HttpGet("upcoming")]
+    public async Task<ActionResult<IReadOnlyList<UpcomingActivityResponse>>> GetUpcoming(
+        [FromQuery] int count = 5,
+        CancellationToken cancellationToken = default)
+    {
+        var activities = await getUpcomingActivitiesHandler.HandleAsync(count, cancellationToken);
         return Ok(activities);
     }
 

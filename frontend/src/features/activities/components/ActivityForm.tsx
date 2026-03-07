@@ -13,8 +13,14 @@ interface Props {
 export function ActivityForm({ activity, onSubmit, onCancel }: Props) {
   const [title, setTitle] = useState(activity?.title ?? '');
   const [description, setDescription] = useState(activity?.description ?? '');
-  const [activityDate, setActivityDate] = useState(
-    activity?.activityDate ? activity.activityDate.substring(0, 10) : new Date().toISOString().substring(0, 10)
+  const [date, setDate] = useState(
+    activity?.startTime ? activity.startTime.substring(0, 10) : new Date().toISOString().substring(0, 10)
+  );
+  const [startTime, setStartTime] = useState(
+    activity?.startTime ? activity.startTime.substring(11, 16) : '18:00'
+  );
+  const [endTime, setEndTime] = useState(
+    activity?.endTime ? activity.endTime.substring(11, 16) : '20:00'
   );
   const [location, setLocation] = useState(activity?.location ?? '');
   const [contactName, setContactName] = useState(activity?.contactName ?? '');
@@ -26,7 +32,8 @@ export function ActivityForm({ activity, onSubmit, onCancel }: Props) {
     onSubmit({
       title,
       description,
-      activityDate: new Date(activityDate).toISOString(),
+      startTime: new Date(`${date}T${startTime}`).toISOString(),
+      endTime: new Date(`${date}T${endTime}`).toISOString(),
       location,
       contactName,
       contactEmail,
@@ -65,8 +72,19 @@ export function ActivityForm({ activity, onSubmit, onCancel }: Props) {
 
         <label className={styles.label}>
           Dato
-          <input className={styles.input} type="date" value={activityDate} onChange={(e) => setActivityDate(e.target.value)} required />
+          <input className={styles.input} type="date" value={date} onChange={(e) => setDate(e.target.value)} required />
         </label>
+
+        <div className={styles.timeRow}>
+          <label className={styles.label}>
+            Fra
+            <input className={styles.input} type="time" value={startTime} onChange={(e) => setStartTime(e.target.value)} required />
+          </label>
+          <label className={styles.label}>
+            Til
+            <input className={styles.input} type="time" value={endTime} onChange={(e) => setEndTime(e.target.value)} required />
+          </label>
+        </div>
 
         <label className={styles.label}>
           Sted

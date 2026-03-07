@@ -18,6 +18,7 @@ export function ActivityTable({ activities, onEdit, onDelete }: Props) {
           <tr>
             <th>Tittel</th>
             <th>Dato</th>
+            <th>Tid</th>
             <th>Sted</th>
             <th>Kontaktperson</th>
             <th>Handlinger</th>
@@ -31,7 +32,12 @@ export function ActivityTable({ activities, onEdit, onDelete }: Props) {
                   {a.title}
                 </button>
               </td>
-              <td>{new Date(a.activityDate).toLocaleDateString('nb-NO')}</td>
+              <td>{new Date(a.startTime).toLocaleDateString('nb-NO')}</td>
+              <td>
+                {new Date(a.startTime).toLocaleTimeString('nb-NO', { hour: '2-digit', minute: '2-digit' })}
+                {' – '}
+                {new Date(a.endTime).toLocaleTimeString('nb-NO', { hour: '2-digit', minute: '2-digit' })}
+              </td>
               <td>{a.location}</td>
               <td>{a.contactName}</td>
               <td>

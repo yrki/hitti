@@ -2,7 +2,8 @@ export interface Activity {
   id: string;
   title: string;
   description: string;
-  activityDate: string;
+  startTime: string;
+  endTime: string;
   location: string;
   contactName: string;
   contactEmail: string;
@@ -12,7 +13,8 @@ export interface Activity {
 export interface CreateActivityRequest {
   title: string;
   description: string;
-  activityDate: string;
+  startTime: string;
+  endTime: string;
   location: string;
   contactName: string;
   contactEmail: string;
@@ -22,7 +24,8 @@ export interface CreateActivityRequest {
 export interface UpdateActivityRequest {
   title: string;
   description: string;
-  activityDate: string;
+  startTime: string;
+  endTime: string;
   location: string;
   contactName: string;
   contactEmail: string;
@@ -65,7 +68,8 @@ export interface SendInvitationsResponse {
 
 export interface RsvpResult {
   activityTitle: string;
-  activityDate: string;
+  startTime: string;
+  endTime: string;
   activityLocation: string;
   accepted: boolean;
 }

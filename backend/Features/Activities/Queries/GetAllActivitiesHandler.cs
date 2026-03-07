@@ -9,13 +9,14 @@ public sealed class GetAllActivitiesHandler(ApplicationDbContext dbContext)
     public async Task<IReadOnlyList<ActivityResponse>> HandleAsync(CancellationToken cancellationToken = default)
     {
         return await dbContext.Activities
-            .OrderBy(a => a.ActivityDate)
+            .OrderBy(a => a.StartTime)
             .Select(a => new ActivityResponse
             {
                 Id = a.Id,
                 Title = a.Title,
                 Description = a.Description,
-                ActivityDate = a.ActivityDate,
+                StartTime = a.StartTime,
+                EndTime = a.EndTime,
                 Location = a.Location,
                 ContactName = a.ContactName,
                 ContactEmail = a.ContactEmail,

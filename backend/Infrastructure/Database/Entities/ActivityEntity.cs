@@ -5,7 +5,8 @@ public sealed class ActivityEntity
     public Guid Id { get; set; }
     public required string Title { get; set; }
     public required string Description { get; set; }
-    public DateTime ActivityDate { get; set; }
+    public DateTime StartTime { get; set; }
+    public DateTime EndTime { get; set; }
     public required string Location { get; set; }
     public required string ContactName { get; set; }
     public required string ContactEmail { get; set; }

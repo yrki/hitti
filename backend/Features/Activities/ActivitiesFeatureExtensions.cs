@@ -15,6 +15,7 @@ public static class ActivitiesFeatureExtensions
         services.AddScoped<SendInvitationsHandler>();
         services.AddScoped<RespondToInvitationHandler>();
         services.AddScoped<GetActivityParticipantsHandler>();
+        services.AddScoped<GetUpcomingActivitiesHandler>();
 
         return services;
     }

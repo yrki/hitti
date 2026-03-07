@@ -17,7 +17,8 @@ public sealed class UpdateActivityHandler(ApplicationDbContext dbContext)
 
         entity.Title = request.Title;
         entity.Description = request.Description;
-        entity.ActivityDate = request.ActivityDate;
+        entity.StartTime = request.StartTime;
+        entity.EndTime = request.EndTime;
         entity.Location = request.Location;
         entity.ContactName = request.ContactName;
         entity.ContactEmail = request.ContactEmail;
@@ -31,7 +32,8 @@ public sealed class UpdateActivityHandler(ApplicationDbContext dbContext)
             Id = entity.Id,
             Title = entity.Title,
             Description = entity.Description,
-            ActivityDate = entity.ActivityDate,
+            StartTime = entity.StartTime,
+            EndTime = entity.EndTime,
             Location = entity.Location,
             ContactName = entity.ContactName,
             ContactEmail = entity.ContactEmail,

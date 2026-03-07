@@ -35,7 +35,8 @@ public sealed class RespondToInvitationHandler(
         return new RespondResult
         {
             ActivityTitle = participant.Activity.Title,
-            ActivityDate = participant.Activity.ActivityDate,
+            StartTime = participant.Activity.StartTime,
+            EndTime = participant.Activity.EndTime,
             ActivityLocation = participant.Activity.Location,
             Accepted = newStatus == ParticipantStatus.Accepted,
         };
@@ -45,7 +46,8 @@ public sealed class RespondToInvitationHandler(
 public sealed record RespondResult
 {
     public required string ActivityTitle { get; init; }
-    public required DateTime ActivityDate { get; init; }
+    public required DateTime StartTime { get; init; }
+    public required DateTime EndTime { get; init; }
     public required string ActivityLocation { get; init; }
     public required bool Accepted { get; init; }
 }

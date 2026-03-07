@@ -20,7 +20,8 @@ public sealed class ActivityEntityConfiguration : IEntityTypeConfiguration<Activ
         builder.Property(a => a.ContactEmail).IsRequired().HasMaxLength(200);
         builder.Property(a => a.ContactPhone).IsRequired().HasMaxLength(50);
 
-        builder.Property(a => a.ActivityDate).IsRequired();
+        builder.Property(a => a.StartTime).IsRequired();
+        builder.Property(a => a.EndTime).IsRequired();
         builder.Property(a => a.CreatedAt).IsRequired();
         builder.Property(a => a.UpdatedAt).IsRequired();
     }

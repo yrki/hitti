@@ -69,7 +69,7 @@ public sealed class SendInvitationsHandler(
             {
                 if (channel == InvitationChannel.Sms)
                 {
-                    var message = $"Du er invitert til \"{activity.Title}\" ({activity.ActivityDate:dd.MM.yyyy}). Svar her: {rsvpUrl}";
+                    var message = $"Du er invitert til \"{activity.Title}\" ({activity.StartTime:dd.MM.yyyy HH:mm}). Svar her: {rsvpUrl}";
                     await notificationService.SendSmsAsync(member.Phone, message, cancellationToken);
                 }
                 else
@@ -77,7 +77,8 @@ public sealed class SendInvitationsHandler(
                     var subject = $"Invitasjon: {activity.Title}";
                     var html = $"""
                         <h2>Du er invitert til {activity.Title}</h2>
-                        <p><strong>Dato:</strong> {activity.ActivityDate:dd.MM.yyyy}</p>
+                        <p><strong>Dato:</strong> {activity.StartTime:dd.MM.yyyy}</p>
+                        <p><strong>Klokkeslett:</strong> {activity.StartTime:HH:mm} – {activity.EndTime:HH:mm}</p>
                         <p><strong>Sted:</strong> {activity.Location}</p>
                         <p><strong>Beskrivelse:</strong> {activity.Description}</p>
                         <p>Klikk på en av knappene under for å svare:</p>
