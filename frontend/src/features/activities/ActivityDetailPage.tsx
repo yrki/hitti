@@ -6,12 +6,14 @@ import { ParticipantList } from './components/ParticipantList';
 import { SendInvitationDialog } from './components/SendInvitationDialog';
 import { ParticipantStatus, InvitationChannel } from './types';
 import type { Activity, Participant } from './types';
+import { usePageTitle } from '../../shared/hooks/usePageTitle';
 import styles from './ActivityDetailPage.module.css';
 
 export function ActivityDetailPage() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const [activity, setActivity] = useState<Activity | null>(null);
+  usePageTitle(activity?.title ?? 'Aktivitet');
   const [participants, setParticipants] = useState<Participant[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);

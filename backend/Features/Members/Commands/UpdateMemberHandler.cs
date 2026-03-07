@@ -21,7 +21,7 @@ public sealed class UpdateMemberHandler(ApplicationDbContext dbContext, IPasswor
 
         entity.Name = request.Name;
         entity.Email = request.Email;
-        entity.Phone = request.Phone;
+        entity.Phone = request.Phone.Replace(" ", "", StringComparison.Ordinal);
         entity.Status = request.Status;
         entity.Role = request.Role;
         entity.JoinedAt = request.JoinedAt;

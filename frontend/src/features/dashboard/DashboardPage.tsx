@@ -1,7 +1,15 @@
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { apiFetch } from '../../shared/api';
+import { usePageTitle } from '../../shared/hooks/usePageTitle';
 import styles from './DashboardPage.module.css';
+
+const MONTH_NAMES = ['jan', 'feb', 'mar', 'apr', 'mai', 'jun', 'jul', 'aug', 'sep', 'okt', 'nov', 'des'];
+
+function formatDate(iso: string): string {
+  const d = new Date(iso);
+  return `${d.getDate()}. ${MONTH_NAMES[d.getMonth()]} ${d.getFullYear()}`;
+}
 
 interface UpcomingActivity {
   id: string;
@@ -15,6 +23,8 @@ interface UpcomingActivity {
 }
 
 export function DashboardPage() {
+  usePageTitle('Dashboard');
+  const navigate = useNavigate();
   const [activities, setActivities] = useState<UpcomingActivity[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -47,24 +57,20 @@ export function DashboardPage() {
           </thead>
           <tbody>
             {activities.map((activity) => (
-              <tr key={activity.id}>
+              <tr
+                key={activity.id}
+                className={styles.clickableRow}
+                onClick={() => navigate(`/aktiviteter/${activity.id}`)}
+              >
                 <td className={styles.dateCell}>
-                  {new Date(activity.startTime).toLocaleDateString('nb-NO', {
-                    day: 'numeric',
-                    month: 'short',
-                    year: 'numeric',
-                  })}
+                  {formatDate(activity.startTime)}
                 </td>
                 <td className={styles.timeCell}>
                   {new Date(activity.startTime).toLocaleTimeString('nb-NO', { hour: '2-digit', minute: '2-digit' })}
                   {' – '}
                   {new Date(activity.endTime).toLocaleTimeString('nb-NO', { hour: '2-digit', minute: '2-digit' })}
                 </td>
-                <td>
-                  <Link to={`/aktiviteter/${activity.id}`} className={styles.activityLink}>
-                    {activity.title}
-                  </Link>
-                </td>
+                <td className={styles.activityCell}>{activity.title}</td>
                 <td className={styles.locationCell}>{activity.location}</td>
                 <td className={`${styles.countCell} ${styles.accepted}`}>{activity.acceptedCount}</td>
                 <td className={`${styles.countCell} ${styles.declined}`}>{activity.declinedCount}</td>

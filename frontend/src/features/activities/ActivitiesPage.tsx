@@ -3,9 +3,11 @@ import { useNavigate } from 'react-router-dom';
 import { ActivityTable } from './components/ActivityTable';
 import { getActivities, deleteActivity } from './services/activitiesApi';
 import type { Activity } from './types';
+import { usePageTitle } from '../../shared/hooks/usePageTitle';
 import styles from './ActivitiesPage.module.css';
 
 export function ActivitiesPage() {
+  usePageTitle('Aktiviteter');
   const navigate = useNavigate();
   const [activities, setActivities] = useState<Activity[]>([]);
   const [loading, setLoading] = useState(true);

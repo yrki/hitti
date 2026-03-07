@@ -43,7 +43,7 @@
 }
 
 .input:focus {
-  border-color: #6366f1;
+  border-color: #243119;
   box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
 }
 
@@ -59,7 +59,7 @@
 }
 
 .textarea:focus {
-  border-color: #6366f1;
+  border-color: #243119;
   box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
 }
 
@@ -71,7 +71,7 @@
 }
 
 .editor:focus-within {
-  border-color: #6366f1;
+  border-color: #243119;
   box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
 }
 
@@ -111,24 +111,26 @@
 }
 
 .cancelButton {
-  padding: 0.5rem 1rem;
-  border: 1px solid #d1d5db;
+  padding: 0.625rem 1.25rem;
+  border: 1px solid #AF5D63;
   border-radius: 8px;
   background: #fff;
-  color: #374151;
-  font-size: 0.875rem;
+  color: #AF5D63;
+  font-size: 0.925rem;
+  font-weight: 500;
   cursor: pointer;
 }
 
 .cancelButton:hover {
-  background: #f9fafb;
+  background: #AF5D63;
+  color: #fff;
 }
 
 .submitButton {
   padding: 0.5rem 1rem;
   border: none;
   border-radius: 8px;
-  background: #6366f1;
+  background: #243119;
   color: #fff;
   font-size: 0.875rem;
   font-weight: 500;
@@ -136,5 +138,5 @@
 }
 
 .submitButton:hover {
-  background: #4f46e5;
+  background: #243119;
 }

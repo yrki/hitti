@@ -4,6 +4,7 @@ using Api.Features.Members;
 using Api.Features.Organizations;
 using Api.Features.Weather;
 using Api.Infrastructure.Authentication;
+using Api.Infrastructure.BackgroundTasks;
 using Api.Infrastructure.Database;
 using Api.Infrastructure.Notifications;
 
@@ -25,6 +26,7 @@ builder.Services.AddCors(options =>
 builder.Services.AddDatabase(builder.Configuration);
 builder.Services.AddJwtAuthentication(builder.Configuration);
 builder.Services.AddNotifications(builder.Configuration);
+builder.Services.AddBackgroundTaskQueue();
 
 // Features
 builder.Services.AddWeatherFeature();

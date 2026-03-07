@@ -41,12 +41,12 @@
 
 .navLink:hover {
   background: #f3f4f6;
-  color: #111827;
+  color: #393D3F;
 }
 
 .active {
-  background: #eef2ff;
-  color: #4f46e5;
+  background: #E8F0E5;
+  color: #243119;
   font-weight: 600;
 }
 
@@ -80,5 +80,5 @@
 
 .footerButton:hover {
   background: #f3f4f6;
-  color: #111827;
+  color: #393D3F;
 }

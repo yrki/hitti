@@ -2,12 +2,14 @@ import { useState } from 'react';
 import { Navigate, Link, useNavigate } from 'react-router-dom';
 import { setAuthToken } from '../../shared/api';
 import { useAuth } from '../../shared/auth/AuthContext';
+import { usePageTitle } from '../../shared/hooks/usePageTitle';
 import hittiLogo from '../../assets/hitti-logo.svg';
 import styles from './LoginPage.module.css';
 
 const API_BASE_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:5137/api';
 
 export function LoginPage() {
+  usePageTitle('Logg inn');
   const { isAuthenticated, isLoading, setUser } = useAuth();
   const navigate = useNavigate();
   const [email, setEmail] = useState('');

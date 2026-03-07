@@ -29,6 +29,11 @@ services:
       Jwt__Issuer: "medlemsvarsling"
       Jwt__Audience: "medlemsvarsling-frontend"
       Jwt__ExpirationMinutes: "480"
+      AzureCommunication__ConnectionString: "endpoint=https://medlem-utv.norway.communication.azure.com/;accesskey=REPLACE_WITH_ACTUAL_KEY"
+      AzureCommunication__SmsFromNumber: "+4790039442"
+      AzureCommunication__EmailFromAddress: "DoNotReply@d05b7287-13c8-489d-8436-bbf290d798a4.azurecomm.net"
+      App__BaseUrl: "http://localhost:3000"
+      App__DevRedirectEmail: "thomas@skum.no"
     ports:
       - "5137:8080"
     depends_on:

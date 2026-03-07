@@ -1,10 +1,12 @@
 import { useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
+import { usePageTitle } from '../../shared/hooks/usePageTitle';
 import styles from './ResetPasswordPage.module.css';
 
 const API_BASE_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:5137/api';
 
 export function ResetPasswordPage() {
+  usePageTitle('Tilbakestill passord');
   const [searchParams] = useSearchParams();
   const token = searchParams.get('token');
 

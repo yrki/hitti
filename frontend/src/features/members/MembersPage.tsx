@@ -3,13 +3,16 @@ import { useNavigate } from 'react-router-dom';
 import { MemberTable } from './components/MemberTable';
 import { getMembers, deleteMember } from './services/membersApi';
 import type { Member } from './types';
+import { usePageTitle } from '../../shared/hooks/usePageTitle';
 import styles from './MembersPage.module.css';
 
 export function MembersPage() {
+  usePageTitle('Medlemmer');
   const navigate = useNavigate();
   const [members, setMembers] = useState<Member[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [search, setSearch] = useState('');
 
   const loadMembers = useCallback(async () => {
     try {
@@ -45,6 +48,14 @@ export function MembersPage() {
     return <p className={styles.error}>{error}</p>;
   }
 
+  const filteredMembers = members.filter((m) => {
+    if (!search.trim()) return true;
+    const q = search.toLowerCase();
+    return m.name.toLowerCase().includes(q) ||
+      m.email.toLowerCase().includes(q) ||
+      m.phone.includes(q);
+  });
+
   return (
     <div>
       <div className={styles.header}>
@@ -54,7 +65,15 @@ export function MembersPage() {
         </button>
       </div>
 
-      <MemberTable members={members} onEdit={handleEdit} onDelete={handleDelete} />
+      <input
+        className={styles.searchInput}
+        type="text"
+        placeholder="Søk på navn, e-post eller telefon..."
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+      />
+
+      <MemberTable members={filteredMembers} onEdit={handleEdit} onDelete={handleDelete} />
     </div>
   );
 }

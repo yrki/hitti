@@ -16,7 +16,7 @@ public sealed class CreateMemberHandler(ApplicationDbContext dbContext, IPasswor
             Id = Guid.NewGuid(),
             Name = request.Name,
             Email = request.Email,
-            Phone = request.Phone,
+            Phone = request.Phone.Replace(" ", "", StringComparison.Ordinal),
             Status = request.Status,
             Role = request.Role,
             OrganizationId = organizationId,

@@ -1,11 +1,13 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import hittiLogo from '../../assets/hitti-logo.svg';
+import { usePageTitle } from '../../shared/hooks/usePageTitle';
 import styles from './ForgotPasswordPage.module.css';
 
 const API_BASE_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:5137/api';
 
 export function ForgotPasswordPage() {
+  usePageTitle('Glemt passord');
   const [email, setEmail] = useState('');
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState<string | null>(null);

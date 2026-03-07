@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Navigate, Link, useNavigate } from 'react-router-dom';
 import { setAuthToken } from '../../shared/api';
 import { useAuth } from '../../shared/auth/AuthContext';
+import { usePageTitle } from '../../shared/hooks/usePageTitle';
 import hittiLogo from '../../assets/hitti-logo.svg';
 import styles from './RegisterPage.module.css';
 
@@ -22,6 +23,7 @@ interface FieldErrors {
 }
 
 export function RegisterPage() {
+  usePageTitle('Registrer');
   const { isAuthenticated, isLoading, setUser } = useAuth();
   const navigate = useNavigate();
   const [organizationName, setOrganizationName] = useState('');

@@ -18,7 +18,7 @@ public sealed class UpdateOrganizationHandler(ApplicationDbContext dbContext)
 
         org.Name = request.Name;
         org.Email = request.Email;
-        org.Phone = request.Phone;
+        org.Phone = request.Phone.Replace(" ", "", StringComparison.Ordinal);
         org.UpdatedAt = DateTime.UtcNow;
 
         await dbContext.SaveChangesAsync(cancellationToken);

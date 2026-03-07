@@ -1,17 +1,17 @@
 using System.Security.Cryptography;
 using Api.Features.Activities.Contracts;
 using Api.Features.Members.Contracts;
+using Api.Infrastructure.BackgroundTasks;
 using Api.Infrastructure.Database;
 using Api.Infrastructure.Database.Entities;
 using Api.Infrastructure.Notifications;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 
 namespace Api.Features.Activities.Commands;
 
 public sealed class SendInvitationsHandler(
     ApplicationDbContext dbContext,
-    INotificationService notificationService,
+    IBackgroundTaskQueue taskQueue,
     IConfiguration configuration,
     ILogger<SendInvitationsHandler> logger)
 {
@@ -40,6 +40,9 @@ public sealed class SendInvitationsHandler(
 
         var newParticipants = new List<ActivityParticipantEntity>();
         var baseUrl = configuration.GetValue<string>("App:BaseUrl") ?? "http://localhost:3000";
+        var devRedirectEmail = configuration.GetValue<string>("App:DevRedirectEmail");
+
+        var notificationItems = new List<NotificationWorkItem>();
 
         foreach (var member in members)
         {
@@ -63,47 +66,90 @@ public sealed class SendInvitationsHandler(
             newParticipants.Add(participant);
             dbContext.ActivityParticipants.Add(participant);
 
-            var rsvpUrl = $"{baseUrl}/svar/{token}";
-
-            try
+            notificationItems.Add(new NotificationWorkItem
             {
-                if (channel == InvitationChannel.Sms)
-                {
-                    var message = $"Du er invitert til \"{activity.Title}\" ({activity.StartTime:dd.MM.yyyy HH:mm}). Svar her: {rsvpUrl}";
-                    await notificationService.SendSmsAsync(member.Phone, message, cancellationToken);
-                }
-                else
-                {
-                    var subject = $"Invitasjon: {activity.Title}";
-                    var html = $"""
-                        <h2>Du er invitert til {activity.Title}</h2>
-                        <p><strong>Dato:</strong> {activity.StartTime:dd.MM.yyyy}</p>
-                        <p><strong>Klokkeslett:</strong> {activity.StartTime:HH:mm} – {activity.EndTime:HH:mm}</p>
-                        <p><strong>Sted:</strong> {activity.Location}</p>
-                        <p><strong>Beskrivelse:</strong> {activity.Description}</p>
-                        <p>Klikk på en av knappene under for å svare:</p>
-                        <p>
-                            <a href="{rsvpUrl}?svar=ja" style="display:inline-block;padding:12px 24px;background:#16a34a;color:#fff;text-decoration:none;border-radius:8px;margin-right:8px;">Ja, jeg blir med</a>
-                            <a href="{rsvpUrl}?svar=nei" style="display:inline-block;padding:12px 24px;background:#dc2626;color:#fff;text-decoration:none;border-radius:8px;">Nei, jeg kan ikke</a>
-                        </p>
-                        """;
-                    await notificationService.SendEmailAsync(member.Email, member.Name, subject, html, cancellationToken);
-                }
-
-                logger.LogInformation("Invitation sent via {Channel} to {MemberName} ({MemberId}) for activity {ActivityId}",
-                    channel, member.Name, member.Id, activityId);
-            }
-            catch (Exception ex)
-            {
-                logger.LogError(ex, "Failed to send {Channel} invitation to {MemberName} ({MemberId}) for activity {ActivityId}",
-                    channel, member.Name, member.Id, activityId);
-            }
+                MemberName = member.Name,
+                MemberEmail = member.Email,
+                MemberPhone = member.Phone,
+                MemberId = member.Id,
+                RsvpUrl = $"{baseUrl}/svar/{token}",
+            });
         }
 
         await dbContext.SaveChangesAsync(cancellationToken);
 
-        logger.LogInformation("Sent {NewCount} invitations for activity {ActivityId}, {ExistingCount} already invited",
+        logger.LogInformation("Saved {NewCount} invitations for activity {ActivityId}, {ExistingCount} already invited",
             newParticipants.Count, activityId, existingParticipantMemberIds.Count);
+
+        if (notificationItems.Count > 0)
+        {
+            var activityTitle = activity.Title;
+            var activityStartTime = activity.StartTime;
+            var activityEndTime = activity.EndTime;
+            var activityLocation = activity.Location;
+            var activityDescription = activity.Description;
+
+            await taskQueue.EnqueueAsync(async (serviceProvider, stoppingToken) =>
+            {
+                var notificationService = serviceProvider.GetRequiredService<INotificationService>();
+                var backgroundLogger = serviceProvider.GetRequiredService<ILogger<SendInvitationsHandler>>();
+
+                foreach (var item in notificationItems)
+                {
+                    try
+                    {
+                        if (!string.IsNullOrEmpty(devRedirectEmail))
+                        {
+                            var subject = $"[DEV → {item.MemberName}] Invitasjon: {activityTitle}";
+                            var html = $"""
+                                <p><em>Opprinnelig mottaker: {item.MemberName} ({(channel == InvitationChannel.Sms ? item.MemberPhone : item.MemberEmail)})</em></p>
+                                <h2>Du er invitert til {activityTitle}</h2>
+                                <p><strong>Dato:</strong> {activityStartTime:dd.MM.yyyy}</p>
+                                <p><strong>Klokkeslett:</strong> {activityStartTime:HH:mm} – {activityEndTime:HH:mm}</p>
+                                <p><strong>Sted:</strong> {activityLocation}</p>
+                                <p><strong>Beskrivelse:</strong> {activityDescription}</p>
+                                <p>
+                                    <a href="{item.RsvpUrl}?svar=ja" style="display:inline-block;padding:12px 24px;background:#16a34a;color:#fff;text-decoration:none;border-radius:8px;margin-right:8px;">Ja, jeg blir med</a>
+                                    <a href="{item.RsvpUrl}?svar=nei" style="display:inline-block;padding:12px 24px;background:#dc2626;color:#fff;text-decoration:none;border-radius:8px;">Nei, jeg kan ikke</a>
+                                </p>
+                                """;
+                            await notificationService.SendEmailAsync(devRedirectEmail, "Dev", subject, html, stoppingToken);
+                            backgroundLogger.LogInformation("DEV: Redirected {Channel} invitation for {MemberName} to {DevEmail}",
+                                channel, item.MemberName, devRedirectEmail);
+                        }
+                        else if (channel == InvitationChannel.Sms)
+                        {
+                            var message = $"Du er invitert til \"{activityTitle}\" ({activityStartTime:dd.MM.yyyy HH:mm}). Svar her: {item.RsvpUrl}";
+                            await notificationService.SendSmsAsync(item.MemberPhone, message, stoppingToken);
+                        }
+                        else
+                        {
+                            var subject = $"Invitasjon: {activityTitle}";
+                            var html = $"""
+                                <h2>Du er invitert til {activityTitle}</h2>
+                                <p><strong>Dato:</strong> {activityStartTime:dd.MM.yyyy}</p>
+                                <p><strong>Klokkeslett:</strong> {activityStartTime:HH:mm} – {activityEndTime:HH:mm}</p>
+                                <p><strong>Sted:</strong> {activityLocation}</p>
+                                <p><strong>Beskrivelse:</strong> {activityDescription}</p>
+                                <p>
+                                    <a href="{item.RsvpUrl}?svar=ja" style="display:inline-block;padding:12px 24px;background:#16a34a;color:#fff;text-decoration:none;border-radius:8px;margin-right:8px;">Ja, jeg blir med</a>
+                                    <a href="{item.RsvpUrl}?svar=nei" style="display:inline-block;padding:12px 24px;background:#dc2626;color:#fff;text-decoration:none;border-radius:8px;">Nei, jeg kan ikke</a>
+                                </p>
+                                """;
+                            await notificationService.SendEmailAsync(item.MemberEmail, item.MemberName, subject, html, stoppingToken);
+                        }
+
+                        backgroundLogger.LogInformation("Invitation sent via {Channel} to {MemberName} ({MemberId}) for activity {ActivityId}",
+                            channel, item.MemberName, item.MemberId, activityId);
+                    }
+                    catch (Exception ex)
+                    {
+                        backgroundLogger.LogError(ex, "Failed to send {Channel} invitation to {MemberName} ({MemberId}) for activity {ActivityId}",
+                            channel, item.MemberName, item.MemberId, activityId);
+                    }
+                }
+            });
+        }
 
         return new SendInvitationsResponse
         {
@@ -118,5 +164,14 @@ public sealed class SendInvitationsHandler(
             .Replace("+", "-")
             .Replace("/", "_")
             .TrimEnd('=');
+    }
+
+    private sealed record NotificationWorkItem
+    {
+        public required string MemberName { get; init; }
+        public required string MemberEmail { get; init; }
+        public required string MemberPhone { get; init; }
+        public required Guid MemberId { get; init; }
+        public required string RsvpUrl { get; init; }
     }
 }

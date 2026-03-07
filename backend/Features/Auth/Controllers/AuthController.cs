@@ -87,7 +87,7 @@ public sealed class AuthController(
             Id = Guid.NewGuid(),
             Name = request.OrganizationName,
             Email = request.OrganizationEmail,
-            Phone = request.OrganizationPhone,
+            Phone = request.OrganizationPhone.Replace(" ", "", StringComparison.Ordinal),
             CreatedAt = DateTime.UtcNow,
             UpdatedAt = DateTime.UtcNow,
         };
@@ -97,7 +97,7 @@ public sealed class AuthController(
             Id = Guid.NewGuid(),
             Name = request.AdminName,
             Email = request.AdminEmail,
-            Phone = request.AdminPhone,
+            Phone = request.AdminPhone.Replace(" ", "", StringComparison.Ordinal),
             Status = MemberStatus.Active,
             Role = MemberRole.Admin,
             PasswordHash = passwordHasher.HashPassword(HashTarget, request.Password),

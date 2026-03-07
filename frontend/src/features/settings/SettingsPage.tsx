@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useAuth } from '../../shared/auth/AuthContext';
 import { apiFetch } from '../../shared/api';
+import { usePageTitle } from '../../shared/hooks/usePageTitle';
 import styles from './SettingsPage.module.css';
 
 interface UpdateOrganizationRequest {
@@ -17,6 +18,7 @@ interface OrganizationResponse {
 }
 
 export function SettingsPage() {
+  usePageTitle('Innstillinger');
   const { user, updateOrganization } = useAuth();
   const organization = user?.organization;
   const [saving, setSaving] = useState(false);

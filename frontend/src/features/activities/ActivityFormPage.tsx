@@ -3,9 +3,11 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { ActivityForm } from './components/ActivityForm';
 import { getActivity, createActivity, updateActivity } from './services/activitiesApi';
 import type { Activity, CreateActivityRequest } from './types';
+import { usePageTitle } from '../../shared/hooks/usePageTitle';
 
 export function ActivityFormPage() {
   const { id } = useParams<{ id: string }>();
+  usePageTitle(id ? 'Rediger aktivitet' : 'Ny aktivitet');
   const navigate = useNavigate();
   const [activity, setActivity] = useState<Activity | undefined>();
   const [loading, setLoading] = useState(!!id);

@@ -1,11 +1,13 @@
 import { useEffect, useState } from 'react';
 import { useParams, useSearchParams } from 'react-router-dom';
 import type { RsvpResult } from './types';
+import { usePageTitle } from '../../shared/hooks/usePageTitle';
 import styles from './RsvpPage.module.css';
 
 const API_BASE_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:5137/api';
 
 export function RsvpPage() {
+  usePageTitle('Svar på invitasjon');
   const { token } = useParams<{ token: string }>();
   const [searchParams] = useSearchParams();
   const response = searchParams.get('svar');

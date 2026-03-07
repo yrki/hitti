@@ -33,7 +33,7 @@
 .titleLink {
   border: none;
   background: none;
-  color: #6366f1;
+  color: #243119;
   font-weight: 500;
   cursor: pointer;
   padding: 0;
@@ -65,15 +65,17 @@
 }
 
 .deleteButton {
-  padding: 0.25rem 0.75rem;
-  border: 1px solid #fecaca;
+  padding: 0.375rem 1rem;
+  border: 1px solid #AF5D63;
   border-radius: 6px;
   background: #fff;
-  color: #dc2626;
-  font-size: 0.8rem;
+  color: #AF5D63;
+  font-size: 0.85rem;
+  font-weight: 500;
   cursor: pointer;
 }
 
 .deleteButton:hover {
-  background: #fef2f2;
+  background: #AF5D63;
+  color: #fff;
 }

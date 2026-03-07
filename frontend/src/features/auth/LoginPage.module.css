@@ -52,26 +52,26 @@
 
 .input:focus {
   outline: none;
-  border-color: #3b82f6;
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+  border-color: #243119;
+  box-shadow: 0 0 0 3px rgba(36, 49, 25, 0.15);
 }
 
 .inputError {
-  border-color: #dc2626;
+  border-color: #AF5D63;
 }
 
 .inputError:focus {
-  border-color: #dc2626;
-  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.15);
+  border-color: #AF5D63;
+  box-shadow: 0 0 0 3px rgba(175, 93, 99, 0.15);
 }
 
 .required {
-  color: #dc2626;
+  color: #AF5D63;
   margin-left: 2px;
 }
 
 .fieldError {
-  color: #dc2626;
+  color: #AF5D63;
   font-size: 0.8rem;
   font-weight: 400;
   margin-top: 2px;
@@ -79,7 +79,7 @@
 
 .error {
   margin: 0;
-  color: #dc2626;
+  color: #AF5D63;
   font-size: 0.875rem;
   font-weight: 500;
 }
@@ -89,7 +89,7 @@
   padding: 0.75rem 1.5rem;
   border: none;
   border-radius: 8px;
-  background: #3b82f6;
+  background: #243119;
   color: #fff;
   font-size: 1rem;
   font-weight: 600;
@@ -98,7 +98,7 @@
 }
 
 .submitButton:hover {
-  background: #2563eb;
+  background: #1a2412;
 }
 
 .submitButton:disabled {
@@ -113,7 +113,7 @@
 }
 
 .registerLink a {
-  color: #3b82f6;
+  color: #243119;
   text-decoration: none;
   font-weight: 500;
 }
