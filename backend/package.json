@@ -1,0 +1,20 @@
+{
+  "name": "medlemsvarsling-backend",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch src/server.ts",
+    "build": "tsc",
+    "start": "node dist/server.js"
+  },
+  "dependencies": {
+    "express": "^5.1.0"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.2",
+    "@types/node": "^22.14.1",
+    "tsx": "^4.19.4",
+    "typescript": "~5.7.2"
+  }
+}

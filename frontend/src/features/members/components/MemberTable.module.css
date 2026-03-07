@@ -1,0 +1,49 @@
+.wrapper {
+  overflow-x: auto;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  background: #fff;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table th,
+.table td {
+  padding: 0.875rem 1rem;
+  text-align: left;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.table th {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  background: #f9fafb;
+}
+
+.table tbody tr:hover {
+  background: #f9fafb;
+}
+
+.badge {
+  display: inline-block;
+  padding: 0.2rem 0.6rem;
+  border-radius: 9999px;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.active {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+.inactive {
+  background: #fee2e2;
+  color: #991b1b;
+}

@@ -1,0 +1,41 @@
+.card {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.label {
+  font-size: 0.875rem;
+  color: #6b7280;
+  font-weight: 500;
+}
+
+.value {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #111827;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.trend {
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.up {
+  color: #10b981;
+}
+
+.down {
+  color: #ef4444;
+}
+
+.neutral {
+  color: #6b7280;
+}
