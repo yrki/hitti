@@ -10,7 +10,7 @@ services:
     ports:
       - "5433:5432"
     volumes:
-      - pgdata:/var/lib/postgresql/data
+      - ./dockervolumes/pgdata:/var/lib/postgresql/data
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U admin -d medlemsvarsling"]
       interval: 5s
@@ -44,6 +44,3 @@ services:
       - "3000:80"
     depends_on:
       - backend
-
-volumes:
-  pgdata:

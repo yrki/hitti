@@ -26,3 +26,6 @@ dist-ssr
 # .NET
 bin/
 obj/
+
+# Docker
+dockervolumes/
