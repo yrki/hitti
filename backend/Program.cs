@@ -1,5 +1,6 @@
 using Api.Features.Activities;
 using Api.Features.Members;
+using Api.Features.Settings;
 using Api.Features.Weather;
 using Api.Infrastructure.Database;
 
@@ -23,6 +24,7 @@ builder.Services.AddDatabase(builder.Configuration);
 builder.Services.AddWeatherFeature();
 builder.Services.AddMembersFeature();
 builder.Services.AddActivitiesFeature();
+builder.Services.AddSettingsFeature();
 
 var app = builder.Build();
 

@@ -5,7 +5,6 @@ const navItems = [
   { to: '/', label: 'Dashboard', icon: '📊' },
   { to: '/medlemmer', label: 'Medlemmer', icon: '👥' },
   { to: '/aktiviteter', label: 'Aktiviteter', icon: '📅' },
-  { to: '/varsler', label: 'Varsler', icon: '🔔' },
   { to: '/innstillinger', label: 'Innstillinger', icon: '⚙️' },
 ];
 

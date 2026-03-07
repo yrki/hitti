@@ -3,7 +3,6 @@ import { Layout } from './shared/components/Layout';
 import { DashboardPage } from './features/dashboard';
 import { MembersPage, MemberFormPage } from './features/members';
 import { ActivitiesPage, ActivityFormPage } from './features/activities';
-import { NotificationsPage } from './features/notifications';
 import { SettingsPage } from './features/settings';
 
 export function App() {
@@ -17,7 +16,6 @@ export function App() {
         <Route path="aktiviteter" element={<ActivitiesPage />} />
         <Route path="aktiviteter/ny" element={<ActivityFormPage />} />
         <Route path="aktiviteter/:id/rediger" element={<ActivityFormPage />} />
-        <Route path="varsler" element={<NotificationsPage />} />
         <Route path="innstillinger" element={<SettingsPage />} />
       </Route>
     </Routes>

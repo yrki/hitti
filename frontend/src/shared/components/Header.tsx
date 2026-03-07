@@ -4,7 +4,7 @@ import styles from './Header.module.css';
 const pageTitles: Record<string, string> = {
   '/': 'Dashboard',
   '/medlemmer': 'Medlemmer',
-  '/varsler': 'Varsler',
+  '/aktiviteter': 'Aktiviteter',
   '/innstillinger': 'Innstillinger',
 };
 
