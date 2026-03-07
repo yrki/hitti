@@ -29,9 +29,8 @@ export function MemberForm({ member, onSubmit, onCancel }: Props) {
   }
 
   return (
-    <div className={styles.overlay}>
-      <form className={styles.form} onSubmit={handleSubmit}>
-        <h2>{member ? 'Rediger medlem' : 'Nytt medlem'}</h2>
+    <form className={styles.form} onSubmit={handleSubmit}>
+      <h2>{member ? 'Rediger medlem' : 'Nytt medlem'}</h2>
 
         <label className={styles.label}>
           Navn
@@ -98,6 +97,5 @@ export function MemberForm({ member, onSubmit, onCancel }: Props) {
           </button>
         </div>
       </form>
-    </div>
   );
 }

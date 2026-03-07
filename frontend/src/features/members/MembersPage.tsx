@@ -1,16 +1,15 @@
 import { useEffect, useState, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { MemberTable } from './components/MemberTable';
-import { MemberForm } from './components/MemberForm';
-import { getMembers, createMember, updateMember, deleteMember } from './services/membersApi';
-import type { Member, CreateMemberRequest } from './types';
+import { getMembers, deleteMember } from './services/membersApi';
+import type { Member } from './types';
 import styles from './MembersPage.module.css';
 
 export function MembersPage() {
+  const navigate = useNavigate();
   const [members, setMembers] = useState<Member[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [showForm, setShowForm] = useState(false);
-  const [editingMember, setEditingMember] = useState<Member | undefined>();
 
   const loadMembers = useCallback(async () => {
     try {
@@ -28,20 +27,6 @@ export function MembersPage() {
     loadMembers();
   }, [loadMembers]);
 
-  async function handleCreate(data: CreateMemberRequest) {
-    await createMember(data);
-    setShowForm(false);
-    await loadMembers();
-  }
-
-  async function handleUpdate(data: CreateMemberRequest) {
-    if (!editingMember) return;
-    await updateMember(editingMember.id, data);
-    setEditingMember(undefined);
-    setShowForm(false);
-    await loadMembers();
-  }
-
   async function handleDelete(member: Member) {
     if (!confirm(`Er du sikker på at du vil slette ${member.name}?`)) return;
     await deleteMember(member.id);
@@ -49,13 +34,7 @@ export function MembersPage() {
   }
 
   function handleEdit(member: Member) {
-    setEditingMember(member);
-    setShowForm(true);
-  }
-
-  function handleCancel() {
-    setEditingMember(undefined);
-    setShowForm(false);
+    navigate(`/medlemmer/${member.id}/rediger`);
   }
 
   if (loading) {
@@ -70,20 +49,12 @@ export function MembersPage() {
     <div>
       <div className={styles.header}>
         <h1 className={styles.title}>Medlemmer</h1>
-        <button className={styles.addButton} onClick={() => setShowForm(true)}>
+        <button className={styles.addButton} onClick={() => navigate('/medlemmer/ny')}>
           + Nytt medlem
         </button>
       </div>
 
       <MemberTable members={members} onEdit={handleEdit} onDelete={handleDelete} />
-
-      {showForm && (
-        <MemberForm
-          member={editingMember}
-          onSubmit={editingMember ? handleUpdate : handleCreate}
-          onCancel={handleCancel}
-        />
-      )}
     </div>
   );
 }

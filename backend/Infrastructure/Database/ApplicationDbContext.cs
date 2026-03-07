@@ -6,6 +6,7 @@ namespace Api.Infrastructure.Database;
 public sealed class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : DbContext(options)
 {
     public DbSet<MemberEntity> Members => Set<MemberEntity>();
+    public DbSet<ActivityEntity> Activities => Set<ActivityEntity>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

@@ -1,3 +1,4 @@
+using Api.Features.Activities;
 using Api.Features.Members;
 using Api.Features.Weather;
 using Api.Infrastructure.Database;
@@ -21,6 +22,7 @@ builder.Services.AddDatabase(builder.Configuration);
 // Features
 builder.Services.AddWeatherFeature();
 builder.Services.AddMembersFeature();
+builder.Services.AddActivitiesFeature();
 
 var app = builder.Build();
 
