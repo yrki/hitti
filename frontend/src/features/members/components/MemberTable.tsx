@@ -3,9 +3,11 @@ import styles from './MemberTable.module.css';
 
 interface Props {
   members: Member[];
+  onEdit: (member: Member) => void;
+  onDelete: (member: Member) => void;
 }
 
-export function MemberTable({ members }: Props) {
+export function MemberTable({ members, onEdit, onDelete }: Props) {
   return (
     <div className={styles.wrapper}>
       <table className={styles.table}>
@@ -16,6 +18,7 @@ export function MemberTable({ members }: Props) {
             <th>Telefon</th>
             <th>Status</th>
             <th>Innmeldt</th>
+            <th>Handlinger</th>
           </tr>
         </thead>
         <tbody>
@@ -25,11 +28,21 @@ export function MemberTable({ members }: Props) {
               <td>{m.email}</td>
               <td>{m.phone}</td>
               <td>
-                <span className={`${styles.badge} ${styles[m.status]}`}>
+                <span className={`${styles.badge} ${m.status === 'active' ? styles.active : styles.inactive}`}>
                   {m.status === 'active' ? 'Aktiv' : 'Inaktiv'}
                 </span>
               </td>
               <td>{new Date(m.joinedAt).toLocaleDateString('nb-NO')}</td>
+              <td>
+                <div className={styles.actions}>
+                  <button className={styles.editButton} onClick={() => onEdit(m)}>
+                    Rediger
+                  </button>
+                  <button className={styles.deleteButton} onClick={() => onDelete(m)}>
+                    Slett
+                  </button>
+                </div>
+              </td>
             </tr>
           ))}
         </tbody>

@@ -3,6 +3,22 @@ export interface Member {
   name: string;
   email: string;
   phone: string;
-  status: 'active' | 'inactive';
+  status: string;
+  joinedAt: string;
+}
+
+export interface CreateMemberRequest {
+  name: string;
+  email: string;
+  phone: string;
+  status: string;
+  joinedAt: string;
+}
+
+export interface UpdateMemberRequest {
+  name: string;
+  email: string;
+  phone: string;
+  status: string;
   joinedAt: string;
 }

@@ -1,18 +1,89 @@
+import { useEffect, useState, useCallback } from 'react';
 import { MemberTable } from './components/MemberTable';
-import type { Member } from './types';
-
-const sampleMembers: Member[] = [
-  { id: '1', name: 'Kari Nordmann', email: 'kari@example.com', phone: '912 34 567', status: 'active', joinedAt: '2024-01-15' },
-  { id: '2', name: 'Ola Hansen', email: 'ola@example.com', phone: '923 45 678', status: 'active', joinedAt: '2024-03-22' },
-  { id: '3', name: 'Per Olsen', email: 'per@example.com', phone: '934 56 789', status: 'inactive', joinedAt: '2023-11-10' },
-  { id: '4', name: 'Lise Berg', email: 'lise@example.com', phone: '945 67 890', status: 'active', joinedAt: '2025-06-01' },
-  { id: '5', name: 'Erik Johansen', email: 'erik@example.com', phone: '956 78 901', status: 'inactive', joinedAt: '2023-08-30' },
-];
+import { MemberForm } from './components/MemberForm';
+import { getMembers, createMember, updateMember, deleteMember } from './services/membersApi';
+import type { Member, CreateMemberRequest } from './types';
+import styles from './MembersPage.module.css';
 
 export function MembersPage() {
+  const [members, setMembers] = useState<Member[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [showForm, setShowForm] = useState(false);
+  const [editingMember, setEditingMember] = useState<Member | undefined>();
+
+  const loadMembers = useCallback(async () => {
+    try {
+      setError(null);
+      const data = await getMembers();
+      setMembers(data);
+    } catch {
+      setError('Kunne ikke hente medlemmer');
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    loadMembers();
+  }, [loadMembers]);
+
+  async function handleCreate(data: CreateMemberRequest) {
+    await createMember(data);
+    setShowForm(false);
+    await loadMembers();
+  }
+
+  async function handleUpdate(data: CreateMemberRequest) {
+    if (!editingMember) return;
+    await updateMember(editingMember.id, data);
+    setEditingMember(undefined);
+    setShowForm(false);
+    await loadMembers();
+  }
+
+  async function handleDelete(member: Member) {
+    if (!confirm(`Er du sikker på at du vil slette ${member.name}?`)) return;
+    await deleteMember(member.id);
+    await loadMembers();
+  }
+
+  function handleEdit(member: Member) {
+    setEditingMember(member);
+    setShowForm(true);
+  }
+
+  function handleCancel() {
+    setEditingMember(undefined);
+    setShowForm(false);
+  }
+
+  if (loading) {
+    return <p>Laster medlemmer...</p>;
+  }
+
+  if (error) {
+    return <p className={styles.error}>{error}</p>;
+  }
+
   return (
     <div>
-      <MemberTable members={sampleMembers} />
+      <div className={styles.header}>
+        <h1 className={styles.title}>Medlemmer</h1>
+        <button className={styles.addButton} onClick={() => setShowForm(true)}>
+          + Nytt medlem
+        </button>
+      </div>
+
+      <MemberTable members={members} onEdit={handleEdit} onDelete={handleDelete} />
+
+      {showForm && (
+        <MemberForm
+          member={editingMember}
+          onSubmit={editingMember ? handleUpdate : handleCreate}
+          onCancel={handleCancel}
+        />
+      )}
     </div>
   );
 }

@@ -1,0 +1,45 @@
+services:
+  postgres:
+    image: postgres:17
+    container_name: medlemsvarsling-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: VeldigHemmeligPassord1
+      POSTGRES_DB: medlemsvarsling
+    ports:
+      - "5433:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U admin -d medlemsvarsling"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    image: medlemsvarsling-backend:latest
+    container_name: medlemsvarsling-backend
+    restart: unless-stopped
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_HTTP_PORTS: "8080"
+      ConnectionStrings__DefaultConnection: "Host=postgres;Port=5432;Database=medlemsvarsling;Username=admin;Password=VeldigHemmeligPassord1"
+    ports:
+      - "5137:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  frontend:
+    build:
+      context: ./frontend
+    container_name: medlemsvarsling-frontend
+    restart: unless-stopped
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+
+volumes:
+  pgdata:
