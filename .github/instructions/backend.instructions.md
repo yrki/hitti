@@ -7,19 +7,22 @@ applyTo: "backend/**"
 ## Architecture
 
 - **Vertical feature slices** — organize code by feature, not by technical layer.
-- Each feature lives in `Features/<Feature>/` and encapsulates its own endpoints, services, models, validators, and tests.
-- A feature folder structure looks like:
+- The backend has three top-level folders:
+  - `Infrastructure/` — database connections, external service clients, middleware, and cross-cutting infrastructure concerns.
+  - `Features/` — all feature slices. Each feature is self-contained with its own sub-folders.
+  - `Services/` — shared services used across multiple features.
+
+- Each feature lives in `Features/<Feature>/` with the following sub-folder structure:
   ```
   Features/<Feature>/
-  ├── <Feature>Controller.cs   # API endpoints
-  ├── <Feature>Service.cs      # Business logic
-  ├── I<Feature>Service.cs     # Service interface
-  ├── <Feature>Repository.cs   # Data access (if needed)
-  ├── Models/                  # DTOs, request/response models
-  ├── Validators/              # Input validation (FluentValidation)
+  ├── Controllers/             # API endpoints
+  ├── Queries/                 # Read operations / query handlers
+  ├── Commands/                # Write operations / command handlers
+  ├── Services/                # Business logic specific to this feature
+  ├── Contracts/               # Interfaces, DTOs, request/response models
   └── Tests/                   # Unit tests for this feature
   ```
-- Cross-cutting concerns go in `Shared/` or `Infrastructure/` (middleware, extensions, base classes).
+- Each feature has a `<Feature>FeatureExtensions.cs` file at the feature root for DI registration.
 - Features must not reference other features' internal types directly. Use shared contracts or events.
 
 ## .NET & C# Conventions
