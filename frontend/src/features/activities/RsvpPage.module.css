@@ -49,6 +49,24 @@
   color: #374151;
 }
 
+.calendarButton {
+  margin-top: 1.25rem;
+  padding: 0.75rem 1.5rem;
+  border: 1px solid #243119;
+  border-radius: 10px;
+  background: #fff;
+  color: #243119;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  width: 100%;
+}
+
+.calendarButton:hover {
+  background: #243119;
+  color: #fff;
+}
+
 .buttons {
   display: flex;
   flex-direction: column;

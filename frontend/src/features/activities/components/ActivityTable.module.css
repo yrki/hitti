@@ -26,6 +26,16 @@
   background: #f9fafb;
 }
 
+.sortable {
+  cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
+}
+
+.sortable:hover {
+  color: #393D3F;
+}
+
 .table tbody tr:hover {
   background: #f9fafb;
 }

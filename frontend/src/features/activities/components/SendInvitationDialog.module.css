@@ -57,6 +57,15 @@
   background: #f5f3ff;
 }
 
+.option.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.option.disabled:hover {
+  border-color: #e5e7eb;
+}
+
 .option input[type="radio"] {
   margin-top: 0.2rem;
   accent-color: #243119;

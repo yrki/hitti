@@ -12,6 +12,7 @@ export function ActivitiesPage() {
   const [activities, setActivities] = useState<Activity[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [search, setSearch] = useState('');
 
   const loadActivities = useCallback(async () => {
     try {
@@ -47,6 +48,14 @@ export function ActivitiesPage() {
     return <p className={styles.error}>{error}</p>;
   }
 
+  const filteredActivities = activities.filter((a) => {
+    if (!search.trim()) return true;
+    const q = search.toLowerCase();
+    return a.title.toLowerCase().includes(q) ||
+      a.location.toLowerCase().includes(q) ||
+      a.contactName.toLowerCase().includes(q);
+  });
+
   return (
     <div>
       <div className={styles.header}>
@@ -56,7 +65,15 @@ export function ActivitiesPage() {
         </button>
       </div>
 
-      <ActivityTable activities={activities} onEdit={handleEdit} onDelete={handleDelete} />
+      <input
+        className={styles.searchInput}
+        type="text"
+        placeholder="Søk på tittel, sted eller kontaktperson..."
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+      />
+
+      <ActivityTable activities={filteredActivities} onEdit={handleEdit} onDelete={handleDelete} />
     </div>
   );
 }

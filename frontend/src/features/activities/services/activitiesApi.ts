@@ -1,3 +1,9 @@
+// Resend invitation to a single participant
+export function resendInvitation(activityId: string, participantId: string): Promise<void> {
+  return apiFetch<void>(`/activities/${activityId}/participants/${participantId}/resend`, {
+    method: 'POST',
+  });
+}
 import { apiFetch } from '../../../shared/api';
 import type { Activity, CreateActivityRequest, UpdateActivityRequest, Participant, SendInvitationsRequest, SendInvitationsResponse } from '../types';
 

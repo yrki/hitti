@@ -16,6 +16,32 @@ export function RsvpPage() {
   const [loading, setLoading] = useState(true);
   const [manualChoice, setManualChoice] = useState<string | null>(null);
 
+  function downloadIcs(result: RsvpResult) {
+    const formatDate = (dateStr: string) =>
+      new Date(dateStr).toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '');
+
+    const ics = [
+      'BEGIN:VCALENDAR',
+      'VERSION:2.0',
+      'PRODID:-//hitti//NO',
+      'BEGIN:VEVENT',
+      `DTSTART:${formatDate(result.startTime)}`,
+      `DTEND:${formatDate(result.endTime)}`,
+      `SUMMARY:${result.activityTitle}`,
+      `LOCATION:${result.activityLocation}`,
+      'END:VEVENT',
+      'END:VCALENDAR',
+    ].join('\r\n');
+
+    const blob = new Blob([ics], { type: 'text/calendar;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `${result.activityTitle}.ics`;
+    link.click();
+    URL.revokeObjectURL(url);
+  }
+
   useEffect(() => {
     if (!token || !response || (response !== 'ja' && response !== 'nei')) {
       setLoading(false);
@@ -93,6 +119,11 @@ export function RsvpPage() {
             <p><strong>Dato:</strong> {new Date(result.startTime).toLocaleDateString('nb-NO', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })} kl. {new Date(result.startTime).toLocaleTimeString('nb-NO', { hour: '2-digit', minute: '2-digit' })} – {new Date(result.endTime).toLocaleTimeString('nb-NO', { hour: '2-digit', minute: '2-digit' })}</p>
             <p><strong>Sted:</strong> {result.activityLocation}</p>
           </div>
+          {result.accepted && (
+            <button className={styles.calendarButton} onClick={() => downloadIcs(result)}>
+              Legg til i kalender
+            </button>
+          )}
         </div>
       </div>
     );

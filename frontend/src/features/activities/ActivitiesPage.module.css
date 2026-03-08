@@ -26,6 +26,22 @@
   background: #243119;
 }
 
+.searchInput {
+  width: 100%;
+  padding: 0.625rem 0.75rem;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  margin-bottom: 1rem;
+  box-sizing: border-box;
+}
+
+.searchInput:focus {
+  outline: none;
+  border-color: #243119;
+  box-shadow: 0 0 0 3px rgba(36, 49, 25, 0.15);
+}
+
 .error {
   color: #AF5D63;
   font-weight: 500;

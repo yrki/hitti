@@ -4,6 +4,7 @@ import styles from './ParticipantList.module.css';
 
 interface Props {
   participants: Participant[];
+  onInvite?: () => void;
 }
 
 const statusLabels: Record<Participant['status'], string> = {
@@ -18,11 +19,35 @@ const notificationLabels: Record<Participant['notificationStatus'], string> = {
   [NotificationStatus.Failed]: 'Feilet',
 };
 
-export function ParticipantList({ participants }: Props) {
+import { resendInvitation } from '../services/activitiesApi';
+import { useParams } from 'react-router-dom';
+import { useState } from 'react';
+
+export function ParticipantList({ participants, onInvite }: Props) {
+  const { id: activityId } = useParams<{ id: string }>();
+  const [sendingId, setSendingId] = useState<string | null>(null);
+
+  async function handleResend(participantId: string) {
+    if (!activityId) return;
+    setSendingId(participantId);
+    try {
+      await resendInvitation(activityId, participantId);
+      alert('Invitasjon sendt på nytt!');
+    } catch {
+      alert('Kunne ikke sende invitasjon på nytt.');
+    } finally {
+      setSendingId(null);
+    }
+  }
   if (participants.length === 0) {
     return (
       <div className={styles.empty}>
-        <p>Ingen invitasjoner sendt ennå. Klikk «Send invitasjoner» for å invitere medlemmene.</p>
+        <p>Ingen invitasjoner sendt ennå.</p>
+        {onInvite && (
+          <button className={styles.inviteButton} onClick={onInvite}>
+            Send invitasjoner
+          </button>
+        )}
       </div>
     );
   }
@@ -40,6 +65,7 @@ export function ParticipantList({ participants }: Props) {
             <th>Varsel</th>
             <th>Status</th>
             <th>Svart</th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
@@ -63,6 +89,17 @@ export function ParticipantList({ participants }: Props) {
                 {p.respondedAt
                   ? new Date(p.respondedAt).toLocaleString('nb-NO', { dateStyle: 'short', timeStyle: 'short' })
                   : '—'}
+              </td>
+              <td>
+                {(p.status !== ParticipantStatus.Accepted && p.status !== ParticipantStatus.Declined) && (
+                  <button
+                    className={styles.resendButton}
+                    onClick={() => handleResend(p.id)}
+                    disabled={sendingId === p.id}
+                  >
+                    {sendingId === p.id ? 'Sender...' : 'Send på nytt'}
+                  </button>
+                )}
               </td>
             </tr>
           ))}

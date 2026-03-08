@@ -77,9 +77,6 @@ export function ActivityDetailPage() {
           <button className={styles.editButton} onClick={() => navigate(`/aktiviteter/${id}/rediger`)}>
             Rediger
           </button>
-          <button className={styles.inviteButton} onClick={() => setShowInviteDialog(true)}>
-            Send invitasjoner
-          </button>
         </div>
       </div>
 
@@ -123,7 +120,7 @@ export function ActivityDetailPage() {
         </div>
       </div>
 
-      <ParticipantList participants={participants} />
+      <ParticipantList participants={participants} onInvite={() => setShowInviteDialog(true)} />
 
       {showInviteDialog && (
         <SendInvitationDialog
