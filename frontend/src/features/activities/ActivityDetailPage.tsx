@@ -1,10 +1,10 @@
 import { useEffect, useState, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import DOMPurify from 'dompurify';
-import { getActivity, getParticipants, sendInvitations } from './services/activitiesApi';
+import { getActivity, getParticipants, sendInvitations, resendInvitation } from './services/activitiesApi';
 import { ParticipantList } from './components/ParticipantList';
 import { SendInvitationDialog } from './components/SendInvitationDialog';
-import { ParticipantStatus, InvitationChannel } from './types';
+import { ParticipantStatus, InvitationChannel, NotificationStatus } from './types';
 import type { Activity, Participant } from './types';
 import { usePageTitle } from '../../shared/hooks/usePageTitle';
 import styles from './ActivityDetailPage.module.css';
@@ -40,6 +40,22 @@ export function ActivityDetailPage() {
   useEffect(() => {
     loadData();
   }, [loadData]);
+
+  async function handleResend(participantId: string) {
+    if (!id) return;
+    setParticipants(prev =>
+      prev.map(p => p.id === participantId ? { ...p, notificationStatus: NotificationStatus.Pending } : p)
+    );
+    try {
+      await resendInvitation(id, participantId);
+      // Reload after a short delay to pick up the final Sent/Failed status from the background job
+      setTimeout(() => { loadData(); }, 4000);
+    } catch {
+      setParticipants(prev =>
+        prev.map(p => p.id === participantId ? { ...p, notificationStatus: NotificationStatus.Failed } : p)
+      );
+    }
+  }
 
   async function handleSendInvitations(channel: InvitationChannel) {
     if (!id) return;
@@ -120,7 +136,7 @@ export function ActivityDetailPage() {
         </div>
       </div>
 
-      <ParticipantList participants={participants} onInvite={() => setShowInviteDialog(true)} />
+      <ParticipantList participants={participants} onInvite={() => setShowInviteDialog(true)} onResend={handleResend} />
 
       {showInviteDialog && (
         <SendInvitationDialog

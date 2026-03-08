@@ -2,12 +2,17 @@
   padding: 0.35rem 1rem;
   border: none;
   border-radius: 8px;
-  background: #2563eb;
+  background: #243119;
   color: #fff;
   font-size: 0.85rem;
   font-weight: 500;
   cursor: pointer;
   margin-left: 0.5rem;
+  transition: background 0.2s;
+}
+
+.resendButton:hover:not(:disabled) {
+  background: #1a2412;
 }
 
 .resendButton:disabled {

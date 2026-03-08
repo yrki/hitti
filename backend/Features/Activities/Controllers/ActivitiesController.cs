@@ -18,7 +18,8 @@ public sealed class ActivitiesController(
     DeleteActivityHandler deleteActivityHandler,
     SendInvitationsHandler sendInvitationsHandler,
     GetActivityParticipantsHandler getActivityParticipantsHandler,
-    GetUpcomingActivitiesHandler getUpcomingActivitiesHandler) : ControllerBase
+    GetUpcomingActivitiesHandler getUpcomingActivitiesHandler,
+    ResendInvitationHandler resendInvitationHandler) : ControllerBase
 {
     [HttpGet]
     public async Task<ActionResult<IReadOnlyList<ActivityResponse>>> GetAll(CancellationToken cancellationToken)
@@ -114,6 +115,19 @@ public sealed class ActivitiesController(
         }
 
         return Ok(participants);
+    }
+
+    [HttpPost("{id:guid}/participants/{participantId:guid}/resend")]
+    public async Task<IActionResult> ResendInvitation(Guid id, Guid participantId, CancellationToken cancellationToken)
+    {
+        var organizationId = GetOrganizationId();
+        if (organizationId is null) return Unauthorized();
+
+        var ok = await resendInvitationHandler.HandleAsync(id, participantId, organizationId.Value, cancellationToken);
+
+        if (!ok) return NotFound();
+
+        return NoContent();
     }
 
     private Guid? GetOrganizationId()

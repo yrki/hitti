@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { ParticipantStatus, InvitationChannel, NotificationStatus } from '../types';
 import type { Participant } from '../types';
 import styles from './ParticipantList.module.css';
@@ -5,6 +6,7 @@ import styles from './ParticipantList.module.css';
 interface Props {
   participants: Participant[];
   onInvite?: () => void;
+  onResend?: (participantId: string) => Promise<void>;
 }
 
 const statusLabels: Record<Participant['status'], string> = {
@@ -19,22 +21,14 @@ const notificationLabels: Record<Participant['notificationStatus'], string> = {
   [NotificationStatus.Failed]: 'Feilet',
 };
 
-import { resendInvitation } from '../services/activitiesApi';
-import { useParams } from 'react-router-dom';
-import { useState } from 'react';
-
-export function ParticipantList({ participants, onInvite }: Props) {
-  const { id: activityId } = useParams<{ id: string }>();
+export function ParticipantList({ participants, onInvite, onResend }: Props) {
   const [sendingId, setSendingId] = useState<string | null>(null);
 
   async function handleResend(participantId: string) {
-    if (!activityId) return;
+    if (!onResend) return;
     setSendingId(participantId);
     try {
-      await resendInvitation(activityId, participantId);
-      alert('Invitasjon sendt på nytt!');
-    } catch {
-      alert('Kunne ikke sende invitasjon på nytt.');
+      await onResend(participantId);
     } finally {
       setSendingId(null);
     }
