@@ -192,7 +192,7 @@ public sealed class AuthController(
         var htmlBody = $"""
             <h2>Tilbakestill passord</h2>
             <p>Hei {member.Name},</p>
-            <p>Vi har mottatt en forespørsel om å tilbakestille passordet ditt for Medlemsvarsling.</p>
+            <p>Vi har mottatt en forespørsel om å tilbakestille passordet ditt for Hitti.</p>
             <p><a href="{resetUrl}" style="display:inline-block;padding:12px 24px;background:#3b82f6;color:#fff;text-decoration:none;border-radius:8px;font-weight:600;">Tilbakestill passord</a></p>
             <p>Lenken er gyldig i 1 time.</p>
             <p>Hvis du ikke ba om dette, kan du ignorere denne e-posten.</p>

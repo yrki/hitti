@@ -42,7 +42,7 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
     app.UseSwaggerUI(options =>
     {
-        options.SwaggerEndpoint("/openapi/v1.json", "Medlemsvarsling API");
+        options.SwaggerEndpoint("/openapi/v1.json", "Hitti API");
     });
     await app.ApplyMigrationsAsync();
 }

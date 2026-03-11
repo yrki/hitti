@@ -1,4 +1,4 @@
-# Copilot Instructions — Medlemsvarsling
+# Copilot Instructions — Hitti
 
 This is a monorepo with two projects:
 

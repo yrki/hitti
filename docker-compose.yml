@@ -1,33 +1,33 @@
 services:
   postgres:
     image: postgres:17
-    container_name: medlemsvarsling-db
+    container_name: hitti-db
     restart: unless-stopped
     environment:
       POSTGRES_USER: admin
       POSTGRES_PASSWORD: VeldigHemmeligPassord1
-      POSTGRES_DB: medlemsvarsling
+      POSTGRES_DB: hitti
     ports:
       - "5433:5432"
     volumes:
       - ./dockervolumes/pgdata:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U admin -d medlemsvarsling"]
+      test: ["CMD-SHELL", "pg_isready -U admin -d hitti"]
       interval: 5s
       timeout: 5s
       retries: 5
 
   backend:
-    image: medlemsvarsling-backend:latest
-    container_name: medlemsvarsling-backend
+    image: hitti-backend:latest
+    container_name: hitti-backend
     restart: unless-stopped
     environment:
       ASPNETCORE_ENVIRONMENT: Development
       ASPNETCORE_HTTP_PORTS: "8080"
-      ConnectionStrings__DefaultConnection: "Host=postgres;Port=5432;Database=medlemsvarsling;Username=admin;Password=VeldigHemmeligPassord1"
-      Jwt__Key: "MedlemsvarslingDevSigningKey2026AtLeast32Chars!"
-      Jwt__Issuer: "medlemsvarsling"
-      Jwt__Audience: "medlemsvarsling-frontend"
+      ConnectionStrings__DefaultConnection: "Host=postgres;Port=5432;Database=hitti;Username=admin;Password=VeldigHemmeligPassord1"
+      Jwt__Key: "HittiDevSigningKey2026AtLeast32Chars!!!!!"
+      Jwt__Issuer: "hitti"
+      Jwt__Audience: "hitti-frontend"
       Jwt__ExpirationMinutes: "480"
       AzureCommunication__ConnectionString: "endpoint=https://medlem-utv.norway.communication.azure.com/;accesskey=REPLACE_WITH_ACTUAL_KEY"
       AzureCommunication__SmsFromNumber: "+4790039442"
@@ -43,7 +43,7 @@ services:
   frontend:
     build:
       context: ./frontend
-    container_name: medlemsvarsling-frontend
+    container_name: hitti-frontend
     restart: unless-stopped
     ports:
       - "3000:80"
