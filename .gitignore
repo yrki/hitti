@@ -29,3 +29,5 @@ obj/
 
 # Docker
 dockervolumes/
+
+**/appsettings.[Dd]evelopment.json
