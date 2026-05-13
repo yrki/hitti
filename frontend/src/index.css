@@ -100,69 +100,134 @@ textarea::placeholder {
 }
 
 /* Quill rich-text-editor — tema bakgrunn, tekst, ikoner og dropdowns
- * slik at den matcher resten av appen i begge moduser. */
+ * slik at den matcher resten av appen i begge moduser. Bruker !important
+ * for aa overstyre Quill sine default-regler uavhengig av ladingrekkefolge. */
 .ql-toolbar.ql-snow {
-  background: var(--color-surface-subtle);
+  background: var(--color-surface-subtle) !important;
   border-color: var(--color-border) !important;
 }
 
 .ql-container.ql-snow {
-  background: var(--color-surface-alt);
+  background: var(--color-surface-alt) !important;
   border-color: var(--color-border) !important;
-  color: var(--color-text);
+  color: var(--color-text) !important;
 }
 
 .ql-editor {
-  color: var(--color-text);
+  color: var(--color-text) !important;
 }
 
 .ql-editor.ql-blank::before {
-  color: var(--color-text-muted);
+  color: var(--color-text-muted) !important;
 }
 
-.ql-snow .ql-stroke {
-  stroke: var(--color-text-strong);
+/* Ikoner i toolbaren */
+.ql-snow .ql-stroke,
+.ql-snow .ql-stroke-miter {
+  stroke: var(--color-text-strong) !important;
 }
 
 .ql-snow .ql-fill,
 .ql-snow .ql-stroke.ql-fill {
-  fill: var(--color-text-strong);
+  fill: var(--color-text-strong) !important;
 }
 
+/* Dropdown-labels (Normal/Heading 1/Sans Serif osv.) */
 .ql-snow .ql-picker,
 .ql-snow .ql-picker-label,
-.ql-snow .ql-picker-label::before,
 .ql-snow .ql-picker-item {
-  color: var(--color-text-strong);
+  color: var(--color-text-strong) !important;
 }
 
-.ql-snow .ql-picker-options {
-  background: var(--color-surface);
+.ql-snow .ql-picker.ql-expanded .ql-picker-label {
+  color: var(--color-text) !important;
   border-color: var(--color-border) !important;
-  color: var(--color-text-strong);
 }
 
-.ql-snow .ql-picker-item:hover,
-.ql-snow .ql-picker-item.ql-selected,
-.ql-snow .ql-picker-label:hover,
-.ql-snow .ql-picker-label.ql-active,
+.ql-snow .ql-picker.ql-expanded .ql-picker-label .ql-stroke {
+  stroke: var(--color-text) !important;
+}
+
+.ql-snow .ql-picker.ql-expanded .ql-picker-label .ql-fill {
+  fill: var(--color-text) !important;
+}
+
+/* Dropdown-popupen */
+.ql-snow .ql-picker-options {
+  background: var(--color-surface) !important;
+  border-color: var(--color-border) !important;
+  color: var(--color-text-strong) !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.ql-toolbar.ql-snow .ql-picker.ql-expanded .ql-picker-options {
+  border-color: var(--color-border) !important;
+}
+
+/* Hover/active paa toolbar-knapper og dropdowns */
+.ql-snow.ql-toolbar button:hover,
 .ql-snow .ql-toolbar button:hover,
+.ql-snow.ql-toolbar button:focus,
+.ql-snow .ql-toolbar button:focus,
+.ql-snow.ql-toolbar button.ql-active,
 .ql-snow .ql-toolbar button.ql-active,
-.ql-snow .ql-toolbar button:focus {
+.ql-snow.ql-toolbar .ql-picker-label:hover,
+.ql-snow .ql-toolbar .ql-picker-label:hover,
+.ql-snow.ql-toolbar .ql-picker-label.ql-active,
+.ql-snow .ql-toolbar .ql-picker-label.ql-active,
+.ql-snow.ql-toolbar .ql-picker-item:hover,
+.ql-snow .ql-toolbar .ql-picker-item:hover,
+.ql-snow.ql-toolbar .ql-picker-item.ql-selected,
+.ql-snow .ql-toolbar .ql-picker-item.ql-selected {
   color: var(--color-accent) !important;
 }
 
+.ql-snow.ql-toolbar button:hover .ql-stroke,
 .ql-snow .ql-toolbar button:hover .ql-stroke,
-.ql-snow .ql-toolbar button.ql-active .ql-stroke,
+.ql-snow.ql-toolbar button:focus .ql-stroke,
 .ql-snow .ql-toolbar button:focus .ql-stroke,
-.ql-snow .ql-picker-label:hover .ql-stroke,
-.ql-snow .ql-picker-label.ql-active .ql-stroke {
+.ql-snow.ql-toolbar button.ql-active .ql-stroke,
+.ql-snow .ql-toolbar button.ql-active .ql-stroke,
+.ql-snow.ql-toolbar .ql-picker-label:hover .ql-stroke,
+.ql-snow .ql-toolbar .ql-picker-label:hover .ql-stroke,
+.ql-snow.ql-toolbar .ql-picker-label.ql-active .ql-stroke,
+.ql-snow .ql-toolbar .ql-picker-label.ql-active .ql-stroke,
+.ql-snow.ql-toolbar .ql-picker-item:hover .ql-stroke,
+.ql-snow .ql-toolbar .ql-picker-item:hover .ql-stroke,
+.ql-snow.ql-toolbar .ql-picker-item.ql-selected .ql-stroke,
+.ql-snow .ql-toolbar .ql-picker-item.ql-selected .ql-stroke,
+.ql-snow.ql-toolbar button:hover .ql-stroke-miter,
+.ql-snow .ql-toolbar button:hover .ql-stroke-miter,
+.ql-snow.ql-toolbar button.ql-active .ql-stroke-miter,
+.ql-snow .ql-toolbar button.ql-active .ql-stroke-miter {
   stroke: var(--color-accent) !important;
 }
 
+.ql-snow.ql-toolbar button:hover .ql-fill,
 .ql-snow .ql-toolbar button:hover .ql-fill,
+.ql-snow.ql-toolbar button.ql-active .ql-fill,
 .ql-snow .ql-toolbar button.ql-active .ql-fill,
-.ql-snow .ql-picker-label:hover .ql-fill,
-.ql-snow .ql-picker-label.ql-active .ql-fill {
+.ql-snow.ql-toolbar .ql-picker-label:hover .ql-fill,
+.ql-snow .ql-toolbar .ql-picker-label:hover .ql-fill,
+.ql-snow.ql-toolbar .ql-picker-label.ql-active .ql-fill,
+.ql-snow .ql-toolbar .ql-picker-label.ql-active .ql-fill {
   fill: var(--color-accent) !important;
+}
+
+/* Tooltip (link-redigering) */
+.ql-snow .ql-tooltip {
+  background: var(--color-surface) !important;
+  border-color: var(--color-border) !important;
+  color: var(--color-text) !important;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.3) !important;
+}
+
+.ql-snow .ql-tooltip input[type="text"] {
+  background: var(--color-surface-alt) !important;
+  color: var(--color-text) !important;
+  border-color: var(--color-border-strong) !important;
+}
+
+.ql-snow a {
+  color: var(--color-accent) !important;
 }
