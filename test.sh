@@ -83,7 +83,7 @@ run_playwright() {
   local base_url="${E2E_BASE_URL:-http://localhost:3000}"
 
   if ! curl -sS -m 3 -o /dev/null "$base_url"; then
-    playwright_skip_reason="Frontend ($base_url) er ikke tilgjengelig. Kjør \`docker-compose up\` først."
+    playwright_skip_reason="Frontend ($base_url) er ikke tilgjengelig. Kjør \`./start.sh\` først."
     echo -e "${YELLOW}Hopper over: $playwright_skip_reason${NC}"
     echo "$playwright_skip_reason" > "$PLAYWRIGHT_LOG"
     return
