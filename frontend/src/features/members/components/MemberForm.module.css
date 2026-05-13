@@ -1,5 +1,5 @@
 .form {
-  background: #fff;
+  background: var(--color-surface);
   border-radius: 12px;
   padding: 2rem;
   width: 100%;
@@ -19,12 +19,12 @@
   gap: 0.25rem;
   font-size: 0.875rem;
   font-weight: 500;
-  color: #374151;
+  color: var(--color-text-subtle);
 }
 
 .input {
   padding: 0.5rem 0.75rem;
-  border: 1px solid #d1d5db;
+  border: 1px solid var(--color-border-strong);
   border-radius: 8px;
   font-size: 0.875rem;
   outline: none;
@@ -32,7 +32,7 @@
 }
 
 .input:focus {
-  border-color: #243119;
+  border-color: var(--color-text);
   box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
 }
 
@@ -45,31 +45,31 @@
 
 .cancelButton {
   padding: 0.625rem 1.25rem;
-  border: 1px solid #AF5D63;
+  border: 1px solid var(--color-primary);
   border-radius: 8px;
-  background: #fff;
-  color: #AF5D63;
+  background: var(--color-surface);
+  color: var(--color-primary);
   font-size: 0.925rem;
   font-weight: 500;
   cursor: pointer;
 }
 
 .cancelButton:hover {
-  background: #AF5D63;
-  color: #fff;
+  background: var(--color-primary);
+  color: var(--color-surface);
 }
 
 .submitButton {
   padding: 0.5rem 1rem;
   border: none;
   border-radius: 8px;
-  background: #243119;
-  color: #fff;
+  background: var(--color-text);
+  color: var(--color-surface);
   font-size: 0.875rem;
   font-weight: 500;
   cursor: pointer;
 }
 
 .submitButton:hover {
-  background: #243119;
+  background: var(--color-text);
 }

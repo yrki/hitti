@@ -9,7 +9,7 @@
 }
 
 .dialog {
-  background: #fff;
+  background: var(--color-surface);
   border-radius: 16px;
   padding: 2rem;
   width: 100%;
@@ -26,7 +26,7 @@
 .description {
   margin: 0 0 1.5rem;
   font-size: 0.875rem;
-  color: #6b7280;
+  color: var(--color-text-muted);
   line-height: 1.5;
 }
 
@@ -42,7 +42,7 @@
   align-items: flex-start;
   gap: 0.75rem;
   padding: 1rem;
-  border: 2px solid #e5e7eb;
+  border: 2px solid var(--color-border);
   border-radius: 12px;
   cursor: pointer;
   transition: border-color 0.15s;
@@ -53,7 +53,7 @@
 }
 
 .option.selected {
-  border-color: #243119;
+  border-color: var(--color-text);
   background: #f5f3ff;
 }
 
@@ -63,12 +63,12 @@
 }
 
 .option.disabled:hover {
-  border-color: #e5e7eb;
+  border-color: var(--color-border);
 }
 
 .option input[type="radio"] {
   margin-top: 0.2rem;
-  accent-color: #243119;
+  accent-color: var(--color-text);
 }
 
 .optionContent {
@@ -80,12 +80,12 @@
 .optionTitle {
   font-weight: 600;
   font-size: 0.9rem;
-  color: #393D3F;
+  color: var(--color-text);
 }
 
 .optionDescription {
   font-size: 0.8rem;
-  color: #6b7280;
+  color: var(--color-text-muted);
 }
 
 .actions {
@@ -96,33 +96,33 @@
 
 .cancelButton {
   padding: 0.625rem 1.25rem;
-  border: 1px solid #AF5D63;
+  border: 1px solid var(--color-primary);
   border-radius: 8px;
-  background: #fff;
-  color: #AF5D63;
+  background: var(--color-surface);
+  color: var(--color-primary);
   font-size: 0.925rem;
   font-weight: 500;
   cursor: pointer;
 }
 
 .cancelButton:hover:not(:disabled) {
-  background: #AF5D63;
-  color: #fff;
+  background: var(--color-primary);
+  color: var(--color-surface);
 }
 
 .sendButton {
   padding: 0.5rem 1.25rem;
   border: none;
   border-radius: 8px;
-  background: #243119;
-  color: #fff;
+  background: var(--color-text);
+  color: var(--color-surface);
   font-size: 0.875rem;
   font-weight: 500;
   cursor: pointer;
 }
 
 .sendButton:hover:not(:disabled) {
-  background: #243119;
+  background: var(--color-text);
 }
 
 .sendButton:disabled,

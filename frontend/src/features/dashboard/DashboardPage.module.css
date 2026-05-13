@@ -2,18 +2,18 @@
   margin: 0 0 1.25rem;
   font-size: 1.35rem;
   font-weight: 700;
-  color: #393D3F;
+  color: var(--color-text);
 }
 
 .empty {
-  color: #6b7280;
+  color: var(--color-text-muted);
   font-size: 0.95rem;
 }
 
 .table {
   width: 100%;
   border-collapse: collapse;
-  background: #fff;
+  background: var(--color-surface);
   border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
@@ -24,18 +24,18 @@
   padding: 0.875rem 1rem;
   font-size: 0.8rem;
   font-weight: 600;
-  color: #6b7280;
+  color: var(--color-text-muted);
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  background: #fafbfc;
-  border-bottom: 1px solid #e5e7eb;
+  background: var(--color-surface-subtle);
+  border-bottom: 1px solid var(--color-border);
 }
 
 .table td {
   padding: 0.75rem 1rem;
   font-size: 0.925rem;
-  color: #374151;
-  border-bottom: 1px solid #f3f4f6;
+  color: var(--color-text-subtle);
+  border-bottom: 1px solid var(--color-surface-alt);
 }
 
 .table tbody tr:last-child td {
@@ -43,7 +43,7 @@
 }
 
 .table tbody tr:hover {
-  background: #f9fafb;
+  background: var(--color-surface-subtle);
 }
 
 .clickableRow {
@@ -52,21 +52,21 @@
 
 .activityCell {
   font-weight: 500;
-  color: #393D3F;
+  color: var(--color-text);
 }
 
 .dateCell {
   white-space: nowrap;
-  color: #6b7280;
+  color: var(--color-text-muted);
 }
 
 .timeCell {
   white-space: nowrap;
-  color: #6b7280;
+  color: var(--color-text-muted);
 }
 
 .locationCell {
-  color: #6b7280;
+  color: var(--color-text-muted);
 }
 
 .countHeader {
@@ -83,7 +83,7 @@
 }
 
 .declined {
-  color: #AF5D63;
+  color: var(--color-primary);
 }
 
 .invited {

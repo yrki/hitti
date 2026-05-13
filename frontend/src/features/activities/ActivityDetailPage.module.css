@@ -13,7 +13,7 @@
 .backButton {
   border: none;
   background: none;
-  color: #243119;
+  color: var(--color-text);
   font-size: 0.875rem;
   cursor: pointer;
   padding: 0;
@@ -37,36 +37,36 @@
 
 .editButton {
   padding: 0.5rem 1rem;
-  border: 1px solid #d1d5db;
+  border: 1px solid var(--color-border-strong);
   border-radius: 8px;
-  background: #fff;
-  color: #374151;
+  background: var(--color-surface);
+  color: var(--color-text-subtle);
   font-size: 0.875rem;
   cursor: pointer;
 }
 
 .editButton:hover {
-  background: #f3f4f6;
+  background: var(--color-surface-alt);
 }
 
 .inviteButton {
   padding: 0.5rem 1.25rem;
   border: none;
   border-radius: 8px;
-  background: #243119;
-  color: #fff;
+  background: var(--color-text);
+  color: var(--color-surface);
   font-size: 0.875rem;
   font-weight: 500;
   cursor: pointer;
 }
 
 .inviteButton:hover {
-  background: #243119;
+  background: var(--color-text);
 }
 
 .details {
-  background: #fff;
-  border: 1px solid #e5e7eb;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
   border-radius: 12px;
   padding: 1.5rem;
   display: flex;
@@ -83,7 +83,7 @@
 .detailLabel {
   font-size: 0.8rem;
   font-weight: 600;
-  color: #6b7280;
+  color: var(--color-text-muted);
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
@@ -95,8 +95,8 @@
 
 .stat {
   flex: 1;
-  background: #fff;
-  border: 1px solid #e5e7eb;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
   border-radius: 12px;
   padding: 1.25rem;
   display: flex;
@@ -108,16 +108,16 @@
 .statNumber {
   font-size: 1.75rem;
   font-weight: 700;
-  color: #393D3F;
+  color: var(--color-text);
 }
 
 .statLabel {
   font-size: 0.8rem;
-  color: #6b7280;
+  color: var(--color-text-muted);
   font-weight: 500;
 }
 
 .error {
-  color: #AF5D63;
+  color: var(--color-primary);
   font-weight: 500;
 }

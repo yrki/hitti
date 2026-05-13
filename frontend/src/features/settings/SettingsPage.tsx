@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useAuth } from '../../shared/auth/AuthContext';
+import { useTheme, type Theme } from '../../shared/theme/ThemeContext';
 import { apiFetch } from '../../shared/api';
 import { usePageTitle } from '../../shared/hooks/usePageTitle';
 import styles from './SettingsPage.module.css';
@@ -20,6 +21,7 @@ interface OrganizationResponse {
 export function SettingsPage() {
   usePageTitle('Innstillinger');
   const { user, updateOrganization } = useAuth();
+  const { theme, setTheme } = useTheme();
   const organization = user?.organization;
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
@@ -53,9 +55,33 @@ export function SettingsPage() {
     }
   }
 
+  const themes: { value: Theme; label: string }[] = [
+    { value: 'light', label: 'Lyst' },
+    { value: 'dark', label: 'Mørkt' },
+  ];
+
   return (
     <div>
       <h1 className={styles.title}>Innstillinger</h1>
+
+      <section className={styles.section} aria-labelledby="theme-heading">
+        <h2 id="theme-heading" className={styles.sectionTitle}>Utseende</h2>
+        <p className={styles.sectionDescription}>Velg om grensesnittet skal være lyst eller mørkt.</p>
+        <div className={styles.themeRow} role="radiogroup" aria-label="Tema">
+          {themes.map((option) => (
+            <button
+              key={option.value}
+              type="button"
+              role="radio"
+              aria-checked={theme === option.value}
+              className={`${styles.themeOption} ${theme === option.value ? styles.themeOptionActive : ''}`}
+              onClick={() => setTheme(option.value)}
+            >
+              {option.label}
+            </button>
+          ))}
+        </div>
+      </section>
 
       <form className={styles.form} onSubmit={handleSubmit}>
         <label className={styles.label}>

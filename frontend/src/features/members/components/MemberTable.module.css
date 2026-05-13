@@ -1,8 +1,8 @@
 .wrapper {
   overflow-x: auto;
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--color-border);
   border-radius: 12px;
-  background: #fff;
+  background: var(--color-surface);
 }
 
 .table {
@@ -14,16 +14,16 @@
 .table td {
   padding: 0.875rem 1rem;
   text-align: left;
-  border-bottom: 1px solid #f3f4f6;
+  border-bottom: 1px solid var(--color-surface-alt);
 }
 
 .table th {
   font-size: 0.8rem;
   font-weight: 600;
-  color: #6b7280;
+  color: var(--color-text-muted);
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  background: #f9fafb;
+  background: var(--color-surface-subtle);
 }
 
 .sortable {
@@ -33,11 +33,11 @@
 }
 
 .sortable:hover {
-  color: #393D3F;
+  color: var(--color-text);
 }
 
 .table tbody tr:hover {
-  background: #f9fafb;
+  background: var(--color-surface-subtle);
 }
 
 .badge {
@@ -49,13 +49,13 @@
 }
 
 .active {
-  background: #d1fae5;
+  background: var(--color-success-bg);
   color: #065f46;
 }
 
 .inactive {
-  background: #fee2e2;
-  color: #991b1b;
+  background: var(--color-danger-bg);
+  color: var(--color-danger-text);
 }
 
 .actions {
@@ -65,40 +65,40 @@
 
 .editButton {
   padding: 0.25rem 0.75rem;
-  border: 1px solid #d1d5db;
+  border: 1px solid var(--color-border-strong);
   border-radius: 6px;
-  background: #fff;
-  color: #374151;
+  background: var(--color-surface);
+  color: var(--color-text-subtle);
   font-size: 0.8rem;
   cursor: pointer;
 }
 
 .editButton:hover {
-  background: #f3f4f6;
+  background: var(--color-surface-alt);
 }
 
 .deleteButton {
   padding: 0.375rem 1rem;
-  border: 1px solid #AF5D63;
+  border: 1px solid var(--color-primary);
   border-radius: 6px;
-  background: #fff;
-  color: #AF5D63;
+  background: var(--color-surface);
+  color: var(--color-primary);
   font-size: 0.85rem;
   font-weight: 500;
   cursor: pointer;
 }
 
 .deleteButton:hover {
-  background: #AF5D63;
-  color: #fff;
+  background: var(--color-primary);
+  color: var(--color-surface);
 }
 
 .admin {
-  background: #dbeafe;
-  color: #1e40af;
+  background: var(--color-info-bg);
+  color: var(--color-info-text);
 }
 
 .member {
-  background: #f3f4f6;
-  color: #374151;
+  background: var(--color-surface-alt);
+  color: var(--color-text-subtle);
 }

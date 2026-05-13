@@ -1,11 +1,11 @@
 .sidebar {
   width: 240px;
-  background: #fff;
-  color: #374151;
+  background: var(--color-surface);
+  color: var(--color-text-subtle);
   display: flex;
   flex-direction: column;
   flex-shrink: 0;
-  border-right: 1px solid #e5e7eb;
+  border-right: 1px solid var(--color-border);
 }
 
 .logo {
@@ -32,7 +32,7 @@
   gap: 0.75rem;
   padding: 0.65rem 1rem;
   border-radius: 8px;
-  color: #6b7280;
+  color: var(--color-text-muted);
   text-decoration: none;
   font-size: 0.925rem;
   font-weight: 500;
@@ -40,13 +40,13 @@
 }
 
 .navLink:hover {
-  background: #f3f4f6;
-  color: #393D3F;
+  background: var(--color-surface-alt);
+  color: var(--color-text);
 }
 
 .active {
   background: #E8F0E5;
-  color: #243119;
+  color: var(--color-text);
   font-weight: 600;
 }
 
@@ -57,7 +57,7 @@
 .footer {
   margin-top: auto;
   padding: 1rem 0.75rem;
-  border-top: 1px solid #e5e7eb;
+  border-top: 1px solid var(--color-border);
   display: flex;
   flex-direction: column;
   gap: 0.25rem;
@@ -71,7 +71,7 @@
   border: none;
   border-radius: 8px;
   background: transparent;
-  color: #6b7280;
+  color: var(--color-text-muted);
   font-size: 0.925rem;
   font-weight: 500;
   cursor: pointer;
@@ -79,6 +79,6 @@
 }
 
 .footerButton:hover {
-  background: #f3f4f6;
-  color: #393D3F;
+  background: var(--color-surface-alt);
+  color: var(--color-text);
 }

@@ -3,12 +3,12 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #f3f4f6;
+  background: var(--color-surface-alt);
   padding: 1rem;
 }
 
 .card {
-  background: #fff;
+  background: var(--color-surface);
   border-radius: 16px;
   padding: 2.5rem;
   max-width: 440px;
@@ -26,18 +26,18 @@
   margin: 0 0 0.75rem;
   font-size: 1.5rem;
   font-weight: 700;
-  color: #393D3F;
+  color: var(--color-text);
 }
 
 .message {
   margin: 0 0 1.5rem;
   font-size: 1rem;
-  color: #6b7280;
+  color: var(--color-text-muted);
   line-height: 1.5;
 }
 
 .details {
-  background: #f9fafb;
+  background: var(--color-surface-subtle);
   border-radius: 8px;
   padding: 1rem;
   text-align: left;
@@ -46,16 +46,16 @@
 .details p {
   margin: 0.25rem 0;
   font-size: 0.9rem;
-  color: #374151;
+  color: var(--color-text-subtle);
 }
 
 .calendarButton {
   margin-top: 1.25rem;
   padding: 0.75rem 1.5rem;
-  border: 1px solid #243119;
+  border: 1px solid var(--color-text);
   border-radius: 10px;
-  background: #fff;
-  color: #243119;
+  background: var(--color-surface);
+  color: var(--color-text);
   font-size: 0.95rem;
   font-weight: 600;
   cursor: pointer;
@@ -63,8 +63,8 @@
 }
 
 .calendarButton:hover {
-  background: #243119;
-  color: #fff;
+  background: var(--color-text);
+  color: var(--color-surface);
 }
 
 .buttons {
@@ -78,7 +78,7 @@
   border: none;
   border-radius: 10px;
   background: #16a34a;
-  color: #fff;
+  color: var(--color-surface);
   font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
@@ -92,15 +92,15 @@
   padding: 0.875rem 1.5rem;
   border: none;
   border-radius: 10px;
-  background: #AF5D63;
-  color: #fff;
+  background: var(--color-primary);
+  color: var(--color-surface);
   font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
 }
 
 .declineButton:hover:not(:disabled) {
-  background: #b91c1c;
+  background: var(--color-danger-text);
 }
 
 .acceptButton:disabled,

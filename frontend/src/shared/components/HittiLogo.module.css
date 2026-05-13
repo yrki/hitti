@@ -3,7 +3,7 @@
   font-weight: 700;
   line-height: 1.05;
   letter-spacing: 0;
-  color: #2563eb;
+  color: var(--color-accent);
   margin: 0 0 0.5rem;
   white-space: pre;
   text-align: left;

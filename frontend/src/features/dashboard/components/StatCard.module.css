@@ -1,6 +1,6 @@
 .card {
-  background: #fff;
-  border: 1px solid #e5e7eb;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
   border-radius: 12px;
   padding: 1.5rem;
   display: flex;
@@ -10,14 +10,14 @@
 
 .label {
   font-size: 0.875rem;
-  color: #6b7280;
+  color: var(--color-text-muted);
   font-weight: 500;
 }
 
 .value {
   font-size: 2rem;
   font-weight: 700;
-  color: #393D3F;
+  color: var(--color-text);
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -37,5 +37,5 @@
 }
 
 .neutral {
-  color: #6b7280;
+  color: var(--color-text-muted);
 }
