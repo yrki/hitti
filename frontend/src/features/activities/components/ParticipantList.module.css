@@ -16,8 +16,9 @@
 }
 
 .resendButton:disabled {
-  background: #a5b4fc;
+  background: var(--color-border-strong);
   cursor: not-allowed;
+  opacity: 0.7;
 }
 .wrapper {
   background: var(--color-surface);
@@ -67,8 +68,8 @@
 }
 
 .Accepted {
-  background: #dcfce7;
-  color: #166534;
+  background: var(--color-status-accepted-bg);
+  color: var(--color-status-accepted-text);
 }
 
 .Declined {

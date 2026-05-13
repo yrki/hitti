@@ -49,12 +49,12 @@
 }
 
 .option:hover {
-  border-color: #c7d2fe;
+  border-color: var(--color-selected-border);
 }
 
 .option.selected {
   border-color: var(--color-text);
-  background: #f5f3ff;
+  background: var(--color-selected-bg);
 }
 
 .option.disabled {

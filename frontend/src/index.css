@@ -33,6 +33,11 @@ html, body {
   --color-warning-text: #92400e;
   --color-info-bg: #dbeafe;
   --color-info-text: #1e40af;
+  --color-nav-active-bg: #E8F0E5;
+  --color-status-accepted-bg: #dcfce7;
+  --color-status-accepted-text: #166534;
+  --color-selected-bg: #f5f3ff;
+  --color-selected-border: #c7d2fe;
 
   color-scheme: light;
 }
@@ -60,6 +65,11 @@ html, body {
   --color-warning-text: #fcd34d;
   --color-info-bg: #1e3a8a;
   --color-info-text: #93c5fd;
+  --color-nav-active-bg: #2d4a35;
+  --color-status-accepted-bg: #064e3b;
+  --color-status-accepted-text: #6ee7b7;
+  --color-selected-bg: #312e81;
+  --color-selected-border: #4338ca;
 
   color-scheme: dark;
 }

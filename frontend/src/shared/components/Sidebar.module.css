@@ -45,7 +45,7 @@
 }
 
 .active {
-  background: #E8F0E5;
+  background: var(--color-nav-active-bg);
   color: var(--color-text);
   font-weight: 600;
 }
