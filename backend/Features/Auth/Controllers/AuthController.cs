@@ -9,6 +9,7 @@ using Api.Infrastructure.Notifications;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
 
 namespace Api.Features.Auth.Controllers;
@@ -26,6 +27,7 @@ public sealed class AuthController(
     private static readonly object HashTarget = new();
 
     [HttpPost("login")]
+    [EnableRateLimiting("auth")]
     public async Task<ActionResult<TokenResponse>> Login(
         [FromBody] LoginRequest request,
         CancellationToken cancellationToken)
@@ -143,6 +145,7 @@ public sealed class AuthController(
 
     [AllowAnonymous]
     [HttpPost("forgot-password")]
+    [EnableRateLimiting("auth")]
     public async Task<IActionResult> ForgotPassword(
         [FromBody] ForgotPasswordRequest request,
         CancellationToken cancellationToken)
@@ -220,6 +223,7 @@ public sealed class AuthController(
 
     [AllowAnonymous]
     [HttpPost("reset-password")]
+    [EnableRateLimiting("auth")]
     public async Task<IActionResult> ResetPassword(
         [FromBody] ResetPasswordRequest request,
         CancellationToken cancellationToken)
