@@ -1,7 +1,6 @@
 using Api.Features.Activities.Contracts;
 using Api.Infrastructure.BackgroundTasks;
 using Api.Infrastructure.Database;
-using Api.Infrastructure.Database.Entities;
 using Api.Infrastructure.Notifications;
 using Microsoft.EntityFrameworkCore;
 
@@ -16,7 +15,11 @@ public sealed class ResendInvitationHandler(
     {
         var participant = await dbContext.ActivityParticipants
             .Include(ap => ap.Activity)
-            .FirstOrDefaultAsync(ap => ap.Id == participantId && ap.ActivityId == activityId, cancellationToken);
+            .FirstOrDefaultAsync(ap =>
+                ap.Id == participantId
+                && ap.ActivityId == activityId
+                && ap.Activity.OrganizationId == organizationId,
+                cancellationToken);
 
         if (participant is null)
             return false;
@@ -45,16 +48,23 @@ public sealed class ResendInvitationHandler(
                 {
                     try
                     {
+                        var activityTitleEncoded = EmailContentSanitizer.EncodePlainText(activity.Title);
+                        var activityLocationEncoded = EmailContentSanitizer.EncodePlainText(activity.Location);
+                        var activityDescriptionSafe = EmailContentSanitizer.SanitizeRichText(activity.Description);
+                        var memberNameEncoded = EmailContentSanitizer.EncodePlainText(member.Name);
+                        var memberContactEncoded = EmailContentSanitizer.EncodePlainText(
+                            channel == InvitationChannel.Sms ? member.Phone : member.Email);
+
                         if (!string.IsNullOrEmpty(devRedirectEmail))
                         {
                             var subject = $"[DEV → {member.Name}] Invitasjon: {activity.Title}";
                             var html = $"""
-<p><em>Opprinnelig mottaker: {member.Name} ({(channel == InvitationChannel.Sms ? member.Phone : member.Email)})</em></p>
-<h2>Du er invitert til {activity.Title}</h2>
+<p><em>Opprinnelig mottaker: {memberNameEncoded} ({memberContactEncoded})</em></p>
+<h2>Du er invitert til {activityTitleEncoded}</h2>
 <p><strong>Dato:</strong> {activity.StartTime:dd.MM.yyyy}</p>
 <p><strong>Klokkeslett:</strong> {activity.StartTime:HH:mm} – {activity.EndTime:HH:mm}</p>
-<p><strong>Sted:</strong> {activity.Location}</p>
-<p><strong>Beskrivelse:</strong> {activity.Description}</p>
+<p><strong>Sted:</strong> {activityLocationEncoded}</p>
+<p><strong>Beskrivelse:</strong> {activityDescriptionSafe}</p>
 <p>
     <a href=\"{rsvpUrl}?svar=ja\" style=\"display:inline-block;padding:12px 24px;background:#16a34a;color:#fff;text-decoration:none;border-radius:8px;margin-right:8px;\">Ja, jeg blir med</a>
     <a href=\"{rsvpUrl}?svar=nei\" style=\"display:inline-block;padding:12px 24px;background:#991b1b;color:#fff;text-decoration:none;border-radius:8px;\">Nei, kan ikke</a>
@@ -72,11 +82,11 @@ public sealed class ResendInvitationHandler(
                         {
                             var subject = $"Invitasjon: {activity.Title}";
                             var html = $"""
-<h2>Du er invitert til {activity.Title}</h2>
+<h2>Du er invitert til {activityTitleEncoded}</h2>
 <p><strong>Dato:</strong> {activity.StartTime:dd.MM.yyyy}</p>
 <p><strong>Klokkeslett:</strong> {activity.StartTime:HH:mm} – {activity.EndTime:HH:mm}</p>
-<p><strong>Sted:</strong> {activity.Location}</p>
-<p><strong>Beskrivelse:</strong> {activity.Description}</p>
+<p><strong>Sted:</strong> {activityLocationEncoded}</p>
+<p><strong>Beskrivelse:</strong> {activityDescriptionSafe}</p>
 <p>
     <a href=\"{rsvpUrl}?svar=ja\" style=\"display:inline-block;padding:12px 24px;background:#16a34a;color:#fff;text-decoration:none;border-radius:8px;margin-right:8px;\">Ja, jeg blir med</a>
     <a href=\"{rsvpUrl}?svar=nei\" style=\"display:inline-block;padding:12px 24px;background:#991b1b;color:#fff;text-decoration:none;border-radius:8px;\">Nei, kan ikke</a>

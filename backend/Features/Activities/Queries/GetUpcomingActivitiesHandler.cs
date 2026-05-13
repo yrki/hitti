@@ -6,10 +6,10 @@ namespace Api.Features.Activities.Queries;
 
 public sealed class GetUpcomingActivitiesHandler(ApplicationDbContext dbContext)
 {
-    public async Task<IReadOnlyList<UpcomingActivityResponse>> HandleAsync(int count, CancellationToken cancellationToken = default)
+    public async Task<IReadOnlyList<UpcomingActivityResponse>> HandleAsync(Guid organizationId, int count, CancellationToken cancellationToken = default)
     {
         return await dbContext.Activities
-            .Where(a => a.StartTime >= DateTime.UtcNow.Date)
+            .Where(a => a.OrganizationId == organizationId && a.StartTime >= DateTime.UtcNow.Date)
             .OrderBy(a => a.StartTime)
             .Take(count)
             .Select(a => new UpcomingActivityResponse

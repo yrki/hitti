@@ -8,10 +8,11 @@ public sealed class GetActivityParticipantsHandler(ApplicationDbContext dbContex
 {
     public async Task<IReadOnlyList<ParticipantResponse>?> HandleAsync(
         Guid activityId,
+        Guid organizationId,
         CancellationToken cancellationToken = default)
     {
         var activityExists = await dbContext.Activities
-            .AnyAsync(a => a.Id == activityId, cancellationToken);
+            .AnyAsync(a => a.Id == activityId && a.OrganizationId == organizationId, cancellationToken);
 
         if (!activityExists)
         {

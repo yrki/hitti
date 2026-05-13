@@ -3,6 +3,7 @@ namespace Api.Infrastructure.Database.Entities;
 public sealed class ActivityEntity
 {
     public Guid Id { get; set; }
+    public Guid OrganizationId { get; set; }
     public required string Title { get; set; }
     public required string Description { get; set; }
     public DateTime StartTime { get; set; }
@@ -14,5 +15,6 @@ public sealed class ActivityEntity
     public DateTime CreatedAt { get; set; }
     public DateTime UpdatedAt { get; set; }
 
+    public OrganizationEntity Organization { get; set; } = null!;
     public ICollection<ActivityParticipantEntity> Participants { get; set; } = [];
 }

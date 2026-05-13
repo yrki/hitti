@@ -6,11 +6,12 @@ namespace Api.Features.Activities.Commands;
 
 public sealed class CreateActivityHandler(ApplicationDbContext dbContext)
 {
-    public async Task<ActivityResponse> HandleAsync(CreateActivityRequest request, CancellationToken cancellationToken = default)
+    public async Task<ActivityResponse> HandleAsync(CreateActivityRequest request, Guid organizationId, CancellationToken cancellationToken = default)
     {
         var entity = new ActivityEntity
         {
             Id = Guid.NewGuid(),
+            OrganizationId = organizationId,
             Title = request.Title,
             Description = request.Description,
             StartTime = request.StartTime,

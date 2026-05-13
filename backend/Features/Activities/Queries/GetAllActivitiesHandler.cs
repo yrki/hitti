@@ -6,9 +6,10 @@ namespace Api.Features.Activities.Queries;
 
 public sealed class GetAllActivitiesHandler(ApplicationDbContext dbContext)
 {
-    public async Task<IReadOnlyList<ActivityResponse>> HandleAsync(CancellationToken cancellationToken = default)
+    public async Task<IReadOnlyList<ActivityResponse>> HandleAsync(Guid organizationId, CancellationToken cancellationToken = default)
     {
         return await dbContext.Activities
+            .Where(a => a.OrganizationId == organizationId)
             .OrderBy(a => a.StartTime)
             .Select(a => new ActivityResponse
             {

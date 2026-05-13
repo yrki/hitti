@@ -22,7 +22,7 @@ public sealed class SendInvitationsHandler(
         CancellationToken cancellationToken = default)
     {
         var activity = await dbContext.Activities
-            .FirstOrDefaultAsync(a => a.Id == activityId, cancellationToken);
+            .FirstOrDefaultAsync(a => a.Id == activityId && a.OrganizationId == organizationId, cancellationToken);
 
         if (activity is null)
         {
@@ -86,11 +86,12 @@ public sealed class SendInvitationsHandler(
 
         if (notificationItems.Count > 0)
         {
-            var activityTitle = activity.Title;
+            var activityTitle = EmailContentSanitizer.EncodePlainText(activity.Title);
+            var activityTitlePlain = activity.Title;
             var activityStartTime = activity.StartTime;
             var activityEndTime = activity.EndTime;
-            var activityLocation = activity.Location;
-            var activityDescription = activity.Description;
+            var activityLocation = EmailContentSanitizer.EncodePlainText(activity.Location);
+            var activityDescription = EmailContentSanitizer.SanitizeRichText(activity.Description);
 
             await taskQueue.EnqueueAsync(async (serviceProvider, stoppingToken) =>
             {
@@ -106,11 +107,15 @@ public sealed class SendInvitationsHandler(
                     {
                         try
                         {
+                            var memberNameEncoded = EmailContentSanitizer.EncodePlainText(item.MemberName);
+                            var memberContactEncoded = EmailContentSanitizer.EncodePlainText(
+                                channel == InvitationChannel.Sms ? item.MemberPhone : item.MemberEmail);
+
                             if (!string.IsNullOrEmpty(devRedirectEmail))
                             {
-                                var subject = $"[DEV → {item.MemberName}] Invitasjon: {activityTitle}";
+                                var subject = $"[DEV → {item.MemberName}] Invitasjon: {activityTitlePlain}";
                                 var html = $"""
-                                    <p><em>Opprinnelig mottaker: {item.MemberName} ({(channel == InvitationChannel.Sms ? item.MemberPhone : item.MemberEmail)})</em></p>
+                                    <p><em>Opprinnelig mottaker: {memberNameEncoded} ({memberContactEncoded})</em></p>
                                     <h2>Du er invitert til {activityTitle}</h2>
                                     <p><strong>Dato:</strong> {activityStartTime:dd.MM.yyyy}</p>
                                     <p><strong>Klokkeslett:</strong> {activityStartTime:HH:mm} – {activityEndTime:HH:mm}</p>
@@ -127,12 +132,12 @@ public sealed class SendInvitationsHandler(
                             }
                             else if (channel == InvitationChannel.Sms)
                             {
-                                var message = $"Du er invitert til \"{activityTitle}\" ({activityStartTime:dd.MM.yyyy HH:mm}). Svar her: {item.RsvpUrl}";
+                                var message = $"Du er invitert til \"{activityTitlePlain}\" ({activityStartTime:dd.MM.yyyy HH:mm}). Svar her: {item.RsvpUrl}";
                                 await notificationService.SendSmsAsync(item.MemberPhone, message, stoppingToken);
                             }
                             else
                             {
-                                var subject = $"Invitasjon: {activityTitle}";
+                                var subject = $"Invitasjon: {activityTitlePlain}";
                                 var html = $"""
                                     <h2>Du er invitert til {activityTitle}</h2>
                                     <p><strong>Dato:</strong> {activityStartTime:dd.MM.yyyy}</p>

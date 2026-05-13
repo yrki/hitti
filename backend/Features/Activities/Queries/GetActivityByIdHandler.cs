@@ -6,10 +6,10 @@ namespace Api.Features.Activities.Queries;
 
 public sealed class GetActivityByIdHandler(ApplicationDbContext dbContext)
 {
-    public async Task<ActivityResponse?> HandleAsync(Guid id, CancellationToken cancellationToken = default)
+    public async Task<ActivityResponse?> HandleAsync(Guid id, Guid organizationId, CancellationToken cancellationToken = default)
     {
         return await dbContext.Activities
-            .Where(a => a.Id == id)
+            .Where(a => a.Id == id && a.OrganizationId == organizationId)
             .Select(a => new ActivityResponse
             {
                 Id = a.Id,

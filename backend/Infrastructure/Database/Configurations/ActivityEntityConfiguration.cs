@@ -13,6 +13,8 @@ public sealed class ActivityEntityConfiguration : IEntityTypeConfiguration<Activ
         builder.HasKey(a => a.Id);
         builder.Property(a => a.Id).ValueGeneratedOnAdd();
 
+        builder.Property(a => a.OrganizationId).IsRequired();
+
         builder.Property(a => a.Title).IsRequired().HasMaxLength(200);
         builder.Property(a => a.Description).IsRequired();
         builder.Property(a => a.Location).IsRequired().HasMaxLength(300);
@@ -24,5 +26,12 @@ public sealed class ActivityEntityConfiguration : IEntityTypeConfiguration<Activ
         builder.Property(a => a.EndTime).IsRequired();
         builder.Property(a => a.CreatedAt).IsRequired();
         builder.Property(a => a.UpdatedAt).IsRequired();
+
+        builder.HasOne(a => a.Organization)
+            .WithMany()
+            .HasForeignKey(a => a.OrganizationId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        builder.HasIndex(a => a.OrganizationId);
     }
 }

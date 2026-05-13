@@ -1,4 +1,3 @@
-using System.Security.Claims;
 using Api.Features.Activities.Commands;
 using Api.Features.Activities.Contracts;
 using Api.Features.Activities.Queries;
@@ -24,7 +23,10 @@ public sealed class ActivitiesController(
     [HttpGet]
     public async Task<ActionResult<IReadOnlyList<ActivityResponse>>> GetAll(CancellationToken cancellationToken)
     {
-        var activities = await getAllActivitiesHandler.HandleAsync(cancellationToken);
+        var organizationId = GetOrganizationId();
+        if (organizationId is null) return Unauthorized();
+
+        var activities = await getAllActivitiesHandler.HandleAsync(organizationId.Value, cancellationToken);
         return Ok(activities);
     }
 
@@ -33,14 +35,20 @@ public sealed class ActivitiesController(
         [FromQuery] int count = 5,
         CancellationToken cancellationToken = default)
     {
-        var activities = await getUpcomingActivitiesHandler.HandleAsync(count, cancellationToken);
+        var organizationId = GetOrganizationId();
+        if (organizationId is null) return Unauthorized();
+
+        var activities = await getUpcomingActivitiesHandler.HandleAsync(organizationId.Value, count, cancellationToken);
         return Ok(activities);
     }
 
     [HttpGet("{id:guid}")]
     public async Task<ActionResult<ActivityResponse>> GetById(Guid id, CancellationToken cancellationToken)
     {
-        var activity = await getActivityByIdHandler.HandleAsync(id, cancellationToken);
+        var organizationId = GetOrganizationId();
+        if (organizationId is null) return Unauthorized();
+
+        var activity = await getActivityByIdHandler.HandleAsync(id, organizationId.Value, cancellationToken);
 
         if (activity is null)
         {
@@ -53,14 +61,20 @@ public sealed class ActivitiesController(
     [HttpPost]
     public async Task<ActionResult<ActivityResponse>> Create([FromBody] CreateActivityRequest request, CancellationToken cancellationToken)
     {
-        var activity = await createActivityHandler.HandleAsync(request, cancellationToken);
+        var organizationId = GetOrganizationId();
+        if (organizationId is null) return Unauthorized();
+
+        var activity = await createActivityHandler.HandleAsync(request, organizationId.Value, cancellationToken);
         return CreatedAtAction(nameof(GetById), new { id = activity.Id }, activity);
     }
 
     [HttpPut("{id:guid}")]
     public async Task<ActionResult<ActivityResponse>> Update(Guid id, [FromBody] UpdateActivityRequest request, CancellationToken cancellationToken)
     {
-        var activity = await updateActivityHandler.HandleAsync(id, request, cancellationToken);
+        var organizationId = GetOrganizationId();
+        if (organizationId is null) return Unauthorized();
+
+        var activity = await updateActivityHandler.HandleAsync(id, organizationId.Value, request, cancellationToken);
 
         if (activity is null)
         {
@@ -73,7 +87,10 @@ public sealed class ActivitiesController(
     [HttpDelete("{id:guid}")]
     public async Task<IActionResult> Delete(Guid id, CancellationToken cancellationToken)
     {
-        var deleted = await deleteActivityHandler.HandleAsync(id, cancellationToken);
+        var organizationId = GetOrganizationId();
+        if (organizationId is null) return Unauthorized();
+
+        var deleted = await deleteActivityHandler.HandleAsync(id, organizationId.Value, cancellationToken);
 
         if (!deleted)
         {
@@ -107,7 +124,10 @@ public sealed class ActivitiesController(
         Guid id,
         CancellationToken cancellationToken)
     {
-        var participants = await getActivityParticipantsHandler.HandleAsync(id, cancellationToken);
+        var organizationId = GetOrganizationId();
+        if (organizationId is null) return Unauthorized();
+
+        var participants = await getActivityParticipantsHandler.HandleAsync(id, organizationId.Value, cancellationToken);
 
         if (participants is null)
         {

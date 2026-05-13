@@ -6,9 +6,10 @@ namespace Api.Features.Activities.Commands;
 
 public sealed class UpdateActivityHandler(ApplicationDbContext dbContext)
 {
-    public async Task<ActivityResponse?> HandleAsync(Guid id, UpdateActivityRequest request, CancellationToken cancellationToken = default)
+    public async Task<ActivityResponse?> HandleAsync(Guid id, Guid organizationId, UpdateActivityRequest request, CancellationToken cancellationToken = default)
     {
-        var entity = await dbContext.Activities.FirstOrDefaultAsync(a => a.Id == id, cancellationToken);
+        var entity = await dbContext.Activities
+            .FirstOrDefaultAsync(a => a.Id == id && a.OrganizationId == organizationId, cancellationToken);
 
         if (entity is null)
         {
