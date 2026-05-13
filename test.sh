@@ -86,6 +86,37 @@ run_frontend() {
   popd > /dev/null
 }
 
+ensure_playwright_installed() {
+  if [[ ! -d node_modules/@playwright/test ]]; then
+    echo "Installerer Playwright npm-pakker ..."
+    if ! npm install --no-audit --no-fund 2>&1 | tail -3; then
+      playwright_skip_reason="Klarte ikke å kjøre \`npm install\` i e2e/. Sjekk Node-installasjonen."
+      echo -e "${YELLOW}$playwright_skip_reason${NC}"
+      echo "$playwright_skip_reason" > "$PLAYWRIGHT_LOG"
+      return 1
+    fi
+  fi
+
+  local cache_dir
+  if [[ -n "${PLAYWRIGHT_BROWSERS_PATH:-}" ]]; then
+    cache_dir="$PLAYWRIGHT_BROWSERS_PATH"
+  elif [[ "$(uname)" == "Darwin" ]]; then
+    cache_dir="$HOME/Library/Caches/ms-playwright"
+  else
+    cache_dir="$HOME/.cache/ms-playwright"
+  fi
+
+  if ! compgen -G "$cache_dir/chromium-*" > /dev/null; then
+    echo "Installerer Chromium-nettleser for Playwright ..."
+    if ! npx playwright install chromium 2>&1 | tail -5; then
+      playwright_skip_reason="Klarte ikke å installere Chromium for Playwright."
+      echo -e "${YELLOW}$playwright_skip_reason${NC}"
+      echo "$playwright_skip_reason" > "$PLAYWRIGHT_LOG"
+      return 1
+    fi
+  fi
+}
+
 run_playwright() {
   echo -e "\n${BLUE}=== Playwright E2E ===${NC}"
   local base_url="${E2E_BASE_URL:-http://localhost:3000}"
@@ -99,10 +130,9 @@ run_playwright() {
 
   pushd "$SCRIPT_DIR/e2e" > /dev/null
 
-  if [[ ! -d node_modules ]]; then
-    echo "Installerer Playwright-avhengigheter ..."
-    npm install --no-audit --no-fund 2>&1 | tail -3
-    npx playwright install chromium 2>&1 | tail -3
+  if ! ensure_playwright_installed; then
+    popd > /dev/null
+    return
   fi
 
   if npx playwright test --reporter=list,html 2>&1 | tee "$PLAYWRIGHT_LOG"; then
