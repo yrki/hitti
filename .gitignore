@@ -31,3 +31,10 @@ obj/
 dockervolumes/
 
 **/appsettings.[Dd]evelopment.json
+
+# Lokale miljøvariabler
+.env
+.env.local
+
+# Claude Code agent-minne (lokal state per maskin)
+**/.claude/agent-memory/

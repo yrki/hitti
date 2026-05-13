@@ -1,0 +1,17 @@
+{
+  "_comment": "Kopier denne filen til `appsettings.Development.json` (samme mappe) for lokal kjøring via `dotnet run`. Den faktiske filen er gitignored og skal ALDRI committes. Alternativt kan du sette samme verdier som env-vars eller via `dotnet user-secrets`.",
+  "ConnectionStrings": {
+    "DefaultConnection": "Host=localhost;Port=5433;Database=hitti;Username=admin;Password=change-me-locally"
+  },
+  "Jwt": {
+    "Key": "change-me-to-a-random-string-at-least-32-chars-long"
+  },
+  "AzureCommunication": {
+    "ConnectionString": "endpoint=https://<din-ressurs>.communication.azure.com/;accesskey=<din-nokkel>",
+    "SmsFromNumber": "+4700000000",
+    "EmailFromAddress": "DoNotReply@<din-domene>.azurecomm.net"
+  },
+  "App": {
+    "DevRedirectEmail": ""
+  }
+}

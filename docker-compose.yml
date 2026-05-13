@@ -4,15 +4,15 @@ services:
     container_name: hitti-db
     restart: unless-stopped
     environment:
-      POSTGRES_USER: admin
-      POSTGRES_PASSWORD: VeldigHemmeligPassord1
-      POSTGRES_DB: hitti
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
     ports:
       - "5433:5432"
     volumes:
       - ./dockervolumes/pgdata:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U admin -d hitti"]
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
       interval: 5s
       timeout: 5s
       retries: 5
@@ -24,16 +24,16 @@ services:
     environment:
       ASPNETCORE_ENVIRONMENT: Development
       ASPNETCORE_HTTP_PORTS: "8080"
-      ConnectionStrings__DefaultConnection: "Host=postgres;Port=5432;Database=hitti;Username=admin;Password=VeldigHemmeligPassord1"
-      Jwt__Key: "HittiDevSigningKey2026AtLeast32Chars!!!!!"
+      ConnectionStrings__DefaultConnection: "Host=postgres;Port=5432;Database=${POSTGRES_DB};Username=${POSTGRES_USER};Password=${POSTGRES_PASSWORD}"
+      Jwt__Key: ${JWT_KEY}
       Jwt__Issuer: "hitti"
       Jwt__Audience: "hitti-frontend"
       Jwt__ExpirationMinutes: "480"
-      AzureCommunication__ConnectionString: "endpoint=https://medlem-utv.norway.communication.azure.com/;accesskey=REPLACE_WITH_ACTUAL_KEY"
-      AzureCommunication__SmsFromNumber: "+4790039442"
-      AzureCommunication__EmailFromAddress: "DoNotReply@d05b7287-13c8-489d-8436-bbf290d798a4.azurecomm.net"
-      App__BaseUrl: "http://localhost:3000"
-      App__DevRedirectEmail: "thomas@skum.no"
+      AzureCommunication__ConnectionString: ${AZURE_COMMUNICATION_CONNECTION_STRING}
+      AzureCommunication__SmsFromNumber: ${AZURE_COMMUNICATION_SMS_FROM}
+      AzureCommunication__EmailFromAddress: ${AZURE_COMMUNICATION_EMAIL_FROM}
+      App__BaseUrl: ${APP_BASE_URL}
+      App__DevRedirectEmail: ${APP_DEV_REDIRECT_EMAIL}
     ports:
       - "5137:8080"
     depends_on:
