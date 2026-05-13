@@ -1,73 +1,87 @@
-# React + TypeScript + Vite
+# Hitti — Aktivitetsstyring for foreninger
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Hitti er en multi-tenant SaaS-plattform som hjelper foreninger og frivillige organisasjoner med å administrere aktiviteter og holde kontakten med medlemmene sine. En admin oppretter aktiviteter, inviterer medlemmer via e-post eller SMS, og følger opp hvem som deltar — alt fra ett enkelt grensesnitt. Medlemmene trenger ikke brukerkonto: de svarer på invitasjoner via en personlig lenke i meldingen de mottar.
 
-Currently, two official plugins are available:
+## Tech stack
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+| Lag | Teknologi |
+|---|---|
+| Backend | .NET 10, C#, ASP.NET Core Web API |
+| Frontend | React 19, TypeScript, Vite |
+| Database | PostgreSQL 17 |
+| Notifikasjoner | Azure Communication Services (e-post + SMS) |
+| Autentisering | JWT (kun admin-brukere logger inn) |
+| Containerisering | Docker / docker-compose |
 
-## React Compiler
+## Repo-struktur
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```
+hitti/
+├── backend/              # .NET 10 Web API
+│   ├── Features/         # Funksjonsmoduler (Activities, Auth, Members, Organizations)
+│   └── Infrastructure/   # Database, auth, bakgrunnskø, notifikasjoner
+├── frontend/             # React + Vite SPA
+│   └── src/
+├── docs/                 # Prosjektdokumentasjon
+│   ├── architecture/     # Systemarkitektur og teknologivalg
+│   └── features/         # Funksjonsbeskrivelser (BDD-stil)
+├── docker-compose.yml    # Kjører postgres, backend og frontend
+├── seed.sql              # Testdata (20 medlemmer + 20 aktiviteter)
+└── start.sh              # Bygger og starter alt med ett kommando
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Kom i gang lokalt
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+### Forutsetninger
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+- [Docker Desktop](https://www.docker.com/products/docker-desktop/) installert og kjørende
+- [.NET 10 SDK](https://dotnet.microsoft.com/download) (for `start.sh`)
+
+### Start applikasjonen
+
+```bash
+# Bygg backend-container og start alle tjenester
+./start.sh
 ```
+
+Tjenester etter oppstart:
+
+| Tjeneste | URL |
+|---|---|
+| Frontend | http://localhost:3000 |
+| Backend API | http://localhost:5137 |
+| Swagger UI | http://localhost:5137/swagger |
+| PostgreSQL | localhost:5433 |
+
+### Last inn testdata
+
+```bash
+# Kobler til databasen og kjører seed-scriptet
+docker exec -i hitti-db psql -U admin -d hitti < seed.sql
+```
+
+Seed-scriptet oppretter 20 medlemmer og 20 aktiviteter knyttet til organisasjonen med
+`OrganizationId = 3e998d35-6902-41a9-8a03-594cdd8c07b9`.
+
+### Kjør backend lokalt (uten Docker)
+
+```bash
+cd backend
+dotnet run
+```
+
+Backend leser da fra `appsettings.json` og kobler til PostgreSQL på `localhost:5433`
+(forutsetter at `docker-compose up postgres -d` kjører).
+
+### Konfigurasjon
+
+Kopier `appsettings.Development.json.example` (eller rediger `appsettings.json`) og sett:
+
+- `AzureCommunication__ConnectionString` — nøkkel fra Azure Communication Services
+- `App__DevRedirectEmail` — hvis satt, omdirigeres alle notifikasjoner til denne adressen (praktisk under utvikling)
+
+## Videre lesning
+
+- [Systemarkitektur](docs/architecture/overview.md) — multi-tenant modell, komponentoversikt og teknologivalg
+- [Invitasjons- og RSVP-flyt](docs/features/invitations.md) — hvordan invitasjoner sendes og besvares
+- [Autentisering](docs/features/auth.md) — JWT-oppsett, registrering, glemt passord
