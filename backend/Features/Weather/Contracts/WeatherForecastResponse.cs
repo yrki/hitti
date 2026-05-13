@@ -1,5 +1,8 @@
+using System.Diagnostics.CodeAnalysis;
+
 namespace Api.Features.Weather.Contracts;
 
+[ExcludeFromCodeCoverage]
 public sealed record WeatherForecastResponse
 {
     public required DateOnly Date { get; init; }

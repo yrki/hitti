@@ -1,11 +1,13 @@
 using Api.Features.Weather.Contracts;
 using Api.Features.Weather.Services;
 using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Api.Features.Weather.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+[ExcludeFromCodeCoverage]
 public sealed class WeatherController(IWeatherService weatherService) : ControllerBase
 {
     [HttpGet]

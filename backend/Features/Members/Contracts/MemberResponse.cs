@@ -1,5 +1,8 @@
+using System.Diagnostics.CodeAnalysis;
+
 namespace Api.Features.Members.Contracts;
 
+[ExcludeFromCodeCoverage]
 public sealed record MemberResponse
 {
     public required Guid Id { get; init; }

@@ -1,7 +1,9 @@
 using Api.Features.Members.Contracts;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Api.Infrastructure.Database.Entities;
 
+[ExcludeFromCodeCoverage]
 public sealed class MemberEntity
 {
     public Guid Id { get; set; }

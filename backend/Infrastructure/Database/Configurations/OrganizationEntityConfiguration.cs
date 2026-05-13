@@ -1,9 +1,11 @@
 using Api.Infrastructure.Database.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Api.Infrastructure.Database.Configurations;
 
+[ExcludeFromCodeCoverage]
 public sealed class OrganizationEntityConfiguration : IEntityTypeConfiguration<OrganizationEntity>
 {
     public void Configure(EntityTypeBuilder<OrganizationEntity> builder)

@@ -111,11 +111,14 @@ def parse_cobertura(report_dir: Path) -> tuple[list[CoverageFile], float | None]
     for cls in root.iter("class"):
         filename = cls.attrib.get("filename", "?")
         # Hopp over auto-genererte filer (migrasjoner, source generators, model snapshot)
+        norm = filename.replace("\\", "/")
         if (
-            "/Migrations/" in filename
-            or "/obj/" in filename
-            or filename.endswith("Designer.cs")
-            or filename.endswith("ModelSnapshot.cs")
+            "/Migrations/" in norm
+            or "/obj/" in norm
+            or norm.startswith("obj/")
+            or norm.endswith("Designer.cs")
+            or norm.endswith("ModelSnapshot.cs")
+            or ".generated.cs" in norm
         ):
             continue
         try:

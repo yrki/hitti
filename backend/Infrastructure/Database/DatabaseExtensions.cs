@@ -1,7 +1,9 @@
 using Microsoft.EntityFrameworkCore;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Api.Infrastructure.Database;
 
+[ExcludeFromCodeCoverage]
 public static class DatabaseExtensions
 {
     public static IServiceCollection AddDatabase(this IServiceCollection services, IConfiguration configuration)

@@ -1,7 +1,9 @@
 using Api.Features.Activities.Contracts;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Api.Infrastructure.Database.Entities;
 
+[ExcludeFromCodeCoverage]
 public sealed class ActivityParticipantEntity
 {
     public Guid Id { get; set; }

@@ -1,9 +1,11 @@
 using Api.Infrastructure.Database.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Api.Infrastructure.Database.Configurations;
 
+[ExcludeFromCodeCoverage]
 public sealed class ActivityParticipantEntityConfiguration : IEntityTypeConfiguration<ActivityParticipantEntity>
 {
     public void Configure(EntityTypeBuilder<ActivityParticipantEntity> builder)

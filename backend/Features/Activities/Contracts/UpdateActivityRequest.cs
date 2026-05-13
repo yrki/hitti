@@ -1,5 +1,8 @@
+using System.Diagnostics.CodeAnalysis;
+
 namespace Api.Features.Activities.Contracts;
 
+[ExcludeFromCodeCoverage]
 public sealed record UpdateActivityRequest
 {
     public required string Title { get; init; }

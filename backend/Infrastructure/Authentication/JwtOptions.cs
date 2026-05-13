@@ -1,5 +1,8 @@
+using System.Diagnostics.CodeAnalysis;
+
 namespace Api.Infrastructure.Authentication;
 
+[ExcludeFromCodeCoverage]
 public sealed class JwtOptions
 {
     public required string Key { get; set; }

@@ -74,7 +74,7 @@ run_backend() {
       -targetdir:"$COVERAGE_DIR" \
       -reporttypes:"HtmlInline_AzurePipelines;TextSummary" \
       -assemblyfilters:"+Api" \
-      -filefilters:"-**/Migrations/**;-**/obj/**;-**/*Designer.cs;-**ModelSnapshot.cs" \
+      -filefilters:"-**/Migrations/**;-**/obj/**;-**/*Designer.cs;-**/*ModelSnapshot.cs;-**/*.generated.cs" \
       > /dev/null 2>&1 || echo "(reportgenerator feilet, hopper over coverage-HTML)"
   fi
 }

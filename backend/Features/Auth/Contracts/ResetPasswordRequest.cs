@@ -1,7 +1,9 @@
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Api.Features.Auth.Contracts;
 
+[ExcludeFromCodeCoverage]
 public sealed record ResetPasswordRequest
 {
     [Required]

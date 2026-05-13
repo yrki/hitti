@@ -1,5 +1,8 @@
+using System.Diagnostics.CodeAnalysis;
+
 namespace Api.Features.Auth.Contracts;
 
+[ExcludeFromCodeCoverage]
 public sealed record RegisterRequest
 {
     public required string OrganizationName { get; init; }

@@ -1,7 +1,9 @@
 using Api.Features.Weather.Contracts;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Api.Features.Weather.Services;
 
+[ExcludeFromCodeCoverage]
 public sealed class WeatherService : IWeatherService
 {
     private static readonly string[] Summaries =

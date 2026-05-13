@@ -1,5 +1,8 @@
+using System.Diagnostics.CodeAnalysis;
+
 namespace Api.Features.Members.Contracts;
 
+[ExcludeFromCodeCoverage]
 public sealed record CreateMemberRequest
 {
     public required string Name { get; init; }

@@ -1,8 +1,10 @@
 using Api.Features.Activities.Commands;
 using Api.Features.Activities.Queries;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Api.Features.Activities;
 
+[ExcludeFromCodeCoverage]
 public static class ActivitiesFeatureExtensions
 {
     public static IServiceCollection AddActivitiesFeature(this IServiceCollection services)

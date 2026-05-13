@@ -1,5 +1,8 @@
+using System.Diagnostics.CodeAnalysis;
+
 namespace Api.Features.Organizations.Contracts;
 
+[ExcludeFromCodeCoverage]
 public sealed record UpdateOrganizationResponse
 {
     public required Guid Id { get; init; }

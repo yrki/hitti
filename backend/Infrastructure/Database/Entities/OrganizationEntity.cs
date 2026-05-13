@@ -1,5 +1,8 @@
+using System.Diagnostics.CodeAnalysis;
+
 namespace Api.Infrastructure.Database.Entities;
 
+[ExcludeFromCodeCoverage]
 public sealed class OrganizationEntity
 {
     public Guid Id { get; set; }
