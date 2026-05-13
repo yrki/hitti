@@ -3,13 +3,11 @@ import { Navigate, Link, useNavigate } from 'react-router-dom';
 import { setAuthToken } from '../../shared/api';
 import { useAuth } from '../../shared/auth/AuthContext';
 import { usePageTitle } from '../../shared/hooks/usePageTitle';
+import { isValidEmail, isValidNorwegianPhone } from '../../shared/validation';
 import hittiLogo from '../../assets/hitti-logo.svg';
 import styles from './RegisterPage.module.css';
 
 const API_BASE_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:5137/api';
-
-const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-const PHONE_REGEX = /^\d{8}$/;
 
 interface FieldErrors {
   organizationName?: string;
@@ -59,25 +57,25 @@ export function RegisterPage() {
     if (!organizationName.trim()) errors.organizationName = 'Navn er påkrevd';
     if (!organizationEmail.trim()) {
       errors.organizationEmail = 'E-postadresse er påkrevd';
-    } else if (!EMAIL_REGEX.test(organizationEmail)) {
+    } else if (!isValidEmail(organizationEmail)) {
       errors.organizationEmail = 'Ugyldig e-postadresse';
     }
     if (!organizationPhone.trim()) {
       errors.organizationPhone = 'Telefonnummer er påkrevd';
-    } else if (!PHONE_REGEX.test(organizationPhone)) {
-      errors.organizationPhone = 'Telefonnummer må være 8 siffer';
+    } else if (!isValidNorwegianPhone(organizationPhone)) {
+      errors.organizationPhone = 'Ugyldig telefonnummer (8 siffer, evt. med +47)';
     }
 
     if (!adminName.trim()) errors.adminName = 'Navn er påkrevd';
     if (!adminEmail.trim()) {
       errors.adminEmail = 'E-postadresse er påkrevd';
-    } else if (!EMAIL_REGEX.test(adminEmail)) {
+    } else if (!isValidEmail(adminEmail)) {
       errors.adminEmail = 'Ugyldig e-postadresse';
     }
     if (!adminPhone.trim()) {
       errors.adminPhone = 'Telefonnummer er påkrevd';
-    } else if (!PHONE_REGEX.test(adminPhone)) {
-      errors.adminPhone = 'Telefonnummer må være 8 siffer';
+    } else if (!isValidNorwegianPhone(adminPhone)) {
+      errors.adminPhone = 'Ugyldig telefonnummer (8 siffer, evt. med +47)';
     }
 
     if (!password) {
