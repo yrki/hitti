@@ -38,3 +38,6 @@ dockervolumes/
 
 # Claude Code agent-minne (lokal state per maskin)
 **/.claude/agent-memory/
+
+# Testresultater fra test.sh
+test-results/
