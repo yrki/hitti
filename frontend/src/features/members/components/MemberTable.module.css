@@ -50,7 +50,7 @@
 
 .active {
   background: var(--color-success-bg);
-  color: #065f46;
+  color: var(--color-success-text);
 }
 
 .inactive {
