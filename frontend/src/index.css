@@ -83,3 +83,82 @@ body {
   line-height: 1.5;
   transition: background-color 0.15s ease, color 0.15s ease;
 }
+
+/* Globale skjemafelter — bruker tematokens slik at de ikke faller tilbake
+ * paa UA-default (stygg systemgraa i moerk modus). */
+input,
+textarea,
+select {
+  background: var(--color-surface-alt);
+  color: var(--color-text);
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: var(--color-text-muted);
+  opacity: 0.8;
+}
+
+/* Quill rich-text-editor — tema bakgrunn, tekst, ikoner og dropdowns
+ * slik at den matcher resten av appen i begge moduser. */
+.ql-toolbar.ql-snow {
+  background: var(--color-surface-subtle);
+  border-color: var(--color-border) !important;
+}
+
+.ql-container.ql-snow {
+  background: var(--color-surface-alt);
+  border-color: var(--color-border) !important;
+  color: var(--color-text);
+}
+
+.ql-editor {
+  color: var(--color-text);
+}
+
+.ql-editor.ql-blank::before {
+  color: var(--color-text-muted);
+}
+
+.ql-snow .ql-stroke {
+  stroke: var(--color-text);
+}
+
+.ql-snow .ql-fill,
+.ql-snow .ql-stroke.ql-fill {
+  fill: var(--color-text);
+}
+
+.ql-snow .ql-picker {
+  color: var(--color-text);
+}
+
+.ql-snow .ql-picker-options {
+  background: var(--color-surface);
+  border-color: var(--color-border) !important;
+}
+
+.ql-snow .ql-picker-item:hover,
+.ql-snow .ql-picker-item.ql-selected,
+.ql-snow .ql-picker-label:hover,
+.ql-snow .ql-picker-label.ql-active,
+.ql-snow .ql-toolbar button:hover,
+.ql-snow .ql-toolbar button.ql-active,
+.ql-snow .ql-toolbar button:focus {
+  color: var(--color-accent) !important;
+}
+
+.ql-snow .ql-toolbar button:hover .ql-stroke,
+.ql-snow .ql-toolbar button.ql-active .ql-stroke,
+.ql-snow .ql-toolbar button:focus .ql-stroke,
+.ql-snow .ql-picker-label:hover .ql-stroke,
+.ql-snow .ql-picker-label.ql-active .ql-stroke {
+  stroke: var(--color-accent) !important;
+}
+
+.ql-snow .ql-toolbar button:hover .ql-fill,
+.ql-snow .ql-toolbar button.ql-active .ql-fill,
+.ql-snow .ql-picker-label:hover .ql-fill,
+.ql-snow .ql-picker-label.ql-active .ql-fill {
+  fill: var(--color-accent) !important;
+}
