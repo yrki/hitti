@@ -121,21 +121,25 @@ textarea::placeholder {
 }
 
 .ql-snow .ql-stroke {
-  stroke: var(--color-text);
+  stroke: var(--color-text-strong);
 }
 
 .ql-snow .ql-fill,
 .ql-snow .ql-stroke.ql-fill {
-  fill: var(--color-text);
+  fill: var(--color-text-strong);
 }
 
-.ql-snow .ql-picker {
-  color: var(--color-text);
+.ql-snow .ql-picker,
+.ql-snow .ql-picker-label,
+.ql-snow .ql-picker-label::before,
+.ql-snow .ql-picker-item {
+  color: var(--color-text-strong);
 }
 
 .ql-snow .ql-picker-options {
   background: var(--color-surface);
   border-color: var(--color-border) !important;
+  color: var(--color-text-strong);
 }
 
 .ql-snow .ql-picker-item:hover,
