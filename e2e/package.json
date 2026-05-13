@@ -1,0 +1,20 @@
+{
+  "name": "hitti-e2e",
+  "private": true,
+  "version": "0.0.1",
+  "description": "End-to-end tests for Hitti (Playwright + TypeScript).",
+  "type": "module",
+  "scripts": {
+    "test": "playwright test",
+    "test:ui": "playwright test --ui",
+    "test:list": "playwright test --list",
+    "install-browsers": "playwright install"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.49.1",
+    "@types/node": "^24.10.1",
+    "pg": "^8.13.1",
+    "@types/pg": "^8.11.10",
+    "typescript": "~5.9.3"
+  }
+}
