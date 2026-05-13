@@ -4,7 +4,7 @@ import { setAuthToken } from '../../shared/api';
 import { useAuth } from '../../shared/auth/AuthContext';
 import { usePageTitle } from '../../shared/hooks/usePageTitle';
 import { isValidEmail, isValidNorwegianPhone } from '../../shared/validation';
-import hittiLogo from '../../assets/hitti-logo.svg';
+import { HittiLogo } from '../../shared/components/HittiLogo';
 import styles from './RegisterPage.module.css';
 
 const API_BASE_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:5137/api';
@@ -131,7 +131,7 @@ export function RegisterPage() {
   return (
     <div className={styles.container}>
       <div className={styles.card}>
-        <img src={hittiLogo} alt="hitti" className={styles.logo} />
+        <HittiLogo />
         <p className={styles.subtitle}>Opprett en konto for din forening</p>
 
         <form className={styles.form} onSubmit={handleSubmit}>

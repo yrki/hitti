@@ -1,0 +1,20 @@
+.logo {
+  font-family: ui-monospace, "SF Mono", "Menlo", "Consolas", monospace;
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: 0;
+  color: #2563eb;
+  margin: 0 0 0.5rem;
+  white-space: pre;
+  text-align: left;
+  display: inline-block;
+}
+
+.large {
+  font-size: 1rem;
+}
+
+.small {
+  font-size: 0.6rem;
+  margin: 0;
+}

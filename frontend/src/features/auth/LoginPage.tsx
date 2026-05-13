@@ -3,7 +3,7 @@ import { Navigate, Link, useNavigate } from 'react-router-dom';
 import { setAuthToken } from '../../shared/api';
 import { useAuth } from '../../shared/auth/AuthContext';
 import { usePageTitle } from '../../shared/hooks/usePageTitle';
-import hittiLogo from '../../assets/hitti-logo.svg';
+import { HittiLogo } from '../../shared/components/HittiLogo';
 import styles from './LoginPage.module.css';
 
 const API_BASE_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:5137/api';
@@ -76,7 +76,7 @@ export function LoginPage() {
   return (
     <div className={styles.container}>
       <div className={styles.card}>
-        <img src={hittiLogo} alt="hitti" className={styles.logo} />
+        <HittiLogo />
         <p className={styles.subtitle}>Logg inn for å administrere din forening</p>
 
         <form className={styles.form} onSubmit={handleSubmit}>

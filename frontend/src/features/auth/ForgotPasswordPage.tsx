@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import hittiLogo from '../../assets/hitti-logo.svg';
+import { HittiLogo } from '../../shared/components/HittiLogo';
 import { usePageTitle } from '../../shared/hooks/usePageTitle';
 import styles from './ForgotPasswordPage.module.css';
 
@@ -57,7 +57,7 @@ export function ForgotPasswordPage() {
     return (
       <div className={styles.container}>
         <div className={styles.card}>
-          <img src={hittiLogo} alt="hitti" className={styles.logo} />
+          <HittiLogo />
           <h1 className={styles.title}>Sjekk e-posten din</h1>
           <p className={styles.description}>
             Hvis e-postadressen finnes i systemet, har vi sendt en lenke du kan bruke for å tilbakestille passordet ditt.
@@ -72,7 +72,7 @@ export function ForgotPasswordPage() {
   return (
     <div className={styles.container}>
       <div className={styles.card}>
-        <img src={hittiLogo} alt="hitti" className={styles.logo} />
+        <HittiLogo />
         <h1 className={styles.title}>Glemt passord</h1>
         <p className={styles.description}>
           Skriv inn e-postadressen din, så sender vi en lenke for å tilbakestille passordet.

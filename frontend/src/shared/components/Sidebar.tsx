@@ -1,5 +1,5 @@
 import { NavLink } from 'react-router-dom';
-import hittiLogo from '../../assets/hitti-logo.svg';
+import { HittiLogo } from './HittiLogo';
 import styles from './Sidebar.module.css';
 
 const navItems = [
@@ -13,7 +13,7 @@ export function Sidebar() {
   return (
     <aside className={styles.sidebar}>
       <div className={styles.logo}>
-        <img src={hittiLogo} alt="hitti" className={styles.logoImage} />
+        <HittiLogo size="small" />
       </div>
       <nav className={styles.nav}>
         {navItems.map((item) => (
