@@ -1,6 +1,15 @@
 #!/usr/bin/env bash
 set -uo pipefail
 
+cat <<'BANNER'
+    __  ___ __  __  _
+   / / / (_) /_/ /_(_)
+  / /_/ / / __/ __/ /
+ / __  / / /_/ /_/ /
+/_/ /_/_/\__/\__/_/
+
+BANNER
+
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$SCRIPT_DIR"
 

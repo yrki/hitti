@@ -1,6 +1,15 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+cat <<'BANNER'
+    __  ___ __  __  _
+   / / / (_) /_/ /_(_)
+  / /_/ / / __/ __/ /
+ / __  / / /_/ /_/ /
+/_/ /_/_/\__/\__/_/
+
+BANNER
+
 echo "=== Bygger backend-container ==="
 dotnet publish backend/Api.csproj -r linux-musl-arm64 /t:PublishContainer
 
