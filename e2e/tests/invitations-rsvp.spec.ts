@@ -43,12 +43,16 @@ async function createActivityInUiAndReturnId(page: Page): Promise<string> {
 async function sendInvitationsViaUi(page: Page, activityId: string): Promise<void> {
   await page.goto(`/aktiviteter/${activityId}`);
   page.once('dialog', (dialog) => dialog.accept());
-  await page.getByRole('button', { name: /Send invitasjoner/i }).click();
-  await page
-    .locator('div', { hasText: /^Send invitasjoner$/ })
-    .getByRole('button', { name: /Send invitasjoner/i })
-    .click();
-  await expect(page.getByText(/invitasjon\(er\) sendt|allerede invitert/i)).toBeHidden({ timeout: 10_000 }).catch(() => undefined);
+  await page.getByRole('button', { name: /^Send invitasjoner$/ }).click();
+
+  const dialogHeading = page.getByRole('heading', { name: /^Send invitasjoner$/ });
+  await expect(dialogHeading).toBeVisible();
+
+  // Scope direkte til dialogens body (heading-ens umiddelbare forelder) for å
+  // unngå å treffe trigger-knappen på siden, som har samme navn.
+  const dialogBody = dialogHeading.locator('..');
+  await dialogBody.getByRole('button', { name: /^Send invitasjoner$/ }).click();
+  await expect(dialogHeading).toBeHidden({ timeout: 15_000 });
 }
 
 test.describe('Invitasjoner og RSVP', () => {
