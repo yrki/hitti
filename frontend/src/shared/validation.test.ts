@@ -2,7 +2,7 @@ import { describe, it, expect } from 'vitest';
 import { isValidNorwegianPhone, isValidEmail, normalizeNorwegianPhone } from './validation';
 
 describe('isValidNorwegianPhone', () => {
-  it('should_accept_8_bare_digits', () => {
+  it('godtar 8 sifre uten landkode', () => {
     // Arrange
     const phone = '12345678';
 
@@ -13,7 +13,7 @@ describe('isValidNorwegianPhone', () => {
     expect(result).toBe(true);
   });
 
-  it('should_accept_plus_47_prefix', () => {
+  it('godtar nummer med +47-prefiks', () => {
     // Arrange
     const phone = '+4712345678';
 
@@ -24,7 +24,7 @@ describe('isValidNorwegianPhone', () => {
     expect(result).toBe(true);
   });
 
-  it('should_accept_47_prefix_without_plus', () => {
+  it('godtar 47-prefiks uten plusstegn', () => {
     // Arrange
     const phone = '4712345678';
 
@@ -35,7 +35,7 @@ describe('isValidNorwegianPhone', () => {
     expect(result).toBe(true);
   });
 
-  it('should_accept_spaces_in_number', () => {
+  it('godtar mellomrom i nummeret', () => {
     // Arrange
     const phone = '+47 12 34 56 78';
 
@@ -46,7 +46,7 @@ describe('isValidNorwegianPhone', () => {
     expect(result).toBe(true);
   });
 
-  it('should_reject_empty_string', () => {
+  it('avviser tom streng', () => {
     // Arrange
     const phone = '';
 
@@ -57,7 +57,7 @@ describe('isValidNorwegianPhone', () => {
     expect(result).toBe(false);
   });
 
-  it('should_reject_7_digits', () => {
+  it('avviser 7 sifre', () => {
     // Arrange
     const phone = '1234567';
 
@@ -68,7 +68,7 @@ describe('isValidNorwegianPhone', () => {
     expect(result).toBe(false);
   });
 
-  it('should_reject_9_digits_without_country_code', () => {
+  it('avviser 9 sifre uten landkode', () => {
     // Arrange
     const phone = '123456789';
 
@@ -79,7 +79,7 @@ describe('isValidNorwegianPhone', () => {
     expect(result).toBe(false);
   });
 
-  it('should_reject_non_norwegian_country_code', () => {
+  it('avviser ikke-norsk landkode', () => {
     // Arrange
     const phone = '+4512345678';
 
@@ -90,7 +90,7 @@ describe('isValidNorwegianPhone', () => {
     expect(result).toBe(false);
   });
 
-  it('should_reject_letters', () => {
+  it('avviser bokstaver i nummeret', () => {
     // Arrange
     const phone = '+47abcdefgh';
 
@@ -103,7 +103,7 @@ describe('isValidNorwegianPhone', () => {
 });
 
 describe('normalizeNorwegianPhone', () => {
-  it('should_strip_spaces', () => {
+  it('fjerner mellomrom fra nummeret', () => {
     // Arrange
     const phone = '+47 12 34 56 78';
 
@@ -114,7 +114,7 @@ describe('normalizeNorwegianPhone', () => {
     expect(result).toBe('+4712345678');
   });
 
-  it('should_leave_already_compact_number_unchanged', () => {
+  it('lar allerede kompakt nummer stå uendret', () => {
     // Arrange
     const phone = '12345678';
 
@@ -127,7 +127,7 @@ describe('normalizeNorwegianPhone', () => {
 });
 
 describe('isValidEmail', () => {
-  it('should_accept_simple_email', () => {
+  it('godtar enkel e-postadresse', () => {
     // Arrange
     const email = 'thomas@hitti.no';
 
@@ -138,7 +138,7 @@ describe('isValidEmail', () => {
     expect(result).toBe(true);
   });
 
-  it('should_accept_email_with_subdomain', () => {
+  it('godtar e-post med subdomene', () => {
     // Arrange
     const email = 'admin@apps.hitti.no';
 
@@ -149,7 +149,7 @@ describe('isValidEmail', () => {
     expect(result).toBe(true);
   });
 
-  it('should_trim_surrounding_whitespace', () => {
+  it('trimmer mellomrom rundt e-postadressen', () => {
     // Arrange
     const email = '  thomas@hitti.no  ';
 
@@ -160,7 +160,7 @@ describe('isValidEmail', () => {
     expect(result).toBe(true);
   });
 
-  it('should_reject_email_without_at_sign', () => {
+  it('avviser e-post uten alfakrøll', () => {
     // Arrange
     const email = 'thomas.hitti.no';
 
@@ -171,7 +171,7 @@ describe('isValidEmail', () => {
     expect(result).toBe(false);
   });
 
-  it('should_reject_email_without_tld', () => {
+  it('avviser e-post uten toppdomene', () => {
     // Arrange
     const email = 'thomas@hitti';
 
@@ -182,7 +182,7 @@ describe('isValidEmail', () => {
     expect(result).toBe(false);
   });
 
-  it('should_reject_empty_string', () => {
+  it('avviser tom streng som e-post', () => {
     // Arrange
     const email = '';
 

@@ -39,7 +39,7 @@ describe('LoginPage', () => {
     vi.restoreAllMocks();
   });
 
-  it('should_render_email_and_password_fields', async () => {
+  it('viser e-post- og passordfelter ved innlasting', async () => {
     // Arrange
     renderLogin();
 
@@ -52,7 +52,7 @@ describe('LoginPage', () => {
     expect(passwordField).toBeInTheDocument();
   });
 
-  it('should_block_submission_and_not_call_api_when_fields_are_empty', async () => {
+  it('kaller ikke API når feltene er tomme', async () => {
     // Arrange
     renderLogin();
     const submit = await screen.findByRole('button', { name: /Logg inn/i });
@@ -66,7 +66,7 @@ describe('LoginPage', () => {
     expect(globalThis.fetch).not.toHaveBeenCalled();
   });
 
-  it('should_redirect_to_root_after_successful_login', async () => {
+  it('videresender til forsiden etter vellykket innlogging', async () => {
     // Arrange
     vi.mocked(globalThis.fetch).mockResolvedValueOnce({
       ok: true,
@@ -84,7 +84,7 @@ describe('LoginPage', () => {
     expect(localStorage.getItem('auth_token')).toBe('new-token');
   });
 
-  it('should_show_error_message_when_login_fails', async () => {
+  it('viser feilmelding når innlogging mislykkes', async () => {
     // Arrange
     vi.mocked(globalThis.fetch).mockResolvedValueOnce({
       ok: false,

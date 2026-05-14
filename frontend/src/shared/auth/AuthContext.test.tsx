@@ -44,7 +44,7 @@ describe('AuthContext', () => {
     vi.restoreAllMocks();
   });
 
-  it('should_have_loading_true_initially_when_token_exists', async () => {
+  it('viser loading-tilstand initialt når token finnes', async () => {
     // Arrange
     setAuthToken('valid-token');
     let resolveFetch: (value: Response) => void = () => {};
@@ -66,7 +66,7 @@ describe('AuthContext', () => {
     });
   });
 
-  it('should_set_user_and_stop_loading_after_successful_auth_me', async () => {
+  it('setter bruker og avslutter loading etter vellykket auth/me', async () => {
     // Arrange
     setAuthToken('valid-token');
     vi.mocked(globalThis.fetch).mockResolvedValueOnce({
@@ -82,7 +82,7 @@ describe('AuthContext', () => {
     expect(screen.getByTestId('user')).toHaveTextContent('Børre');
   });
 
-  it('should_set_user_to_null_when_auth_me_returns_401', async () => {
+  it('nullstiller bruker og sletter token når auth/me returnerer 401', async () => {
     // Arrange
     setAuthToken('expired-token');
     vi.mocked(globalThis.fetch).mockResolvedValueOnce({
@@ -100,7 +100,7 @@ describe('AuthContext', () => {
     expect(localStorage.getItem('auth_token')).toBeNull();
   });
 
-  it('should_clear_localStorage_and_reset_user_on_logout', async () => {
+  it('tømmer localStorage og nullstiller bruker ved utlogging', async () => {
     // Arrange
     setAuthToken('valid-token');
     vi.mocked(globalThis.fetch).mockResolvedValueOnce({

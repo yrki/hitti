@@ -21,7 +21,7 @@ describe('ThemeProvider', () => {
     document.documentElement.removeAttribute('data-theme');
   });
 
-  it('should_default_to_light_when_no_preference_stored', () => {
+  it('bruker lyst tema som standard når ingen preferanse er lagret', () => {
     // Arrange
     // Act
     render(<ThemeProvider><ThemeProbe /></ThemeProvider>);
@@ -31,7 +31,7 @@ describe('ThemeProvider', () => {
     expect(document.documentElement.dataset.theme).toBe('light');
   });
 
-  it('should_restore_stored_theme_from_localStorage', () => {
+  it('gjenoppretter lagret tema fra localStorage', () => {
     // Arrange
     window.localStorage.setItem('hitti-theme', 'dark');
 
@@ -43,7 +43,7 @@ describe('ThemeProvider', () => {
     expect(document.documentElement.dataset.theme).toBe('dark');
   });
 
-  it('should_toggle_between_light_and_dark', async () => {
+  it('veksler mellom lyst og mørkt tema', async () => {
     // Arrange
     const user = userEvent.setup();
     render(<ThemeProvider><ThemeProbe /></ThemeProvider>);
@@ -62,7 +62,7 @@ describe('ThemeProvider', () => {
     expect(screen.getByTestId('current-theme')).toHaveTextContent('light');
   });
 
-  it('should_persist_chosen_theme_to_localStorage', async () => {
+  it('lagrer valgt tema i localStorage', async () => {
     // Arrange
     const user = userEvent.setup();
     render(<ThemeProvider><ThemeProbe /></ThemeProvider>);
@@ -74,7 +74,7 @@ describe('ThemeProvider', () => {
     expect(window.localStorage.getItem('hitti-theme')).toBe('dark');
   });
 
-  it('should_throw_when_useTheme_is_called_outside_provider', () => {
+  it('kaster feil når useTheme brukes utenfor ThemeProvider', () => {
     // Arrange
     const spy = vi.spyOn(console, 'error').mockImplementation(() => {});
 

@@ -31,7 +31,7 @@ describe('RsvpPage', () => {
     vi.restoreAllMocks();
   });
 
-  it('should_show_invitation_details_when_token_and_response_are_valid', async () => {
+  it('viser invitasjonsdetaljer når token og svar er gyldig', async () => {
     // Arrange
     vi.mocked(globalThis.fetch).mockResolvedValueOnce({
       ok: true,
@@ -47,7 +47,7 @@ describe('RsvpPage', () => {
     expect(screen.getByText(/Hittihagen/)).toBeInTheDocument();
   });
 
-  it('should_show_error_message_when_api_returns_404', async () => {
+  it('viser feilmelding når API returnerer 404', async () => {
     // Arrange
     vi.mocked(globalThis.fetch).mockResolvedValueOnce({
       ok: false,
@@ -63,7 +63,7 @@ describe('RsvpPage', () => {
     expect(screen.getByText(/Oops!/)).toBeInTheDocument();
   });
 
-  it('should_show_confirmation_after_clicking_Ja', async () => {
+  it('viser bekreftelse etter klikk på Ja-knappen', async () => {
     // Arrange: ingen ?svar => komponenten viser knapper.
     vi.mocked(globalThis.fetch).mockResolvedValueOnce({
       ok: true,
@@ -79,7 +79,7 @@ describe('RsvpPage', () => {
     await waitFor(() => expect(screen.getByText(/Du er påmeldt/i)).toBeInTheDocument());
   });
 
-  it('should_show_decline_confirmation_after_clicking_Nei', async () => {
+  it('viser avmeldingsbekreftelse etter klikk på Nei-knappen', async () => {
     // Arrange
     vi.mocked(globalThis.fetch).mockResolvedValueOnce({
       ok: true,

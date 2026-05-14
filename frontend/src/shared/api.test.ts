@@ -34,7 +34,7 @@ describe('apiFetch', () => {
     });
   });
 
-  it('should_send_Authorization_header_when_token_exists', async () => {
+  it('sender Authorization-header når token er satt', async () => {
     // Arrange
     setAuthToken('abc-123');
     vi.mocked(globalThis.fetch).mockResolvedValueOnce(mockFetchResponse({ ok: true }));
@@ -48,7 +48,7 @@ describe('apiFetch', () => {
     expect(headers['Authorization']).toBe('Bearer abc-123');
   });
 
-  it('should_omit_Authorization_header_when_token_missing', async () => {
+  it('utelater Authorization-header når token mangler', async () => {
     // Arrange
     vi.mocked(globalThis.fetch).mockResolvedValueOnce(mockFetchResponse({ ok: true }));
 
@@ -61,7 +61,7 @@ describe('apiFetch', () => {
     expect(headers['Authorization']).toBeUndefined();
   });
 
-  it('should_clear_token_and_redirect_to_login_on_401', async () => {
+  it('sletter token og videresender til login ved 401', async () => {
     // Arrange
     setAuthToken('expired');
     vi.mocked(globalThis.fetch).mockResolvedValueOnce(
@@ -77,7 +77,7 @@ describe('apiFetch', () => {
     expect(window.location.href).toBe('/login');
   });
 
-  it('should_return_parsed_json_on_200', async () => {
+  it('returnerer parset JSON ved 200', async () => {
     // Arrange
     const payload = { id: 42, name: 'Børre' };
     vi.mocked(globalThis.fetch).mockResolvedValueOnce(mockFetchResponse(payload));
@@ -89,7 +89,7 @@ describe('apiFetch', () => {
     expect(result).toEqual(payload);
   });
 
-  it('should_throw_when_response_is_not_ok', async () => {
+  it('kaster feil når responsen ikke er ok', async () => {
     // Arrange
     vi.mocked(globalThis.fetch).mockResolvedValueOnce(
       mockFetchResponse({}, { status: 500, ok: false, statusText: 'Server Error' })
