@@ -1,0 +1,42 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.hint {
+  margin: 0;
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+}
+
+.lookingUp {
+  color: var(--color-accent);
+  font-weight: 500;
+}
+
+.map {
+  height: 280px;
+  border: 1px solid var(--color-border-strong);
+  border-radius: 8px;
+  overflow: hidden;
+  cursor: crosshair;
+}
+
+.map :global(.maplibregl-ctrl-attrib) {
+  font-size: 0.7rem;
+}
+
+:root[data-theme="dark"] .map :global(.maplibregl-ctrl-attrib) {
+  background: rgba(30, 41, 59, 0.85);
+}
+
+:root[data-theme="dark"] .map :global(.maplibregl-ctrl-attrib),
+:root[data-theme="dark"] .map :global(.maplibregl-ctrl-attrib a) {
+  color: var(--color-text-muted);
+}
+
+:root[data-theme="dark"] .map :global(.maplibregl-ctrl-attrib a) {
+  color: var(--color-accent);
+}

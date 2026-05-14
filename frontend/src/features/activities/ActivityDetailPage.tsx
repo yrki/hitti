@@ -1,9 +1,10 @@
 import { useEffect, useState, useCallback } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import DOMPurify from 'dompurify';
 import { getActivity, getParticipants, sendInvitations, resendInvitation } from './services/activitiesApi';
 import { ParticipantList } from './components/ParticipantList';
 import { SendInvitationDialog } from './components/SendInvitationDialog';
+import { ActivityMap } from './components/ActivityMap';
 import { ParticipantStatus, InvitationChannel, NotificationStatus } from './types';
 import type { Activity, Participant } from './types';
 import { usePageTitle } from '../../shared/hooks/usePageTitle';
@@ -12,6 +13,7 @@ import styles from './ActivityDetailPage.module.css';
 export function ActivityDetailPage() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [activity, setActivity] = useState<Activity | null>(null);
   usePageTitle(activity?.title ?? 'Aktivitet');
   const [participants, setParticipants] = useState<Participant[]>([]);
@@ -40,6 +42,15 @@ export function ActivityDetailPage() {
   useEffect(() => {
     loadData();
   }, [loadData]);
+
+  useEffect(() => {
+    if (searchParams.get('invite') === '1') {
+      setShowInviteDialog(true);
+      const next = new URLSearchParams(searchParams);
+      next.delete('invite');
+      setSearchParams(next, { replace: true });
+    }
+  }, [searchParams, setSearchParams]);
 
   async function handleResend(participantId: string) {
     if (!id) return;
@@ -96,28 +107,33 @@ export function ActivityDetailPage() {
         </div>
       </div>
 
-      <div className={styles.details}>
-        <div className={styles.detailItem}>
-          <span className={styles.detailLabel}>Dato</span>
-          <span>
-            {new Date(activity.startTime).toLocaleDateString('nb-NO', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
-            {' kl. '}
-            {new Date(activity.startTime).toLocaleTimeString('nb-NO', { hour: '2-digit', minute: '2-digit' })}
-            {' – '}
-            {new Date(activity.endTime).toLocaleTimeString('nb-NO', { hour: '2-digit', minute: '2-digit' })}
-          </span>
+      <div className={styles.detailsRow}>
+        <div className={styles.details}>
+          <div className={styles.detailItem}>
+            <span className={styles.detailLabel}>Dato</span>
+            <span>
+              {new Date(activity.startTime).toLocaleDateString('nb-NO', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
+              {' kl. '}
+              {new Date(activity.startTime).toLocaleTimeString('nb-NO', { hour: '2-digit', minute: '2-digit' })}
+              {' – '}
+              {new Date(activity.endTime).toLocaleTimeString('nb-NO', { hour: '2-digit', minute: '2-digit' })}
+            </span>
+          </div>
+          <div className={styles.detailItem}>
+            <span className={styles.detailLabel}>Sted</span>
+            <span>{activity.location}</span>
+          </div>
+          <div className={styles.detailItem}>
+            <span className={styles.detailLabel}>Beskrivelse</span>
+            <span dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(activity.description) }} />
+          </div>
+          <div className={styles.detailItem}>
+            <span className={styles.detailLabel}>Kontakt</span>
+            <span>{activity.contactName} — {activity.contactEmail} / {activity.contactPhone}</span>
+          </div>
         </div>
-        <div className={styles.detailItem}>
-          <span className={styles.detailLabel}>Sted</span>
-          <span>{activity.location}</span>
-        </div>
-        <div className={styles.detailItem}>
-          <span className={styles.detailLabel}>Beskrivelse</span>
-          <span dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(activity.description) }} />
-        </div>
-        <div className={styles.detailItem}>
-          <span className={styles.detailLabel}>Kontakt</span>
-          <span>{activity.contactName} — {activity.contactEmail} / {activity.contactPhone}</span>
+        <div className={styles.mapColumn}>
+          <ActivityMap location={activity.location} />
         </div>
       </div>
 

@@ -140,3 +140,18 @@
 .submitButton:hover {
   background: var(--color-text);
 }
+
+.submitInviteButton {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 8px;
+  background: var(--color-primary);
+  color: var(--color-text-inverse);
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.submitInviteButton:hover {
+  background: var(--color-primary-hover);
+}

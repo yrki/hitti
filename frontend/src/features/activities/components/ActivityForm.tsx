@@ -2,15 +2,17 @@ import { useState } from 'react';
 import ReactQuill from 'react-quill-new';
 import 'react-quill-new/dist/quill.snow.css';
 import type { Activity, CreateActivityRequest } from '../types';
+import { LocationPicker } from './LocationPicker';
 import styles from './ActivityForm.module.css';
 
 interface Props {
   activity?: Activity;
-  onSubmit: (data: CreateActivityRequest) => void;
+  onSubmit: (data: CreateActivityRequest, sendInvitations: boolean) => void;
   onCancel: () => void;
 }
 
 export function ActivityForm({ activity, onSubmit, onCancel }: Props) {
+  const isEditing = !!activity;
   const [title, setTitle] = useState(activity?.title ?? '');
   const [description, setDescription] = useState(activity?.description ?? '');
   const [date, setDate] = useState(
@@ -27,8 +29,10 @@ export function ActivityForm({ activity, onSubmit, onCancel }: Props) {
   const [contactEmail, setContactEmail] = useState(activity?.contactEmail ?? '');
   const [contactPhone, setContactPhone] = useState(activity?.contactPhone ?? '');
 
-  function handleSubmit(event: React.FormEvent) {
+  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    const submitter = (event.nativeEvent as SubmitEvent).submitter as HTMLButtonElement | null;
+    const sendInvitations = submitter?.value === 'invite';
     onSubmit({
       title,
       description,
@@ -38,12 +42,12 @@ export function ActivityForm({ activity, onSubmit, onCancel }: Props) {
       contactName,
       contactEmail,
       contactPhone,
-    });
+    }, sendInvitations);
   }
 
   return (
     <form className={styles.form} onSubmit={handleSubmit}>
-      <h2>{activity ? 'Rediger aktivitet' : 'Ny aktivitet'}</h2>
+      <h2>{isEditing ? 'Rediger aktivitet' : 'Ny aktivitet'}</h2>
 
         <label className={styles.label}>
           Tittel
@@ -86,10 +90,11 @@ export function ActivityForm({ activity, onSubmit, onCancel }: Props) {
           </label>
         </div>
 
-        <label className={styles.label}>
+        <div className={styles.label}>
           Sted
           <input className={styles.input} type="text" value={location} onChange={(e) => setLocation(e.target.value)} required />
-        </label>
+          <LocationPicker value={location} onChange={(label) => setLocation(label)} />
+        </div>
 
         <fieldset className={styles.fieldset}>
           <legend>Kontaktperson</legend>
@@ -114,8 +119,11 @@ export function ActivityForm({ activity, onSubmit, onCancel }: Props) {
           <button type="button" className={styles.cancelButton} onClick={onCancel}>
             Avbryt
           </button>
-          <button type="submit" className={styles.submitButton}>
-            {activity ? 'Oppdater' : 'Opprett'}
+          <button type="submit" name="action" value="save" className={styles.submitButton}>
+            {isEditing ? 'Oppdater aktivitet' : 'Opprett aktivitet'}
+          </button>
+          <button type="submit" name="action" value="invite" className={styles.submitInviteButton}>
+            {isEditing ? 'Oppdater og send invitasjoner' : 'Opprett og send invitasjoner'}
           </button>
         </div>
       </form>

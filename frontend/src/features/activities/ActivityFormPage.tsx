@@ -22,14 +22,16 @@ export function ActivityFormPage() {
       .finally(() => setLoading(false));
   }, [id]);
 
-  async function handleSubmit(data: CreateActivityRequest) {
+  async function handleSubmit(data: CreateActivityRequest, sendInvitations: boolean) {
+    let activityId = id;
     if (id) {
       await updateActivity(id, data);
-      navigate(`/aktiviteter/${id}`);
     } else {
       const created = await createActivity(data);
-      navigate(`/aktiviteter/${created.id}`);
+      activityId = created.id;
     }
+    const suffix = sendInvitations ? '?invite=1' : '';
+    navigate(`/aktiviteter/${activityId}${suffix}`);
   }
 
   function handleCancel() {
