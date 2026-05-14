@@ -37,10 +37,22 @@ export function DashboardPage() {
 
   return (
     <div>
-      <h2 className={styles.heading}>Kommende aktiviteter</h2>
+      {!loading && activities.length > 0 && (
+        <div className={styles.header}>
+          <h2 className={styles.heading}>Kommende aktiviteter</h2>
+          <button className={styles.addButton} onClick={() => navigate('/aktiviteter/ny')}>
+            + Ny aktivitet
+          </button>
+        </div>
+      )}
       {loading && <p>Laster...</p>}
       {!loading && activities.length === 0 && (
-        <p className={styles.empty}>Ingen kommende aktiviteter.</p>
+        <div className={styles.emptyState}>
+          <p className={styles.emptyHeadline}>Her var det tomt!</p>
+          <button className={styles.emptyButton} onClick={() => navigate('/aktiviteter/ny')}>
+            Opprett aktivitet
+          </button>
+        </div>
       )}
       {!loading && activities.length > 0 && (
         <table className={styles.table}>

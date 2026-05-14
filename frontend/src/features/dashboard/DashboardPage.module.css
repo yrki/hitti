@@ -1,13 +1,74 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.25rem;
+}
+
 .heading {
-  margin: 0 0 1.25rem;
+  margin: 0;
   font-size: 1.35rem;
   font-weight: 700;
   color: var(--color-text);
 }
 
+.addButton {
+  padding: 0.5rem 1.25rem;
+  border: none;
+  border-radius: 8px;
+  background: var(--color-text);
+  color: var(--color-surface);
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.addButton:hover {
+  background: var(--color-text);
+}
+
 .empty {
   color: var(--color-text-muted);
   font-size: 0.95rem;
+}
+
+.emptyState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  padding: 5rem 1rem;
+  text-align: center;
+}
+
+.emptyHeadline {
+  margin: 0;
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.emptyButton {
+  padding: 1rem 2.5rem;
+  border: none;
+  border-radius: 12px;
+  background: var(--color-text);
+  color: var(--color-surface);
+  font-size: 1.25rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.1s ease, box-shadow 0.15s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+}
+
+.emptyButton:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.16);
+}
+
+.emptyButton:active {
+  transform: translateY(0);
 }
 
 .table {
