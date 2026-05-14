@@ -24,7 +24,7 @@ test.describe('Aktiviteter', () => {
     await contactFieldset.getByLabel(/^Navn/).fill(activity.contactName);
     await contactFieldset.getByLabel(/^E-post/).fill(activity.contactEmail);
     await contactFieldset.getByLabel(/^Telefon/).fill(activity.contactPhone);
-    await page.getByRole('button', { name: /^Opprett$/ }).click();
+    await page.getByRole('button', { name: /^Opprett aktivitet$/ }).click();
 
     // Assert
     await expect(page).toHaveURL(/\/aktiviteter\/[0-9a-f-]+$/);
@@ -45,7 +45,7 @@ test.describe('Aktiviteter', () => {
     await contactFieldset.getByLabel(/^Navn/).fill(activity.contactName);
     await contactFieldset.getByLabel(/^E-post/).fill(activity.contactEmail);
     await contactFieldset.getByLabel(/^Telefon/).fill(activity.contactPhone);
-    await page.getByRole('button', { name: /^Opprett$/ }).click();
+    await page.getByRole('button', { name: /^Opprett aktivitet$/ }).click();
     await page.goto('/aktiviteter');
 
     // Act
@@ -70,7 +70,7 @@ test.describe('Aktiviteter', () => {
     await contactFieldset.getByLabel(/^Navn/).fill(activity.contactName);
     await contactFieldset.getByLabel(/^E-post/).fill(activity.contactEmail);
     await contactFieldset.getByLabel(/^Telefon/).fill(activity.contactPhone);
-    await page.getByRole('button', { name: /^Opprett$/ }).click();
+    await page.getByRole('button', { name: /^Opprett aktivitet$/ }).click();
     await page.goto('/aktiviteter');
     const row = page.getByRole('row', { name: new RegExp(activity.title) });
     page.once('dialog', (dialog) => dialog.accept());

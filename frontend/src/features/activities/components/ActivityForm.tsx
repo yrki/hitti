@@ -91,8 +91,8 @@ export function ActivityForm({ activity, onSubmit, onCancel }: Props) {
         </div>
 
         <div className={styles.label}>
-          Sted
-          <input className={styles.input} type="text" value={location} onChange={(e) => setLocation(e.target.value)} required />
+          <label htmlFor="activity-location">Sted</label>
+          <input id="activity-location" className={styles.input} type="text" value={location} onChange={(e) => setLocation(e.target.value)} required />
           <LocationPicker value={location} onChange={(label) => setLocation(label)} />
         </div>
 
