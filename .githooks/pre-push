@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+# Pre-push hook: kjorer frontend-build og hele test-suiten (test.sh).
+# Skip ved behov med: git push --no-verify
+set -e
+
+REPO_ROOT="$(git rev-parse --show-toplevel)"
+cd "$REPO_ROOT"
+
+GREEN="\033[0;32m"
+BLUE="\033[0;34m"
+NC="\033[0m"
+
+echo -e "${BLUE}=== pre-push: frontend production build ===${NC}"
+(cd frontend && npm run build > /tmp/hitti-frontend-build.log 2>&1) || {
+  echo "Frontend-build feilet. Siste linjer:"
+  tail -30 /tmp/hitti-frontend-build.log
+  exit 1
+}
+echo -e "${GREEN}frontend build OK${NC}"
+
+echo -e "\n${BLUE}=== pre-push: ./test.sh ===${NC}"
+./test.sh
+
+echo -e "\n${GREEN}Alt grontt — pusher.${NC}"
